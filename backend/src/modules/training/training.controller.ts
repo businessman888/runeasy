@@ -76,14 +76,24 @@ export class TrainingController {
                 preferredDays: dto.preferred_days,
             });
 
+            // Return plan preview data for frontend
             return {
                 success: true,
                 plan_id: result.plan.id,
                 workouts_count: result.workoutsCount,
+                // Include plan preview data for PlanPreview screen
+                planHeader: result.planPreview?.planHeader,
+                planHeadline: result.planPreview?.planHeadline,
+                welcomeBadge: result.planPreview?.welcomeBadge,
+                nextWorkout: result.planPreview?.nextWorkout,
+                fullSchedulePreview: result.planPreview?.fullSchedulePreview,
             };
         } catch (error) {
             this.logger.error('Onboarding failed', error);
-            throw new HttpException('Failed to create plan', HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(
+                error.message || 'Failed to create plan',
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
         }
     }
 

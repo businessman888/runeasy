@@ -45,22 +45,22 @@ export function LoginScreen({ navigation }: any) {
             }
 
             if (userId) {
-                setIsLoading(true);
-                // Store userId and login
-                await Storage.setItemAsync('user_id', userId);
-                await login(userId);
-
-                // Clean URL and navigate
+                // Clean URL first
                 window.history.replaceState({}, '', '/');
 
                 // Check if this is a new user (onboarding path)
-                // The backend redirects to /onboarding?user_id=xxx for new users
                 const isNewUser = currentUrl.includes('onboarding');
                 console.log('Login callback - isNewUser:', isNewUser, 'URL:', currentUrl);
 
                 if (isNewUser) {
-                    navigation.replace('Quiz_Objective');
+                    // DON'T authenticate yet - pass userId to quiz flow
+                    // User will be authenticated after completing quiz and unlocking plan
+                    navigation.replace('Quiz_Objective', { userId });
                 } else {
+                    // Returning user - authenticate and go to main
+                    setIsLoading(true);
+                    await Storage.setItemAsync('user_id', userId);
+                    await login(userId);
                     navigation.replace('Main');
                 }
             }
@@ -109,16 +109,17 @@ export function LoginScreen({ navigation }: any) {
                     }
 
                     if (userId) {
-                        await Storage.setItemAsync('user_id', userId);
-                        await login(userId);
-
                         // Check if this is a new user (onboarding path)
                         const isNewUser = result.url.includes('onboarding');
                         console.log('Native login callback - isNewUser:', isNewUser, 'URL:', result.url);
 
                         if (isNewUser) {
-                            navigation.replace('Quiz_Objective');
+                            // DON'T authenticate yet - pass userId to quiz flow
+                            navigation.replace('Quiz_Objective', { userId });
                         } else {
+                            // Returning user - authenticate and go to main
+                            await Storage.setItemAsync('user_id', userId);
+                            await login(userId);
                             navigation.replace('Main');
                         }
                     }

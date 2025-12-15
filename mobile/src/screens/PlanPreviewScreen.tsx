@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme';
 import { useAuthStore } from '../stores';
+import * as Storage from '../utils/storage';
 
 const GOAL_LABELS: Record<string, string> = {
     '5k': 'Correr 5K',
@@ -27,21 +28,43 @@ const LEVEL_LABELS: Record<string, string> = {
 };
 
 export function PlanPreviewScreen({ navigation, route }: any) {
-    const { planId, workoutsCount, goal, targetWeeks, daysPerWeek, level } = route.params || {};
-    const { setAuthenticated } = useAuthStore();
+    const {
+        userId,
+        planId,
+        workoutsCount,
+        goal,
+        targetWeeks,
+        daysPerWeek,
+        level,
+        // AI-generated plan preview data
+        planHeader,
+        planHeadline,
+        welcomeBadge,
+        nextWorkout,
+        fullSchedulePreview,
+    } = route.params || {};
+    const { login } = useAuthStore();
     const [isUnlocking, setIsUnlocking] = React.useState(false);
 
     const handleUnlockPlan = async () => {
         setIsUnlocking(true);
 
-        // Set user as authenticated (they've completed onboarding and have a plan)
-        await setAuthenticated(true);
+        try {
+            // Store userId and authenticate the user
+            if (userId) {
+                await Storage.setItemAsync('user_id', userId);
+                await login(userId);
+            }
 
-        // Navigate to the main app (Calendar tab)
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'Main', params: { initialTab: 'Calendar' } }],
-        });
+            // Navigate to the main app (Calendar tab)
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Main', params: { initialTab: 'Calendar' } }],
+            });
+        } catch (error) {
+            console.error('Error unlocking plan:', error);
+            setIsUnlocking(false);
+        }
     };
 
     return (
@@ -101,10 +124,14 @@ export function PlanPreviewScreen({ navigation, route }: any) {
                     </View>
                     <View style={styles.analysisCard}>
                         <Text style={styles.analysisText}>
-                            Baseado no seu perfil de <Text style={styles.highlight}>{LEVEL_LABELS[level]?.toLowerCase()}</Text> com
-                            objetivo de <Text style={styles.highlight}>{GOAL_LABELS[goal]?.toLowerCase()}</Text>,
-                            criei um plano progressivo de <Text style={styles.highlight}>{targetWeeks} semanas</Text> com{' '}
-                            <Text style={styles.highlight}>{workoutsCount || targetWeeks * daysPerWeek} treinos</Text> programados.
+                            {planHeadline || (
+                                <>
+                                    Baseado no seu perfil de <Text style={styles.highlight}>{LEVEL_LABELS[level]?.toLowerCase()}</Text> com
+                                    objetivo de <Text style={styles.highlight}>{GOAL_LABELS[goal]?.toLowerCase()}</Text>,
+                                    criei um plano progressivo de <Text style={styles.highlight}>{targetWeeks} semanas</Text> com{' '}
+                                    <Text style={styles.highlight}>{workoutsCount || targetWeeks * daysPerWeek} treinos</Text> programados.
+                                </>
+                            )}
                         </Text>
                         <View style={styles.analysisFeatures}>
                             <View style={styles.featureItem}>

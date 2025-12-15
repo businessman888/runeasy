@@ -9,11 +9,12 @@ const TIMEFRAME_OPTIONS = [
     { value: 16, label: '16+ semanas', description: 'Preparação completa', icon: '🏅' },
 ];
 
-export function TimeframeScreen({ navigation }: any) {
+export function TimeframeScreen({ navigation, route }: any) {
+    const { userId } = route.params || {};
     const { data, updateData } = useOnboardingStore();
 
     const handleNext = () => {
-        navigation.navigate('Quiz_Limitations');
+        navigation.navigate('Quiz_Limitations', { userId });
     };
 
     const handleBack = () => {

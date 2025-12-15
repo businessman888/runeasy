@@ -2,11 +2,12 @@ import React from 'react';
 import { QuizLayout, NumberSelector } from '../../components/QuizLayout';
 import { useOnboardingStore } from '../../stores/onboardingStore';
 
-export function FrequencyScreen({ navigation }: any) {
+export function FrequencyScreen({ navigation, route }: any) {
+    const { userId } = route.params || {};
     const { data, updateData } = useOnboardingStore();
 
     const handleNext = () => {
-        navigation.navigate('Quiz_Pace');
+        navigation.navigate('Quiz_Pace', { userId });
     };
 
     const handleBack = () => {

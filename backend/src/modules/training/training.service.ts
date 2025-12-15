@@ -75,7 +75,19 @@ export class TrainingService {
 
             this.logger.log(`Created training plan ${plan.id} with ${workoutsToInsert.length} workouts`);
 
-            return { plan, workoutsCount: workoutsToInsert.length };
+            // Return plan data including preview for frontend
+            return {
+                plan,
+                workoutsCount: workoutsToInsert.length,
+                // Include plan preview data from AI response
+                planPreview: {
+                    planHeader: generatedPlan.planHeader,
+                    planHeadline: generatedPlan.planHeadline,
+                    welcomeBadge: generatedPlan.welcomeBadge,
+                    nextWorkout: generatedPlan.nextWorkout,
+                    fullSchedulePreview: generatedPlan.fullSchedulePreview,
+                },
+            };
         } catch (error) {
             this.logger.error('Failed to create training plan', error);
             throw error;

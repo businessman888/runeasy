@@ -39,10 +39,13 @@ function WorkoutDetailScreen({ route }: any) {
 
 
 // Tab Navigator
-function MainTabs() {
+function MainTabs({ route }: any) {
+    const { initialTab } = route.params || {};
+
     return (
         <Tab.Navigator
             id="MainTabs"
+            initialRouteName={initialTab || 'Home'}
             screenOptions={{
                 tabBarActiveTintColor: colors.primary,
                 tabBarInactiveTintColor: colors.textSecondary,

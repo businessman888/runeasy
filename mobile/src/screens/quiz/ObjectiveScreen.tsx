@@ -10,11 +10,12 @@ const GOAL_OPTIONS = [
     { value: 'general_fitness', label: 'Condicionamento Geral', description: 'Melhorar saúde e fitness', icon: '💪' },
 ];
 
-export function ObjectiveScreen({ navigation }: any) {
+export function ObjectiveScreen({ navigation, route }: any) {
+    const { userId } = route.params || {};
     const { data, updateData } = useOnboardingStore();
 
     const handleNext = () => {
-        navigation.navigate('Quiz_Level');
+        navigation.navigate('Quiz_Level', { userId });
     };
 
     return (

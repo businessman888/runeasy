@@ -10,7 +10,8 @@ import { QuizLayout } from '../../components/QuizLayout';
 import { useOnboardingStore } from '../../stores/onboardingStore';
 import { colors, typography, spacing, borderRadius } from '../../theme';
 
-export function PaceScreen({ navigation }: any) {
+export function PaceScreen({ navigation, route }: any) {
+    const { userId } = route.params || {};
     const { data, updateData } = useOnboardingStore();
     const [minutes, setMinutes] = React.useState(
         data.currentPace5k ? Math.floor(data.currentPace5k) : 6
@@ -27,7 +28,7 @@ export function PaceScreen({ navigation }: any) {
     }, [minutes, seconds, dontKnow]);
 
     const handleNext = () => {
-        navigation.navigate('Quiz_Timeframe');
+        navigation.navigate('Quiz_Timeframe', { userId });
     };
 
     const handleBack = () => {

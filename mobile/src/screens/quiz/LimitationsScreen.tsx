@@ -8,7 +8,6 @@ import {
 import { QuizLayout } from '../../components/QuizLayout';
 import { useOnboardingStore } from '../../stores/onboardingStore';
 import { colors, typography, spacing, borderRadius } from '../../theme';
-import * as Storage from '../../utils/storage';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api';
 
@@ -41,23 +40,30 @@ export function LimitationsScreen({ navigation, route }: any) {
             if (response.ok) {
                 const result = await response.json();
 
-                // Store userId
-                await Storage.setItemAsync('user_id', userId);
-
-                // Navigate to Plan Preview
+                // Navigate to Plan Preview with all data from API
                 navigation.replace('PlanPreview', {
+                    userId,
                     planId: result.plan_id,
                     workoutsCount: result.workouts_count,
                     goal: data.goal,
                     targetWeeks: data.targetWeeks,
                     daysPerWeek: data.daysPerWeek,
                     level: data.level,
+                    // AI-generated plan preview data
+                    planHeader: result.planHeader,
+                    planHeadline: result.planHeadline,
+                    welcomeBadge: result.welcomeBadge,
+                    nextWorkout: result.nextWorkout,
+                    fullSchedulePreview: result.fullSchedulePreview,
                 });
             } else {
-                console.error('Onboarding failed');
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Onboarding failed:', errorData);
+                // TODO: Show error to user
             }
         } catch (error) {
             console.error('Submit error:', error);
+            // TODO: Show error to user
         } finally {
             setIsSubmitting(false);
         }

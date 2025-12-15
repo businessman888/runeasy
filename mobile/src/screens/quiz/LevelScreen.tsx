@@ -23,11 +23,12 @@ const LEVEL_OPTIONS = [
     },
 ];
 
-export function LevelScreen({ navigation }: any) {
+export function LevelScreen({ navigation, route }: any) {
+    const { userId } = route.params || {};
     const { data, updateData } = useOnboardingStore();
 
     const handleNext = () => {
-        navigation.navigate('Quiz_Frequency');
+        navigation.navigate('Quiz_Frequency', { userId });
     };
 
     const handleBack = () => {
