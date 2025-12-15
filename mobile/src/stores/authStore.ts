@@ -19,6 +19,7 @@ interface AuthState {
 
     // Actions
     setUser: (user: User | null) => void;
+    setAuthenticated: (authenticated: boolean) => void;
     login: (userId: string) => Promise<void>;
     logout: () => Promise<void>;
     checkAuth: () => Promise<void>;
@@ -33,6 +34,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     setUser: (user) => {
         set({ user, isAuthenticated: !!user });
+    },
+
+    setAuthenticated: (authenticated) => {
+        set({ isAuthenticated: authenticated });
     },
 
     login: async (userId: string) => {

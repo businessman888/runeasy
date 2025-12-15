@@ -13,6 +13,13 @@ import {
     FeedbackScreen,
     EvolutionScreen,
     SettingsScreen,
+    PlanPreviewScreen,
+    ObjectiveScreen,
+    LevelScreen,
+    FrequencyScreen,
+    PaceScreen,
+    TimeframeScreen,
+    LimitationsScreen,
 } from '../screens';
 import { colors, typography } from '../theme';
 import { useAuthStore } from '../stores';
@@ -164,12 +171,85 @@ export function AppNavigator() {
                                 gestureEnabled: false,
                             }}
                         />
+                        {/* Quiz Screens */}
+                        <Stack.Screen
+                            name="Quiz_Objective"
+                            component={ObjectiveScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Level"
+                            component={LevelScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Frequency"
+                            component={FrequencyScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Pace"
+                            component={PaceScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Timeframe"
+                            component={TimeframeScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Limitations"
+                            component={LimitationsScreen}
+                            options={{ headerShown: false }}
+                        />
+                        {/* Plan Preview Screen */}
+                        <Stack.Screen
+                            name="PlanPreview"
+                            component={PlanPreviewScreen}
+                            options={{ headerShown: false }}
+                        />
                     </>
                 ) : (
                     <>
                         <Stack.Screen
                             name="Main"
                             component={MainTabs}
+                            options={{ headerShown: false }}
+                        />
+                        {/* Quiz Screens - accessible after auth for new users */}
+                        <Stack.Screen
+                            name="Quiz_Objective"
+                            component={ObjectiveScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Level"
+                            component={LevelScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Frequency"
+                            component={FrequencyScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Pace"
+                            component={PaceScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Timeframe"
+                            component={TimeframeScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="Quiz_Limitations"
+                            component={LimitationsScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="PlanPreview"
+                            component={PlanPreviewScreen}
                             options={{ headerShown: false }}
                         />
                         <Stack.Screen

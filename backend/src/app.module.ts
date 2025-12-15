@@ -26,7 +26,7 @@ import { UsersModule } from './modules/users';
     // Database
     DatabaseModule,
 
-    // Feature Modules
+    // Feature Modules (Redis/BullMQ loads conditionally in StravaModule)
     StravaModule,
     TrainingModule,
     GamificationModule,
@@ -39,3 +39,4 @@ import { UsersModule } from './modules/users';
   providers: [AppService],
 })
 export class AppModule { }
+

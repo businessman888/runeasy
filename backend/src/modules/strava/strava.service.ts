@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { StravaCacheService } from './strava-cache.service';
 
 export interface StravaTokens {
     access_token: string;
@@ -58,7 +59,73 @@ export class StravaService {
     private readonly baseUrl = 'https://www.strava.com/api/v3';
     private readonly oauthUrl = 'https://www.strava.com/oauth';
 
-    constructor(private configService: ConfigService) { }
+    constructor(
+        private configService: ConfigService,
+        private cacheService: StravaCacheService,
+    ) { }
+
+    // ============================================
+    // RETRY & BACKOFF UTILS
+    // ============================================
+
+    /**
+     * Execute a function with exponential backoff retry on errors.
+     * Handles 429 rate limit errors with Retry-After header.
+     */
+    private async fetchWithRetry<T>(
+        fn: () => Promise<AxiosResponse<T>>,
+        maxRetries = 3,
+        baseDelay = 1000,
+    ): Promise<AxiosResponse<T>> {
+        let lastError: any;
+
+        for (let attempt = 0; attempt < maxRetries; attempt++) {
+            try {
+                return await fn();
+            } catch (error: any) {
+                lastError = error;
+                const axiosError = error as AxiosError;
+
+                // Check for rate limit (429)
+                if (axiosError.response?.status === 429) {
+                    const retryAfter = parseInt(
+                        axiosError.response.headers['retry-after'] as string || '60',
+                        10,
+                    );
+                    this.logger.warn(
+                        `Rate limited (429). Waiting ${retryAfter}s before retry...`,
+                    );
+                    await this.sleep(retryAfter * 1000);
+                    continue;
+                }
+
+                // Don't retry on 4xx client errors (except 429)
+                if (axiosError.response?.status && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+                    throw error;
+                }
+
+                // Exponential backoff for server errors
+                if (attempt < maxRetries - 1) {
+                    const delay = baseDelay * Math.pow(2, attempt);
+                    this.logger.warn(
+                        `Request failed. Retry ${attempt + 1}/${maxRetries} after ${delay}ms`,
+                    );
+                    await this.sleep(delay);
+                }
+            }
+        }
+
+        this.logger.error(`All ${maxRetries} retry attempts failed`);
+        throw lastError;
+    }
+
+    private sleep(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // ============================================
+    // OAUTH METHODS (no caching needed)
+    // ============================================
 
     /**
      * Get the Strava OAuth authorization URL
@@ -66,7 +133,6 @@ export class StravaService {
     getAuthorizationUrl(): string {
         const clientId = this.configService.get<string>('STRAVA_CLIENT_ID') || '';
         const redirectUri = this.configService.get<string>('STRAVA_REDIRECT_URI') || '';
-
         const scopes = 'read,activity:read_all,profile:read_all';
 
         return `${this.oauthUrl}/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scopes}`;
@@ -80,13 +146,14 @@ export class StravaService {
         const clientSecret = this.configService.get<string>('STRAVA_CLIENT_SECRET');
 
         try {
-            const response = await axios.post(`${this.oauthUrl}/token`, {
-                client_id: clientId,
-                client_secret: clientSecret,
-                code,
-                grant_type: 'authorization_code',
-            });
-
+            const response = await this.fetchWithRetry(() =>
+                axios.post(`${this.oauthUrl}/token`, {
+                    client_id: clientId,
+                    client_secret: clientSecret,
+                    code,
+                    grant_type: 'authorization_code',
+                }),
+            );
             return response.data;
         } catch (error) {
             this.logger.error('Failed to exchange Strava code', error);
@@ -102,13 +169,14 @@ export class StravaService {
         const clientSecret = this.configService.get<string>('STRAVA_CLIENT_SECRET');
 
         try {
-            const response = await axios.post(`${this.oauthUrl}/token`, {
-                client_id: clientId,
-                client_secret: clientSecret,
-                refresh_token: refreshToken,
-                grant_type: 'refresh_token',
-            });
-
+            const response = await this.fetchWithRetry(() =>
+                axios.post(`${this.oauthUrl}/token`, {
+                    client_id: clientId,
+                    client_secret: clientSecret,
+                    refresh_token: refreshToken,
+                    grant_type: 'refresh_token',
+                }),
+            );
             return response.data;
         } catch (error) {
             this.logger.error('Failed to refresh Strava token', error);
@@ -116,17 +184,20 @@ export class StravaService {
         }
     }
 
+    // ============================================
+    // API METHODS (with caching & retry)
+    // ============================================
+
     /**
-     * Get athlete profile
+     * Get athlete profile (no cache - rarely called)
      */
     async getAthlete(accessToken: string): Promise<StravaAthlete> {
         try {
-            const response = await axios.get(`${this.baseUrl}/athlete`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            });
-
+            const response = await this.fetchWithRetry(() =>
+                axios.get(`${this.baseUrl}/athlete`, {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                }),
+            );
             return response.data;
         } catch (error) {
             this.logger.error('Failed to get Strava athlete', error);
@@ -135,24 +206,43 @@ export class StravaService {
     }
 
     /**
-     * Get a specific activity by ID
+     * Get a specific activity by ID (without cache - use getActivityCached for caching)
      */
     async getActivity(activityId: number, accessToken: string): Promise<StravaActivity> {
         try {
-            const response = await axios.get(
-                `${this.baseUrl}/activities/${activityId}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                },
+            const response = await this.fetchWithRetry(() =>
+                axios.get(`${this.baseUrl}/activities/${activityId}`, {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                }),
             );
-
             return response.data;
         } catch (error) {
             this.logger.error(`Failed to get Strava activity ${activityId}`, error);
             throw error;
         }
+    }
+
+    /**
+     * Get a specific activity by ID WITH CACHING.
+     * Use this in queue processors to avoid duplicate requests.
+     */
+    async getActivityCached(activityId: number, accessToken: string): Promise<StravaActivity> {
+        const cacheKey = this.cacheService.activityKey(activityId);
+
+        // Check cache first
+        const cached = this.cacheService.get<StravaActivity>(cacheKey);
+        if (cached) {
+            this.logger.debug(`Activity ${activityId} served from cache`);
+            return cached;
+        }
+
+        // Fetch from API
+        const activity = await this.getActivity(activityId, accessToken);
+
+        // Cache the result
+        this.cacheService.set(cacheKey, activity, 'ACTIVITY');
+
+        return activity;
     }
 
     /**
@@ -164,22 +254,22 @@ export class StravaService {
         perPage = 30,
     ): Promise<StravaActivity[]> {
         try {
-            const response = await axios.get(`${this.baseUrl}/athlete/activities`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                params: {
-                    page,
-                    per_page: perPage,
-                },
-            });
-
+            const response = await this.fetchWithRetry(() =>
+                axios.get(`${this.baseUrl}/athlete/activities`, {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    params: { page, per_page: perPage },
+                }),
+            );
             return response.data;
         } catch (error) {
             this.logger.error('Failed to get Strava activities', error);
             throw error;
         }
     }
+
+    // ============================================
+    // WEBHOOK UTILS
+    // ============================================
 
     /**
      * Verify webhook subscription challenge
@@ -190,7 +280,7 @@ export class StravaService {
         if (mode === 'subscribe' && token === verifyToken) {
             return challenge;
         }
-
         return null;
     }
 }
+

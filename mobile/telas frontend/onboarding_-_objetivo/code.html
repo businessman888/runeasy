@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RunEasy Onboarding - Objetivo</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00FFFF",
+                        "background-dark": "#0E0E1F",
+                        "text-main": "#EBEBF5",
+                        "surface": "#1C1C2E",
+                        "surface-hover": "#26263D",
+                        "success": "#32CD32",
+                        "alert": "#FFC400",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'neon': '0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.1)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar to keep it clean */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0E0E1F; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #26263D; 
+            border-radius: 3px;
+        }
+        
+        /* Smooth transition for checked state animations */
+        .card-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-text-main font-display antialiased selection:bg-primary/30 selection:text-primary">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden max-w-md mx-auto shadow-2xl bg-background-dark">
+<!-- Header / Progress Indicator -->
+<div class="px-6 pt-8 pb-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-medium text-text-main/60 tracking-wider uppercase">Passo 1 de 6</span>
+<span class="text-xs font-bold text-primary">16%</span>
+</div>
+<div class="flex w-full gap-2">
+<div class="h-1.5 flex-1 rounded-full bg-primary shadow-[0_0_8px_rgba(0,255,255,0.6)]"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface"></div>
+</div>
+</div>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+<!-- Headlines -->
+<div class="py-4">
+<h1 class="text-3xl font-bold leading-tight text-white mb-2">Qual é o seu principal objetivo?</h1>
+<p class="text-text-main/70 text-base font-light">Vamos personalizar seu treino para sua meta específica.</p>
+</div>
+<!-- Cards Selection -->
+<div class="flex flex-col gap-4 mt-2">
+<!-- Card 1: 5K -->
+<label class="group relative cursor-pointer">
+<input checked="" class="peer sr-only" name="goal" type="radio"/>
+<div class="card-transition flex items-center gap-4 rounded-xl border border-surface bg-surface p-4 hover:bg-surface-hover hover:border-surface-hover peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:ring-offset-2 peer-focus:ring-offset-background-dark peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:shadow-neon">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-surface-hover text-text-main group-hover:text-white peer-checked:bg-primary peer-checked:text-background-dark transition-colors">
+<span class="material-symbols-outlined text-[28px]">directions_run</span>
+</div>
+<div class="flex flex-col grow">
+<span class="text-lg font-bold text-white peer-checked:text-primary transition-colors">5K</span>
+<span class="text-sm text-text-main/60 font-light">Primeiros passos</span>
+</div>
+<div class="h-6 w-6 rounded-full border-2 border-surface-hover flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all">
+<span class="material-symbols-outlined text-[16px] text-background-dark opacity-0 peer-checked:opacity-100 font-bold">check</span>
+</div>
+</div>
+</label>
+<!-- Card 2: 10K -->
+<label class="group relative cursor-pointer">
+<input class="peer sr-only" name="goal" type="radio"/>
+<div class="card-transition flex items-center gap-4 rounded-xl border border-surface bg-surface p-4 hover:bg-surface-hover hover:border-surface-hover peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:ring-offset-2 peer-focus:ring-offset-background-dark peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:shadow-neon">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-surface-hover text-text-main group-hover:text-white peer-checked:bg-primary peer-checked:text-background-dark transition-colors">
+<span class="material-symbols-outlined text-[28px]">sprint</span>
+</div>
+<div class="flex flex-col grow">
+<span class="text-lg font-bold text-white peer-checked:text-primary transition-colors">10K</span>
+<span class="text-sm text-text-main/60 font-light">Resistência</span>
+</div>
+<div class="h-6 w-6 rounded-full border-2 border-surface-hover flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all">
+<span class="material-symbols-outlined text-[16px] text-background-dark opacity-0 peer-checked:opacity-100 font-bold">check</span>
+</div>
+</div>
+</label>
+<!-- Card 3: Meia Maratona -->
+<label class="group relative cursor-pointer">
+<input class="peer sr-only" name="goal" type="radio"/>
+<div class="card-transition flex items-center gap-4 rounded-xl border border-surface bg-surface p-4 hover:bg-surface-hover hover:border-surface-hover peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:ring-offset-2 peer-focus:ring-offset-background-dark peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:shadow-neon">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-surface-hover text-text-main group-hover:text-white peer-checked:bg-primary peer-checked:text-background-dark transition-colors">
+<span class="material-symbols-outlined text-[28px]">timer</span>
+</div>
+<div class="flex flex-col grow">
+<span class="text-lg font-bold text-white peer-checked:text-primary transition-colors">Meia Maratona</span>
+<span class="text-sm text-text-main/60 font-light">21km</span>
+</div>
+<div class="h-6 w-6 rounded-full border-2 border-surface-hover flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all">
+<span class="material-symbols-outlined text-[16px] text-background-dark opacity-0 peer-checked:opacity-100 font-bold">check</span>
+</div>
+</div>
+</label>
+<!-- Card 4: Maratona -->
+<label class="group relative cursor-pointer">
+<input class="peer sr-only" name="goal" type="radio"/>
+<div class="card-transition flex items-center gap-4 rounded-xl border border-surface bg-surface p-4 hover:bg-surface-hover hover:border-surface-hover peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:ring-offset-2 peer-focus:ring-offset-background-dark peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:shadow-neon">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-surface-hover text-text-main group-hover:text-white peer-checked:bg-primary peer-checked:text-background-dark transition-colors">
+<span class="material-symbols-outlined text-[28px]">emoji_events</span>
+</div>
+<div class="flex flex-col grow">
+<span class="text-lg font-bold text-white peer-checked:text-primary transition-colors">Maratona</span>
+<span class="text-sm text-text-main/60 font-light">42km - Desafio Supremo</span>
+</div>
+<div class="h-6 w-6 rounded-full border-2 border-surface-hover flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all">
+<span class="material-symbols-outlined text-[16px] text-background-dark opacity-0 peer-checked:opacity-100 font-bold">check</span>
+</div>
+</div>
+</label>
+<!-- Card 5: Fitness Geral -->
+<label class="group relative cursor-pointer">
+<input class="peer sr-only" name="goal" type="radio"/>
+<div class="card-transition flex items-center gap-4 rounded-xl border border-surface bg-surface p-4 hover:bg-surface-hover hover:border-surface-hover peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:ring-offset-2 peer-focus:ring-offset-background-dark peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:shadow-neon">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-surface-hover text-text-main group-hover:text-white peer-checked:bg-primary peer-checked:text-background-dark transition-colors">
+<span class="material-symbols-outlined text-[28px]">monitor_heart</span>
+</div>
+<div class="flex flex-col grow">
+<span class="text-lg font-bold text-white peer-checked:text-primary transition-colors">Fitness Geral</span>
+<span class="text-sm text-text-main/60 font-light">Saúde e Bem-estar</span>
+</div>
+<div class="h-6 w-6 rounded-full border-2 border-surface-hover flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all">
+<span class="material-symbols-outlined text-[16px] text-background-dark opacity-0 peer-checked:opacity-100 font-bold">check</span>
+</div>
+</div>
+</label>
+</div>
+</main>
+<!-- Fixed Footer Buttons -->
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background-dark via-background-dark to-transparent p-6 pt-12">
+<div class="flex flex-col gap-3">
+<button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-14 bg-primary text-background-dark text-base font-bold tracking-wide shadow-[0_0_20px_rgba(0,255,255,0.4)] hover:shadow-[0_0_30px_rgba(0,255,255,0.6)] active:scale-[0.98] transition-all">
+                    Avançar
+                </button>
+<button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-10 bg-transparent text-text-main/50 text-sm font-medium hover:text-white transition-colors">
+                    Voltar
+                </button>
+</div>
+</div>
+</div>
+</body></html>

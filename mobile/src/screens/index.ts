@@ -7,4 +7,7 @@ export * from './FeedbackScreen';
 export * from './EvolutionScreen';
 export * from './SettingsScreen';
 export * from './StatsScreen';
+export * from './PlanPreviewScreen';
 
+// Quiz Screens
+export * from './quiz';

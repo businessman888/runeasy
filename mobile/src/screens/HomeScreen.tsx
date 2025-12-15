@@ -106,96 +106,94 @@ export function HomeScreen({ navigation }: any) {
                 </View>
 
                 {/* Up Next Workout */}
-                {nextWorkout && (
-                    <View style={styles.workoutCard}>
-                        <View style={styles.workoutCardBg} />
-                        <View style={styles.workoutCardOverlay} />
-                        <View style={styles.workoutContent}>
-                            <View style={styles.workoutHeader}>
-                                <View>
-                                    <View style={styles.upNextBadge}>
-                                        <View style={styles.pulsingDot}>
-                                            <View style={styles.pulsingDotInner} />
-                                        </View>
-                                        <Text style={styles.upNextText}>Up Next</Text>
+                <View style={styles.workoutCard}>
+                    <View style={styles.workoutCardBg} />
+                    <View style={styles.workoutCardOverlay} />
+                    <View style={styles.workoutContent}>
+                        <View style={styles.workoutHeader}>
+                            <View>
+                                <View style={styles.upNextBadge}>
+                                    <View style={styles.pulsingDot}>
+                                        <View style={styles.pulsingDotInner} />
                                     </View>
-                                    <Text style={styles.workoutTitle}>{nextWorkout.type.replace('_', ' ')}</Text>
-                                    <Text style={styles.workoutTime}>📅 Today • 18:00</Text>
+                                    <Text style={styles.upNextText}>UP NEXT</Text>
                                 </View>
-                                <View style={styles.workoutIcon}>
-                                    <Text style={styles.workoutIconText}>🏃</Text>
-                                </View>
+                                <Text style={styles.workoutTitle}>
+                                    {nextWorkout ? nextWorkout.type.replace('_', ' ') : 'Tempo Run'}
+                                </Text>
+                                <Text style={styles.workoutTime}>📅 Today • 18:00</Text>
                             </View>
-                            <View style={styles.workoutStats}>
-                                <View style={styles.statBox}>
-                                    <View style={styles.statHeader}>
-                                        <Text style={styles.statIconText}>📏</Text>
-                                        <Text style={styles.statLabel}>DISTANCE</Text>
-                                    </View>
-                                    <Text style={styles.statValue}>
-                                        {nextWorkout.distance_km.toFixed(1)} <Text style={styles.statUnit}>km</Text>
-                                    </Text>
-                                </View>
-                                <View style={styles.statBox}>
-                                    <View style={styles.statHeader}>
-                                        <Text style={styles.statIconText}>⏱️</Text>
-                                        <Text style={styles.statLabel}>PACE</Text>
-                                    </View>
-                                    <Text style={styles.statValue}>
-                                        4:45 <Text style={styles.statUnit}>/km</Text>
-                                    </Text>
-                                </View>
+                            <View style={styles.workoutIcon}>
+                                <Text style={styles.workoutIconText}>🏃</Text>
                             </View>
-                            <TouchableOpacity style={styles.startButton}>
-                                <Text style={styles.playIcon}>▶️</Text>
-                                <Text style={styles.startButtonText}>START SESSION</Text>
-                            </TouchableOpacity>
                         </View>
+                        <View style={styles.workoutStats}>
+                            <View style={styles.statBox}>
+                                <View style={styles.statHeader}>
+                                    <Text style={styles.statIconText}>📏</Text>
+                                    <Text style={styles.statLabel}>DISTANCE</Text>
+                                </View>
+                                <Text style={styles.statValue}>
+                                    {nextWorkout ? nextWorkout.distance_km.toFixed(1) : '8.0'} <Text style={styles.statUnit}>km</Text>
+                                </Text>
+                            </View>
+                            <View style={styles.statBox}>
+                                <View style={styles.statHeader}>
+                                    <Text style={styles.statIconText}>⏱️</Text>
+                                    <Text style={styles.statLabel}>PACE</Text>
+                                </View>
+                                <Text style={styles.statValue}>
+                                    4:45 <Text style={styles.statUnit}>/km</Text>
+                                </Text>
+                            </View>
+                        </View>
+                        <TouchableOpacity style={styles.startButton}>
+                            <Text style={styles.playIcon}>▶</Text>
+                            <Text style={styles.startButtonText}>START SESSION</Text>
+                        </TouchableOpacity>
                     </View>
-                )}
+                </View>
 
                 {/* AI Analysis */}
-                {latestSummary && (
-                    <View style={styles.aiCard}>
-                        <View style={styles.aiBlurLeft} />
-                        <View style={styles.aiBlurRight} />
-                        <View style={styles.aiCardContent}>
-                            <View style={styles.aiHeader}>
-                                <View>
-                                    <Text style={styles.aiTitle}>AI Analysis</Text>
-                                    <Text style={styles.aiSubtitle}>Morning Jog • Yesterday</Text>
-                                </View>
-                                <View style={styles.aiIcon}>
-                                    <Text style={styles.aiIconText}>✨</Text>
-                                </View>
+                <View style={styles.aiCard}>
+                    <View style={styles.aiBlurLeft} />
+                    <View style={styles.aiBlurRight} />
+                    <View style={styles.aiCardContent}>
+                        <View style={styles.aiHeader}>
+                            <View>
+                                <Text style={styles.aiTitle}>AI Analysis</Text>
+                                <Text style={styles.aiSubtitle}>Morning Jog • Yesterday</Text>
                             </View>
-                            <View style={styles.aiStats}>
-                                <View style={styles.aiPaceSection}>
-                                    <Text style={styles.aiPace}>5:12 <Text style={styles.aiPaceUnit}>/km</Text></Text>
-                                    <View style={styles.efficiencyBadge}>
-                                        <Text style={styles.trendingIcon}>📈</Text>
-                                        <Text style={styles.efficiencyText}>+2% Efficiency</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.miniChart}>
-                                    <View style={[styles.bar, { height: 16 }]} />
-                                    <View style={[styles.bar, { height: 24 }]} />
-                                    <View style={[styles.bar, { height: 20 }]} />
-                                    <View style={[styles.barActive, { height: 40 }]} />
-                                    <View style={[styles.bar, { height: 24 }]} />
-                                    <View style={[styles.bar, { height: 32 }]} />
-                                </View>
+                            <View style={styles.aiIcon}>
+                                <Text style={styles.aiIconText}>✨</Text>
                             </View>
-                            <TouchableOpacity
-                                style={styles.viewFeedbackButton}
-                                onPress={() => navigation.navigate('Evolution')}
-                            >
-                                <Text style={styles.viewFeedbackText}>View Full Feedback</Text>
-                                <Text style={styles.arrowIcon}>→</Text>
-                            </TouchableOpacity>
                         </View>
+                        <View style={styles.aiStats}>
+                            <View style={styles.aiPaceSection}>
+                                <Text style={styles.aiPace}>5:12 <Text style={styles.aiPaceUnit}>/km</Text></Text>
+                                <View style={styles.efficiencyBadge}>
+                                    <Text style={styles.trendingIcon}>📈</Text>
+                                    <Text style={styles.efficiencyText}>+2% EFFICIENCY</Text>
+                                </View>
+                            </View>
+                            <View style={styles.miniChart}>
+                                <View style={[styles.bar, { height: 16 }]} />
+                                <View style={[styles.bar, { height: 24 }]} />
+                                <View style={[styles.bar, { height: 20 }]} />
+                                <View style={[styles.barActive, { height: 40 }]} />
+                                <View style={[styles.bar, { height: 24 }]} />
+                                <View style={[styles.bar, { height: 32 }]} />
+                            </View>
+                        </View>
+                        <TouchableOpacity
+                            style={styles.viewFeedbackButton}
+                            onPress={() => navigation.navigate('Evolution')}
+                        >
+                            <Text style={styles.viewFeedbackText}>View Full Feedback</Text>
+                            <Text style={styles.arrowIcon}>→</Text>
+                        </TouchableOpacity>
                     </View>
-                )}
+                </View>
             </ScrollView>
         </SafeAreaView>
     );

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RunEasy Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: #334155;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto shadow-2xl bg-background-light dark:bg-background-dark">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 pb-2 justify-between border-b border-slate-200 dark:border-slate-800">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center">Profile</h2>
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-primary">edit</span>
+</button>
+</div>
+<!-- Profile Header -->
+<div class="flex flex-col items-center pt-6 pb-2 px-4">
+<div class="relative group cursor-pointer">
+<div class="h-28 w-28 rounded-full p-1 bg-gradient-to-tr from-primary to-cyan-400">
+<div class="h-full w-full rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center border-4 border-background-light dark:border-background-dark" data-alt="Portrait of a young male runner smiling" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB3U21BYbg3_SeuAXVomIEIb7E3OIi8qMJ6mz3DuRqXDVnRZsPQzuS4hGjtTor8mjil4V8JYiiM4sFiD1n7-Kn_gQkBcp6y19tNJI7LME0c3bZ-yJ9mWNLpY_sgUO-83nHf7fSfoZ4p339gZ29DpGCF3PChIVSJ1DH1gt3gC5Ow77miBrh_N49u0Mkjp41zO1W4fcfB6qBLOdWJ6S3-p7b1gqTi1-bPkOruDKKdGkXQQpvhS526H_rc38zNFFtrXzawlfkSkxAN1n4");'></div>
+</div>
+<div class="absolute bottom-0 right-1 bg-primary text-white rounded-full p-1 border-2 border-background-light dark:border-background-dark shadow-sm">
+<span class="material-symbols-outlined text-[16px] leading-none block">photo_camera</span>
+</div>
+</div>
+<div class="mt-4 text-center">
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Alex Runner</h1>
+<p class="text-primary font-medium text-sm mt-1">Marathon Enthusiast</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Member since 2023</p>
+</div>
+</div>
+<!-- Stats Cards -->
+<div class="px-4 py-4 grid grid-cols-2 gap-3">
+<div class="flex flex-col gap-3 rounded-2xl p-5 bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-2">
+<div class="p-1.5 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined text-xl block">bolt</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Total XP</p>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">12,450</p>
+<p class="text-green-600 dark:text-green-400 text-xs font-medium mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +150 this week
+                    </p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-2xl p-5 bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700 relative overflow-hidden">
+<!-- Decorative background element -->
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-primary/10 rounded-full blur-2xl"></div>
+<div class="flex items-center gap-2 relative z-10">
+<div class="p-1.5 rounded-lg bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-xl block">military_tech</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Level</p>
+</div>
+<div class="relative z-10">
+<p class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">Level 12</p>
+<p class="text-primary text-xs font-medium mt-1">Elite Sprinter</p>
+</div>
+</div>
+</div>
+<!-- Level Progress -->
+<div class="px-4 pb-6">
+<div class="rounded-2xl bg-white dark:bg-slate-800 p-5 shadow-sm border border-slate-100 dark:border-slate-700">
+<div class="flex justify-between items-end mb-2">
+<p class="text-slate-900 dark:text-white text-sm font-semibold">Progress to Level 13</p>
+<span class="text-xs font-bold text-primary">75%</span>
+</div>
+<div class="h-2.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-cyan-400 rounded-full" style="width: 75%"></div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-2 text-right">1,250 XP remaining</p>
+</div>
+</div>
+<!-- Achievements Section -->
+<div class="flex flex-col">
+<div class="px-4 flex items-center justify-between mb-3">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Achievements</h3>
+<a class="text-primary text-sm font-semibold hover:underline" href="#">View All</a>
+</div>
+<div class="grid grid-cols-3 gap-3 px-4 pb-6">
+<!-- Unlocked Badge 1 -->
+<div class="aspect-square flex flex-col items-center justify-center p-2 rounded-2xl bg-gradient-to-b from-white to-slate-50 dark:from-slate-800 dark:to-slate-800 border border-primary/30 shadow-sm relative group overflow-hidden">
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center mb-2 text-primary">
+<span class="material-symbols-outlined">directions_run</span>
+</div>
+<p class="text-xs font-bold text-slate-900 dark:text-white text-center leading-tight">First 5K</p>
+<span class="text-[10px] text-slate-400 mt-1">Unlocked</span>
+</div>
+<!-- Unlocked Badge 2 -->
+<div class="aspect-square flex flex-col items-center justify-center p-2 rounded-2xl bg-gradient-to-b from-white to-slate-50 dark:from-slate-800 dark:to-slate-800 border border-primary/30 shadow-sm relative group overflow-hidden">
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center mb-2 text-primary">
+<span class="material-symbols-outlined">local_fire_department</span>
+</div>
+<p class="text-xs font-bold text-slate-900 dark:text-white text-center leading-tight">7 Day Streak</p>
+<span class="text-[10px] text-slate-400 mt-1">Unlocked</span>
+</div>
+<!-- Locked Badge 1 -->
+<div class="aspect-square flex flex-col items-center justify-center p-2 rounded-2xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 border-dashed relative opacity-80">
+<div class="absolute top-2 right-2 text-slate-400">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+</div>
+<div class="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center mb-2 text-slate-400">
+<span class="material-symbols-outlined">emoji_events</span>
+</div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 text-center leading-tight">Marathoner</p>
+<span class="text-[10px] text-slate-400 mt-1">Run 42km</span>
+</div>
+</div>
+</div>
+<!-- Menu Links -->
+<div class="flex flex-col gap-1 pb-8">
+<div class="px-4 pb-2 pt-2">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Settings &amp; History</h3>
+</div>
+<!-- Link Item -->
+<button class="w-full flex items-center justify-between p-4 bg-white dark:bg-slate-800 border-y border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-primary">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div class="text-left">
+<p class="text-slate-900 dark:text-white text-sm font-semibold">Training History</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">View your past runs</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</button>
+<!-- Link Item -->
+<button class="w-full flex items-center justify-between p-4 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="p-2 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div class="text-left">
+<p class="text-slate-900 dark:text-white text-sm font-semibold">AI Feedbacks</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Analysis of your performance</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</button>
+<!-- Link Item (Strava) -->
+<button class="w-full flex items-center justify-between p-4 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="p-2 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-[#FC4C02]">
+<!-- Simple placeholder for Strava icon using material symbol that looks like a path/map -->
+<span class="material-symbols-outlined">hub</span>
+</div>
+<div class="text-left">
+<p class="text-slate-900 dark:text-white text-sm font-semibold">Strava Integration</p>
+<p class="text-green-600 text-xs font-medium">Connected</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-400 font-medium">Manage</span>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+</button>
+<!-- Link Item -->
+<button class="w-full flex items-center justify-between p-4 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">settings</span>
+</div>
+<div class="text-left">
+<p class="text-slate-900 dark:text-white text-sm font-semibold">Settings</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Subscription &amp; App preferences</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</button>
+</div>
+<div class="h-10"></div>
+</div>
+</body></html>

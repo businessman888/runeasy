@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RunEasy - Nível Atual</title>
+<!-- Google Fonts: Lexend -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ffff",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0E0E1F", // Modified to match user request
+                        "surface-dark": "#1C1C2E",
+                        "text-main": "#EBEBF5",
+                        "text-muted": "rgba(235, 235, 245, 0.6)",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    boxShadow: {
+                        "neon": "0 0 20px rgba(0, 255, 255, 0.15)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Smooth transition for selection */
+        .selection-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-text-main font-display antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-primary selection:text-background-dark">
+<!-- Header / Progress Indicator -->
+<div class="w-full px-6 pt-12 pb-4 flex flex-col gap-6">
+<!-- Progress Bar (Step 2 of 6) -->
+<div class="flex flex-row items-center justify-between gap-2 w-full">
+<div class="h-1.5 flex-1 rounded-full bg-primary shadow-[0_0_8px_rgba(0,255,255,0.6)]"></div>
+<div class="h-1.5 flex-1 rounded-full bg-primary shadow-[0_0_8px_rgba(0,255,255,0.6)]"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface-dark"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface-dark"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface-dark"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface-dark"></div>
+</div>
+<!-- Step Text -->
+<div class="flex justify-between items-center">
+<span class="text-xs font-medium tracking-wider text-primary uppercase">Passo 2 de 6</span>
+<span class="text-xs font-medium text-text-muted">Perfil</span>
+</div>
+</div>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col px-6">
+<!-- Text Group -->
+<div class="mb-8">
+<h1 class="text-3xl font-bold leading-tight mb-3 text-white tracking-tight">
+                Qual é o seu nível <br/> <span class="text-primary">atual?</span>
+</h1>
+<p class="text-text-muted text-base font-light leading-relaxed">
+                Selecione a opção que melhor descreve seu histórico de treinos. Isso ajuda a IA a calibrar a intensidade.
+            </p>
+</div>
+<!-- Selection Cards (RadioList adapted) -->
+<form class="flex flex-col gap-4 w-full">
+<!-- Option 1: Iniciante -->
+<label class="group cursor-pointer relative">
+<input class="peer sr-only" name="running_level" type="radio" value="beginner"/>
+<div class="selection-card relative flex items-center gap-4 p-5 rounded-xl border border-surface-dark bg-surface-dark/50 hover:bg-surface-dark peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:shadow-neon">
+<!-- Icon Container -->
+<div class="flex items-center justify-center h-12 w-12 rounded-full bg-white/5 text-white/70 group-hover:bg-white/10 peer-checked:bg-primary peer-checked:text-background-dark transition-colors">
+<span class="material-symbols-outlined text-[24px]">directions_walk</span>
+</div>
+<div class="flex flex-col grow">
+<span class="text-white font-semibold text-lg mb-1 group-hover:text-primary transition-colors peer-checked:text-primary">Iniciante</span>
+<span class="text-text-muted text-sm font-light">0-6 meses de prática</span>
+</div>
+<!-- Custom Radio Circle -->
+<div class="h-6 w-6 rounded-full border-2 border-white/20 flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary">
+<span class="material-symbols-outlined text-[16px] text-background-dark opacity-0 peer-checked:opacity-100 font-bold">check</span>
+</div>
+</div>
+</label>
+<!-- Option 2: Intermediário (Pre-selected for demo) -->
+<label class="group cursor-pointer relative">
+<input checked="" class="peer sr-only" name="running_level" type="radio" value="intermediate"/>
+<div class="selection-card relative flex items-center gap-4 p-5 rounded-xl border border-surface-dark bg-surface-dark/50 hover:bg-surface-dark peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:shadow-neon">
+<!-- Icon Container -->
+<div class="flex items-center justify-center h-12 w-12 rounded-full bg-white/5 text-white/70 group-hover:bg-white/10 peer-checked:bg-primary peer-checked:text-background-dark transition-colors">
+<span class="material-symbols-outlined text-[24px]">sprint</span>
+</div>
+<div class="flex flex-col grow">
+<span class="text-white font-semibold text-lg mb-1 group-hover:text-primary transition-colors peer-checked:text-primary">Intermediário</span>
+<span class="text-text-muted text-sm font-light">6 meses - 2 anos</span>
+</div>
+<!-- Custom Radio Circle -->
+<div class="h-6 w-6 rounded-full border-2 border-white/20 flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary">
+<span class="material-symbols-outlined text-[16px] text-background-dark opacity-0 peer-checked:opacity-100 font-bold">check</span>
+</div>
+</div>
+</label>
+<!-- Option 3: Avançado -->
+<label class="group cursor-pointer relative">
+<input class="peer sr-only" name="running_level" type="radio" value="advanced"/>
+<div class="selection-card relative flex items-center gap-4 p-5 rounded-xl border border-surface-dark bg-surface-dark/50 hover:bg-surface-dark peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:shadow-neon">
+<!-- Icon Container -->
+<div class="flex items-center justify-center h-12 w-12 rounded-full bg-white/5 text-white/70 group-hover:bg-white/10 peer-checked:bg-primary peer-checked:text-background-dark transition-colors">
+<span class="material-symbols-outlined text-[24px]">trophy</span>
+</div>
+<div class="flex flex-col grow">
+<span class="text-white font-semibold text-lg mb-1 group-hover:text-primary transition-colors peer-checked:text-primary">Avançado</span>
+<span class="text-text-muted text-sm font-light">Mais de 2 anos de experiência regular</span>
+</div>
+<!-- Custom Radio Circle -->
+<div class="h-6 w-6 rounded-full border-2 border-white/20 flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary">
+<span class="material-symbols-outlined text-[16px] text-background-dark opacity-0 peer-checked:opacity-100 font-bold">check</span>
+</div>
+</div>
+</label>
+</form>
+</main>
+<!-- Footer / Button Group -->
+<div class="px-6 py-8 mt-auto w-full bg-background-dark/80 backdrop-blur-sm sticky bottom-0 z-10">
+<div class="flex gap-4 items-center">
+<!-- Back Button -->
+<button class="flex-1 h-14 rounded-xl border border-surface-dark text-white font-medium hover:bg-white/5 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50">
+                Voltar
+            </button>
+<!-- Next Button -->
+<button class="flex-[2] h-14 rounded-xl bg-primary text-background-dark font-bold text-lg hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(0,255,255,0.3)] flex items-center justify-center gap-2">
+<span>Avançar</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Decorative Glow Element (Background) -->
+<div class="fixed top-20 right-[-100px] w-[300px] h-[300px] bg-primary rounded-full blur-[120px] opacity-[0.08] pointer-events-none z-0" data-alt="Abstract cyan glow gradient background effect"></div>
+<div class="fixed bottom-0 left-[-50px] w-[250px] h-[250px] bg-blue-600 rounded-full blur-[100px] opacity-[0.1] pointer-events-none z-0" data-alt="Abstract blue glow gradient background effect"></div>
+</body></html>

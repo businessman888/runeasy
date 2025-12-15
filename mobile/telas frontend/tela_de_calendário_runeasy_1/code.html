@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RunEasy Calendar</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "neon-cyan": "#00D4FF",
+                        "neon-green": "#32CD32",
+                        "deep-navy": "#1e293b",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                    boxShadow: {
+                        'neon': '0 0 5px theme("colors.primary"), 0 0 20px theme("colors.primary")', 
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: #334155;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary/30">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-white dark:bg-background-dark shadow-xl border-x border-slate-200 dark:border-slate-800">
+<!-- Top App Bar -->
+<header class="flex items-center justify-between p-4 pb-2 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<button class="text-slate-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Calendário</h2>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<!-- Stats Summary -->
+<div class="flex gap-4 p-4 pt-2">
+<div class="flex flex-1 flex-col gap-1 rounded-2xl p-4 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-xl">directions_run</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Mensal</p>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">124 <span class="text-sm font-medium text-slate-500">km</span></p>
+</div>
+<div class="flex flex-1 flex-col gap-1 rounded-2xl p-4 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-neon-green text-xl">check_circle</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Treinos</p>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">18 <span class="text-sm font-medium text-slate-500">/ 22</span></p>
+</div>
+</div>
+<!-- Calendar Section -->
+<div class="px-4 pb-2">
+<!-- Month Navigator -->
+<div class="flex items-center justify-between mb-4">
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">chevron_left</span>
+</button>
+<div class="flex flex-col items-center">
+<span class="text-slate-900 dark:text-white text-lg font-bold">Outubro 2023</span>
+<span class="text-slate-400 text-xs font-medium">Semana 4</span>
+</div>
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">chevron_right</span>
+</button>
+</div>
+<!-- Days Header -->
+<div class="grid grid-cols-7 mb-2">
+<div class="text-center text-xs font-bold text-slate-400 uppercase tracking-wider">D</div>
+<div class="text-center text-xs font-bold text-slate-400 uppercase tracking-wider">S</div>
+<div class="text-center text-xs font-bold text-slate-400 uppercase tracking-wider">T</div>
+<div class="text-center text-xs font-bold text-slate-400 uppercase tracking-wider">Q</div>
+<div class="text-center text-xs font-bold text-slate-400 uppercase tracking-wider">Q</div>
+<div class="text-center text-xs font-bold text-slate-400 uppercase tracking-wider">S</div>
+<div class="text-center text-xs font-bold text-slate-400 uppercase tracking-wider">S</div>
+</div>
+<!-- Calendar Grid -->
+<div class="grid grid-cols-7 gap-y-2 gap-x-1">
+<!-- Empty Days -->
+<div class="h-14 w-full"></div>
+<div class="h-14 w-full"></div>
+<div class="h-14 w-full"></div>
+<!-- Day 1: Past, Rodagem (Navy), Done -->
+<button class="group flex flex-col items-center justify-start h-14 w-full pt-1 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors relative">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">1</span>
+<div class="mt-1 flex flex-col items-center gap-0.5 w-full px-1">
+<div class="h-1 w-full rounded-full bg-slate-600 dark:bg-slate-500"></div>
+<span class="material-symbols-outlined text-[10px] text-neon-green absolute bottom-1 right-1">check_circle</span>
+</div>
+</button>
+<!-- Day 2: Past, Interval (Cyan), Done -->
+<button class="group flex flex-col items-center justify-start h-14 w-full pt-1 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors relative">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">2</span>
+<div class="mt-1 flex flex-col items-center gap-0.5 w-full px-1">
+<div class="h-1 w-full rounded-full bg-neon-cyan shadow-[0_0_8px_rgba(0,212,255,0.5)]"></div>
+<span class="material-symbols-outlined text-[10px] text-neon-green absolute bottom-1 right-1">check_circle</span>
+</div>
+</button>
+<!-- Day 3: Rest -->
+<button class="group flex flex-col items-center justify-start h-14 w-full pt-1 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors relative">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">3</span>
+</button>
+<!-- Day 4: Past, Rodagem, Missed -->
+<button class="group flex flex-col items-center justify-start h-14 w-full pt-1 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors relative">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">4</span>
+<div class="mt-1 flex flex-col items-center gap-0.5 w-full px-1">
+<div class="h-1 w-full rounded-full bg-slate-600 dark:bg-slate-500 opacity-50"></div>
+<span class="material-symbols-outlined text-[10px] text-red-500 absolute bottom-1 right-1">cancel</span>
+</div>
+</button>
+<!-- Filler Days 5-11 -->
+<button class="h-14 w-full pt-1 text-sm text-slate-500 dark:text-slate-400">5</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-500 dark:text-slate-400">6</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-500 dark:text-slate-400">7</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-500 dark:text-slate-400">8</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-500 dark:text-slate-400">9</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-500 dark:text-slate-400">10</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-500 dark:text-slate-400">11</button>
+<!-- Day 12: SELECTED DAY -->
+<button class="group flex flex-col items-center justify-start h-14 w-full pt-1 rounded-xl bg-primary shadow-lg shadow-primary/30 relative transform scale-105 z-10 border border-white/20">
+<span class="text-sm font-bold text-white">12</span>
+<div class="mt-1 flex flex-col items-center gap-0.5 w-full px-1">
+<!-- Tiny Pill with distance -->
+<div class="h-4 w-full rounded-md bg-white text-primary flex items-center justify-center">
+<span class="text-[9px] font-bold leading-none">10k</span>
+</div>
+</div>
+</button>
+<!-- Day 13: Future, Interval -->
+<button class="group flex flex-col items-center justify-start h-14 w-full pt-1 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors relative">
+<span class="text-sm font-medium text-slate-900 dark:text-white">13</span>
+<div class="mt-1 flex flex-col items-center gap-0.5 w-full px-1">
+<div class="h-1 w-full rounded-full bg-neon-cyan/40 dark:bg-neon-cyan"></div>
+</div>
+</button>
+<!-- Day 14 -->
+<button class="h-14 w-full pt-1 text-sm text-slate-900 dark:text-white">14</button>
+<!-- Day 15: Rodagem -->
+<button class="group flex flex-col items-center justify-start h-14 w-full pt-1 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors relative">
+<span class="text-sm font-medium text-slate-900 dark:text-white">15</span>
+<div class="mt-1 flex flex-col items-center gap-0.5 w-full px-1">
+<div class="h-1 w-full rounded-full bg-slate-800 dark:bg-slate-500"></div>
+</div>
+</button>
+<!-- Filler Days 16-31 -->
+<button class="h-14 w-full pt-1 text-sm text-slate-400">16</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">17</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">18</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">19</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">20</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">21</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">22</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">23</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">24</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">25</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">26</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">27</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">28</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">29</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">30</button>
+<button class="h-14 w-full pt-1 text-sm text-slate-400">31</button>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px w-full bg-slate-200 dark:bg-slate-800 my-2"></div>
+<!-- Selected Day Details -->
+<div class="flex flex-col flex-1 p-4 pb-24">
+<h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight px-1 mb-4">Quinta-feira, 12 Out</h3>
+<div class="space-y-4">
+<!-- Main Workout Card (Rodagem - Navy Theme) -->
+<div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all cursor-pointer">
+<!-- Color Strip Indicator -->
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-slate-800 dark:bg-slate-500"></div>
+<div class="flex items-stretch p-4 pl-5">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                                    Rodagem
+                                </span>
+<span class="flex size-2 rounded-full bg-amber-400"></span> <!-- Pending Dot -->
+</div>
+<h4 class="text-slate-900 dark:text-white text-lg font-bold">Longo Aeróbico</h4>
+<div class="flex items-center gap-3 mt-2 text-slate-500 dark:text-slate-400">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">straighten</span>
+<span class="text-sm font-medium">10 km</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">timer</span>
+<span class="text-sm font-medium">55:00</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">speed</span>
+<span class="text-sm font-medium">5:30 /km</span>
+</div>
+</div>
+</div>
+<!-- Action/Status -->
+<div class="flex flex-col justify-center items-end pl-4 border-l border-slate-100 dark:border-slate-800 ml-2">
+<div class="size-10 rounded-full border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-300 dark:text-slate-600 group-hover:border-primary group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">play_arrow</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Item (Tomorrow Teaser) -->
+<div class="opacity-60 mt-6">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 pl-1">Amanhã</p>
+<div class="relative overflow-hidden rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3 pl-4 flex items-center justify-between">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-neon-cyan"></div>
+<div>
+<p class="text-slate-900 dark:text-white font-semibold">Intervalado 8x400m</p>
+<p class="text-slate-500 text-xs">Pista de Atletismo</p>
+</div>
+<span class="material-symbols-outlined text-slate-300">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- FAB (Floating Action Button) -->
+<button class="fixed bottom-6 right-6 size-14 rounded-full bg-primary text-white shadow-lg shadow-primary/40 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-50">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+</body></html>

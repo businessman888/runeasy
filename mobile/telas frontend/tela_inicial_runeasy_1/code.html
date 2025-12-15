@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RunEasy Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    "canvas": "#F5F7FA", // Soft white background
+                    "card": "#FFFFFF",    // White cards
+                    "highlight": "#F1F5F9", // Very light grey for contrast
+                    "text-main": "#0F172A", // Dark Slate for high contrast text
+                    "text-muted": "#64748B", // Slate 500 for secondary text
+                    "neon-cyan": "#00D4FF", // Electric Blue/Cyan
+                    "electric-blue": "#3B82F6", // Strong Blue
+                    "neon-alert": "#FFC400",
+                    "neon-success": "#10B981",
+                },
+                fontFamily: {
+                    "display": ["Plus Jakarta Sans", "sans-serif"]
+                },
+                boxShadow: {
+                    'neon': '0 4px 15px rgba(0, 212, 255, 0.25)',
+                    'neon-strong': '0 6px 20px rgba(0, 212, 255, 0.4)',
+                    'glow-text': '0 0 8px rgba(0, 212, 255, 0.2)',
+                    'soft': '0 10px 40px -10px rgba(0,0,0,0.05)',
+                },
+                backgroundImage: {
+                    'glass': 'linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%)',
+                    'card-gradient': 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: #F5F7FA;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-canvas text-text-main antialiased selection:bg-neon-cyan selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto shadow-2xl overflow-hidden bg-canvas">
+<div class="fixed top-0 left-0 w-full h-96 bg-electric-blue/5 blur-[100px] rounded-full pointer-events-none -translate-y-1/2"></div>
+<div class="fixed bottom-0 right-0 w-64 h-64 bg-neon-cyan/10 blur-[80px] rounded-full pointer-events-none translate-y-1/3"></div>
+<header class="relative z-10 flex items-center justify-between px-6 pt-12 pb-6 w-full">
+<div class="flex items-center gap-4">
+<div class="relative group cursor-pointer">
+<div class="h-14 w-14 rounded-full bg-highlight bg-cover bg-center ring-2 ring-gray-200 shadow-md transition-all group-hover:ring-neon-cyan group-hover:shadow-neon" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDXeDobOpnDkgdR-eJ7t5bc9U4nn4sBhgFw5nmjvysTOkJJUYLojx238MdhlwGJgrWSDTLxae_g0cenKL3BAM03hc_BOTJBi_B1y4nyjmHIccbDu3yZq5wvDnrZ24B3deX3LLuZTnpXuMwhNcoV4A14gmWEAn_WeucUUsYxgQfW9Db1yfGJfqgtTCSPE1BqoOmu8CdfLMAzo3QqkCVMSRdOK00jC4eA0rAmNATVo-jhy0XQzlj9yUxFRqFEz2sRQI9SU6FCECLkJOI');"></div>
+<div class="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full bg-neon-success border-2 border-white shadow-sm"></div>
+</div>
+<div class="flex flex-col gap-0.5">
+<p class="text-text-muted text-[11px] font-bold uppercase tracking-[0.15em]">Welcome Back</p>
+<h1 class="text-2xl font-extrabold leading-none text-text-main tracking-tight">Alex Morgan</h1>
+</div>
+</div>
+<button class="relative p-2.5 rounded-full bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+<span class="material-symbols-outlined text-text-main group-hover:text-neon-cyan transition-colors">notifications</span>
+<span class="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-neon-alert shadow-[0_0_8px_rgba(255,196,0,0.6)] animate-pulse"></span>
+</button>
+</header>
+<main class="relative z-10 flex-1 overflow-y-auto pb-28 px-6 space-y-6">
+<div class="flex items-center justify-between gap-3">
+<div class="flex-1 flex items-center justify-center gap-2 bg-card rounded-xl py-3 border border-gray-100 shadow-soft relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-gray-100/50 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]"></div>
+<span class="material-symbols-outlined text-neon-alert drop-shadow-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<div class="flex flex-col leading-none">
+<span class="text-base font-bold text-text-main">12 Days</span>
+<span class="text-[10px] text-text-muted uppercase tracking-wider font-semibold">Streak</span>
+</div>
+</div>
+<div class="flex-1 flex items-center justify-center gap-2 bg-card rounded-xl py-3 border border-neon-cyan/20 shadow-soft">
+<span class="material-symbols-outlined text-neon-cyan text-[20px]">workspace_premium</span>
+<div class="flex flex-col leading-none">
+<span class="text-base font-bold text-text-main">Pro</span>
+<span class="text-[10px] text-neon-cyan uppercase tracking-wider font-bold">Member</span>
+</div>
+</div>
+</div>
+<section class="relative overflow-hidden rounded-2xl bg-card border border-gray-100 p-6 group shadow-soft">
+<div class="absolute top-0 right-0 p-6 opacity-[0.05] pointer-events-none">
+<span class="material-symbols-outlined text-8xl text-text-main transform rotate-12">speed</span>
+</div>
+<div class="relative z-10 flex justify-between items-end mb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="h-1.5 w-1.5 rounded-full bg-neon-cyan shadow-[0_0_6px_#00D4FF]"></span>
+<p class="text-[10px] font-bold text-electric-blue uppercase tracking-[0.2em]">Runner Level</p>
+</div>
+<h2 class="text-2xl font-extrabold text-text-main tracking-tight">Elite Pacer <span class="text-neon-cyan text-lg align-top ml-1">V.05</span></h2>
+</div>
+</div>
+<div class="relative h-2 w-full bg-highlight rounded-full overflow-hidden mb-3 border border-gray-100">
+<div class="absolute top-0 left-0 h-full bg-gradient-to-r from-electric-blue to-neon-cyan shadow-[0_0_10px_rgba(0,212,255,0.4)]" style="width: 82%;">
+<div class="absolute right-0 top-0 h-full w-1 bg-white opacity-50"></div>
+</div>
+</div>
+<div class="flex justify-between text-[11px] font-medium text-text-muted">
+<span class="font-mono">XP: 4,250</span>
+<span class="text-electric-blue font-mono font-bold">NEXT: 850 XP</span>
+</div>
+</section>
+<section class="rounded-3xl bg-card border border-gray-100 overflow-hidden relative group hover:border-neon-cyan/30 transition-all duration-300 shadow-soft">
+<div class="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-multiply" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD8guamMgj7j0TxdkesafomVY4HA0UEsGNPT4GIRLHPOEUXE25hhwWDThlXSLSAkNh88OSr0QpcssNVr8Upi3j2w6wE9-xfb3I2mDe2HhPuxLYRBH-91pP8igq0Qmtmu4xNqUIRd8em78vPmXJS-XNagaQTsoufGjF4d3uIOfby_R_NtZ5fuayl-A6ulF93nCV2X1ysxz5_JagrTf27AWv3umGRNJ6lWGRQ8UAmmQMrntxyRxMf-DgE0h7JdB2VmQOx6rX3XKDdu_c');"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-white/60 via-white/85 to-card"></div>
+<div class="relative z-10 p-6 flex flex-col gap-6">
+<div class="flex justify-between items-start">
+<div>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-neon-cyan/20 text-neon-cyan text-[10px] font-bold uppercase tracking-wider mb-3 shadow-sm">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-neon-cyan"></span>
+</span>
+                            Up Next
+                        </div>
+<h2 class="text-3xl font-black text-text-main tracking-tight">Tempo Run</h2>
+<p class="text-text-muted font-medium mt-1 flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+                            Today • 18:00
+                        </p>
+</div>
+<div class="h-12 w-12 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-neon-cyan shadow-md">
+<span class="material-symbols-outlined text-3xl">directions_run</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-highlight/80 rounded-xl p-4 border border-white backdrop-blur-sm">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-electric-blue text-lg">straighten</span>
+<span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Distance</span>
+</div>
+<p class="text-2xl font-bold text-text-main font-mono">8.0 <span class="text-sm font-normal text-text-muted font-sans">km</span></p>
+</div>
+<div class="bg-highlight/80 rounded-xl p-4 border border-white backdrop-blur-sm">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-electric-blue text-lg">timer</span>
+<span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Pace</span>
+</div>
+<p class="text-2xl font-bold text-text-main font-mono">4:45 <span class="text-sm font-normal text-text-muted font-sans">/km</span></p>
+</div>
+</div>
+<button class="w-full py-4 bg-neon-cyan hover:bg-electric-blue text-white rounded-xl font-extrabold text-sm uppercase tracking-widest shadow-neon hover:shadow-neon-strong active:scale-[0.98] transition-all flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">play_arrow</span>
+                    Start Session
+                </button>
+</div>
+</section>
+<section class="rounded-2xl bg-card border border-gray-100 p-6 shadow-soft relative overflow-hidden">
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-electric-blue/10 rounded-full blur-[60px]"></div>
+<div class="absolute -left-10 -bottom-10 w-40 h-40 bg-neon-cyan/10 rounded-full blur-[60px]"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-bold text-lg text-text-main leading-tight">AI Analysis</h3>
+<p class="text-text-muted text-xs mt-1 font-medium">Morning Jog • Yesterday</p>
+</div>
+<div class="p-2 rounded-lg bg-highlight border border-gray-200">
+<span class="material-symbols-outlined text-neon-cyan text-xl">auto_awesome</span>
+</div>
+</div>
+<div class="flex items-end justify-between mb-6">
+<div class="flex flex-col">
+<span class="text-3xl font-bold text-text-main font-mono tracking-tight">5:12 <span class="text-sm font-sans font-medium text-text-muted">/km</span></span>
+<span class="text-xs text-neon-success font-bold uppercase tracking-wide flex items-center gap-1 mt-2 bg-neon-success/10 px-2 py-1 rounded w-fit border border-neon-success/20">
+<span class="material-symbols-outlined text-sm font-bold">trending_up</span>
+                            +2% Efficiency
+                        </span>
+</div>
+<div class="flex items-end gap-1.5 h-12">
+<div class="w-1.5 bg-gray-200 rounded-t-sm h-4"></div>
+<div class="w-1.5 bg-gray-200 rounded-t-sm h-6"></div>
+<div class="w-1.5 bg-gray-200 rounded-t-sm h-5"></div>
+<div class="w-1.5 bg-neon-cyan rounded-t-sm h-10 shadow-[0_0_8px_rgba(0,212,255,0.4)]"></div>
+<div class="w-1.5 bg-gray-200 rounded-t-sm h-6"></div>
+<div class="w-1.5 bg-gray-200 rounded-t-sm h-8"></div>
+</div>
+</div>
+<a class="w-full inline-flex items-center justify-between text-sm font-semibold text-text-main hover:text-electric-blue group bg-highlight p-3 rounded-lg border border-gray-200 hover:border-neon-cyan/30 transition-all" href="#">
+<span>View Full Feedback</span>
+<span class="material-symbols-outlined text-sm text-neon-cyan group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</section>
+</main>
+<nav class="absolute bottom-0 w-full bg-white/90 backdrop-blur-xl border-t border-gray-200 pb-safe pt-2 px-6 z-50">
+<div class="flex justify-between items-center h-16">
+<a class="flex items-center gap-2 bg-neon-cyan text-white px-4 py-2 rounded-full shadow-neon transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-xs font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center h-full w-14 text-text-muted hover:text-electric-blue transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">directions_run</span>
+</a>
+<a class="flex flex-col items-center justify-center h-full w-14 text-text-muted hover:text-electric-blue transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">bar_chart</span>
+</a>
+<a class="flex flex-col items-center justify-center h-full w-14 text-text-muted hover:text-electric-blue transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">person</span>
+</a>
+</div>
+<div class="h-5 w-full"></div>
+</nav>
+</div>
+
+</body></html>

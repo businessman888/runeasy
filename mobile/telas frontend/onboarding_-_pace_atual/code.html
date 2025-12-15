@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RunEasy Onboarding - Pace Atual</title>
+<!-- Fonts and Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00FFFF", /* User requested Neon Cyan */
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0E0E1F", /* User requested Deep Violet/Black */
+                        "surface": "#1C1C2E",
+                        "text-main": "#EBEBF5",
+                        "text-muted": "rgba(235, 235, 245, 0.6)",
+                        "alert": "#FFC400",
+                        "success": "#32CD32",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'neon': '0 0 15px rgba(0, 255, 255, 0.3), 0 0 5px rgba(0, 255, 255, 0.1)',
+                        'neon-strong': '0 0 25px rgba(0, 255, 255, 0.4), 0 0 10px rgba(0, 255, 255, 0.2)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-display antialiased selection:bg-primary/30 selection:text-primary h-screen w-full overflow-hidden flex flex-col justify-between">
+<!-- Top Navigation & Progress -->
+<div class="flex flex-col w-full z-10 shrink-0">
+<!-- Header -->
+<div class="flex items-center justify-between px-4 py-4 pt-12 md:pt-6">
+<button aria-label="Voltar" class="flex items-center justify-center w-10 h-10 rounded-full text-text-main hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back_ios_new</span>
+</button>
+<div class="text-text-muted text-sm font-semibold tracking-wide">PASSO 5 DE 6</div>
+<div class="w-10"></div> <!-- Spacer for visual balance -->
+</div>
+<!-- Progress Bar -->
+<div class="px-6 pb-2 w-full">
+<div class="relative w-full h-1 bg-surface rounded-full overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-primary shadow-neon transition-all duration-500 ease-out" style="width: 83%;"></div>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col px-6 pt-4 pb-2 w-full max-w-md mx-auto relative overflow-y-auto">
+<!-- Text Content -->
+<div class="flex flex-col gap-2 mb-8 animate-fade-in-up">
+<h1 class="text-3xl md:text-4xl font-bold text-white leading-[1.1] tracking-tight">
+                Qual é o seu Pace atual?
+            </h1>
+<p class="text-text-muted text-base font-normal leading-relaxed">
+                Insira seu ritmo médio para 5km. Isso ajuda a IA a calibrar seus primeiros treinos.
+            </p>
+</div>
+<!-- Pace Input Module (Futuristic Digital Clock Style) -->
+<div class="flex flex-col gap-6 mb-4">
+<label class="relative group cursor-text w-full">
+<!-- Outer Glow/Border -->
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary/60 to-[#0088FF]/60 rounded-2xl blur opacity-40 transition duration-300 group-hover:opacity-60"></div>
+<!-- Input Container -->
+<div class="relative flex flex-col items-center justify-center bg-surface border border-white/10 rounded-2xl p-8 gap-1 shadow-2xl">
+<div class="text-[10px] uppercase tracking-[0.2em] text-primary font-bold mb-1">Ritmo Médio</div>
+<div class="flex items-baseline gap-2">
+<!-- Simulated Input Display -->
+<div class="text-6xl font-mono font-bold text-white tracking-widest drop-shadow-[0_0_10px_rgba(0,255,255,0.3)]">
+                            05:30
+                        </div>
+<span class="text-lg font-medium text-text-muted">min/km</span>
+</div>
+<!-- Cursor/Focus Indicator (Visual only) -->
+<div class="absolute bottom-6 w-16 h-0.5 bg-primary/50 rounded-full shadow-neon"></div>
+</div>
+</label>
+<!-- Don't Know Option -->
+<label class="flex items-center gap-3 p-1 cursor-pointer group w-fit mx-auto">
+<div class="relative flex items-center justify-center w-5 h-5 rounded border border-white/30 bg-transparent group-hover:border-primary transition-all duration-200">
+<input class="peer appearance-none w-full h-full cursor-pointer absolute inset-0 z-10" type="checkbox"/>
+<div class="hidden peer-checked:block w-3 h-3 bg-primary rounded-[1px] shadow-neon"></div>
+</div>
+<span class="text-text-muted text-sm font-medium group-hover:text-text-main transition-colors select-none">
+                    Não sei meu pace atual
+                </span>
+</label>
+</div>
+<!-- Visual Numpad (Simulating Native/Custom Keyboard) -->
+<div class="mt-auto pt-4 pb-2 w-full max-w-[300px] mx-auto grid grid-cols-3 gap-y-3 md:gap-y-5">
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">1</button>
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">2</button>
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">3</button>
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">4</button>
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">5</button>
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">6</button>
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">7</button>
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">8</button>
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">9</button>
+<div class="h-12 w-full"></div> <!-- Empty slot -->
+<button class="h-12 w-full flex items-center justify-center text-2xl font-medium text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">0</button>
+<button class="h-12 w-full flex items-center justify-center text-white hover:bg-white/5 active:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined" style="font-size: 26px;">backspace</span>
+</button>
+</div>
+</main>
+<!-- Bottom Action Buttons -->
+<footer class="shrink-0 w-full px-6 py-6 bg-gradient-to-t from-background-dark via-background-dark to-transparent z-20">
+<div class="flex w-full max-w-md mx-auto gap-4">
+<button class="flex-1 py-4 px-6 rounded-xl border border-white/10 bg-white/5 text-white font-bold text-base hover:bg-white/10 transition-all duration-300">
+                Voltar
+            </button>
+<button class="flex-[2] py-4 px-6 rounded-xl bg-primary text-background-dark font-bold text-base shadow-neon hover:shadow-neon-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 group">
+                Avançar
+                <span class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1" style="font-size: 20px; font-weight: 700;">arrow_forward</span>
+</button>
+</div>
+</footer>
+<!-- Background Decoration (Subtle glow) -->
+<div class="fixed top-[20%] right-[-20%] w-[300px] h-[300px] bg-primary/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+<div class="fixed bottom-[10%] left-[-10%] w-[200px] h-[200px] bg-purple-600/10 rounded-full blur-[80px] pointer-events-none z-0"></div>
+</body></html>

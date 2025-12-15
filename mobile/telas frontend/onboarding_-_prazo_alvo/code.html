@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RunEasy - Onboarding</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00FFFF",
+                        "secondary": "#FFC400",
+                        "success": "#32CD32",
+                        "background-light": "#f5f8f8", // Fallback
+                        "background-dark": "#0E0E1F",
+                        "surface-dark": "#181829",
+                        "surface-light": "#252538",
+                        "text-main": "#EBEBF5",
+                        "text-muted": "#A0A0B0",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "glow": "0 0 15px rgba(0, 255, 255, 0.3)",
+                        "glow-sm": "0 0 8px rgba(0, 255, 255, 0.2)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0E0E1F;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #252538;
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-display selection:bg-primary selection:text-background-dark overflow-x-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto shadow-2xl overflow-hidden">
+<!-- Header / Progress -->
+<div class="flex flex-col w-full px-6 pt-8 pb-2 z-10">
+<div class="flex w-full flex-row items-center justify-between gap-2 mb-6">
+<!-- Progress Indicators (6/6) -->
+<div class="flex flex-1 gap-1.5">
+<div class="h-1 flex-1 rounded-full bg-primary shadow-glow-sm"></div>
+<div class="h-1 flex-1 rounded-full bg-primary shadow-glow-sm"></div>
+<div class="h-1 flex-1 rounded-full bg-primary shadow-glow-sm"></div>
+<div class="h-1 flex-1 rounded-full bg-primary shadow-glow-sm"></div>
+<div class="h-1 flex-1 rounded-full bg-primary shadow-glow-sm"></div>
+<div class="h-1 flex-1 rounded-full bg-primary shadow-glow-sm"></div>
+</div>
+<span class="text-xs font-bold text-primary tracking-widest ml-2">6/6</span>
+</div>
+<!-- Headline -->
+<h1 class="text-white tracking-tight text-[28px] font-bold leading-[1.15] pb-2">
+                Quando você deseja <br/>atingir este objetivo?
+            </h1>
+<!-- Subtext -->
+<p class="text-text-muted text-sm font-normal leading-relaxed">
+                Selecione um prazo para a IA ajustar a intensidade e volume do seu plano de treino.
+            </p>
+</div>
+<!-- Main Content: Scrollable Cards -->
+<div class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+<!-- Option 1: 4 Weeks (Unselected) -->
+<div class="group relative flex items-center justify-between gap-4 rounded-xl bg-surface-dark border border-white/5 p-4 transition-all duration-300 hover:border-primary/50 hover:bg-surface-light cursor-pointer">
+<div class="flex flex-col gap-1 flex-[2_2_0px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">bolt</span>
+<p class="text-white text-lg font-bold leading-tight">4 semanas</p>
+</div>
+<p class="text-text-muted text-sm font-medium pl-[28px]">Foco Rápido</p>
+</div>
+<!-- Abstract visual representation -->
+<div class="w-16 h-16 rounded-lg overflow-hidden bg-cover bg-center opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Abstract dark futuristic neon blue glowing lines" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUHIYB9gYnWULkmJCb84gNijjEZwiC-4NzTS8u1Xz4y6FX2BHV5TdQNJqCWpCaTSo57XoKjxi-08bYfSD-LbSL0XSN4zKSqbgr1Q8VNIPifnOpStaI9QsxYNZlBeET8MFgfjJ3cXkf7BTaGbOPxBUWEU8V3oU-G0t3q1EjytszSjha1dAqLcDuT8z8E0K70iWynPy5tPGkXpzWfcaKALx08l7RgIitT-0b8qJ6pWhI_K7UBj-ARoFiFWMsaK7GNlqQjrre9xeuhLQ");'>
+</div>
+<div class="absolute right-4 top-4 h-4 w-4 rounded-full border-2 border-white/20 group-hover:border-primary"></div>
+</div>
+<!-- Option 2: 8 Weeks (Selected) -->
+<div class="relative flex items-center justify-between gap-4 rounded-xl bg-primary/10 border-2 border-primary p-4 shadow-glow transition-all duration-300 cursor-pointer">
+<div class="flex flex-col gap-1 flex-[2_2_0px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">trending_up</span>
+<p class="text-white text-lg font-bold leading-tight">8 semanas</p>
+</div>
+<p class="text-primary text-sm font-medium pl-[28px]">Evolução Constante</p>
+</div>
+<!-- Abstract visual representation -->
+<div class="w-16 h-16 rounded-lg overflow-hidden bg-cover bg-center" data-alt="Abstract fluid liquid blue dark background texture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDyspcgCKYvtWp_9rDexN_rY0mX7GUuILYsfrG242tOv6Wp-3KJpKb5jrT1wJP_IFfglALGduTX1B0JWNUu5NKQfXYDlACLj2F6L6dowxOdMd7QVhvNAhyavGaiEcYqHPOk8uP7yP3qVcFobDkIMCZwb85Z6Vnucsiv5IklXgYS_Ln4wDWzb1ZQ7LQT769s306d0Sl2r1e2Dzw1HktEtv17Ag8uQAJecr88vmWFUoPzf5f9Ebo6cQAgM_Ju8F_rjQi7n6MIpBSutOA");'>
+</div>
+<!-- Radio Active Indicator -->
+<div class="absolute right-[-1px] top-[-1px] rounded-bl-xl rounded-tr-lg bg-primary px-2 py-1">
+<span class="material-symbols-outlined text-background-dark text-[14px] font-bold">check</span>
+</div>
+</div>
+<!-- Option 3: 12 Weeks (Unselected) -->
+<div class="group relative flex items-center justify-between gap-4 rounded-xl bg-surface-dark border border-white/5 p-4 transition-all duration-300 hover:border-primary/50 hover:bg-surface-light cursor-pointer">
+<div class="flex flex-col gap-1 flex-[2_2_0px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">fitness_center</span>
+<p class="text-white text-lg font-bold leading-tight">12 semanas</p>
+</div>
+<p class="text-text-muted text-sm font-medium pl-[28px]">Preparação Sólida</p>
+</div>
+<div class="w-16 h-16 rounded-lg overflow-hidden bg-cover bg-center opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Dark computer code abstract programming background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCuhOVdbwHUfheqbNOKGmpgnGwNitb_CvwnPNWKXIn8b_qChM_AKwcaBdpdncMrPyVSLbSCp3I7xsraF7s0yssT0Q6RWyZ65aDQTomyQv8vIdDdpzcPd1kyl0PPMXYMEZ5vKAYy_H8TWJDrojZbdYmW9GrI30yR3-52wV-JoCwXDER09PhWECkMJY6xq5zckXO_n5uBED8wC2_USjLzQLWiKtyHEwFrpbR1S5NV-TlSc2O_glfJ6lXwMWDyfIgdhbQ2grnww_4zDJw");'>
+</div>
+<div class="absolute right-4 top-4 h-4 w-4 rounded-full border-2 border-white/20 group-hover:border-primary"></div>
+</div>
+<!-- Option 4: 16+ Weeks (Unselected) -->
+<div class="group relative flex items-center justify-between gap-4 rounded-xl bg-surface-dark border border-white/5 p-4 transition-all duration-300 hover:border-primary/50 hover:bg-surface-light cursor-pointer">
+<div class="flex flex-col gap-1 flex-[2_2_0px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">workspace_premium</span>
+<p class="text-white text-lg font-bold leading-tight">16+ semanas</p>
+</div>
+<p class="text-text-muted text-sm font-medium pl-[28px]">Maratona / Longo Prazo</p>
+</div>
+<div class="w-16 h-16 rounded-lg overflow-hidden bg-cover bg-center opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Blue planet earth from space dark background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuANy2iTP7FuyatZCeqq5BpuSufrfGhBlE1haTvDoi9EjgeyXIrR1Zl59Rx-UZXPDVEGVmegXmDGh7GQiGyF7r04DS4pZy-rNUbQnj8eMw4LrQFLTm5LFJ74f1oC1EJpKfhD0sZ8ai3hq9gsMjKhRbg4diMu722ObN2ViiPYiGiPT1eXG_VArxQJS7TLkbEBqg_1yZ3XhWl051o8QjTaJQzW5n50K0zwbwzihvK2DzD4-LOIYDRx9viftshWOUgnWsMOGM40BDnTzyk");'>
+</div>
+<div class="absolute right-4 top-4 h-4 w-4 rounded-full border-2 border-white/20 group-hover:border-primary"></div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-6 bg-gradient-to-t from-background-dark via-background-dark to-transparent mt-auto z-20">
+<div class="flex items-center gap-4">
+<!-- Back Button -->
+<button class="flex items-center justify-center h-14 w-14 rounded-full border border-white/10 text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<!-- Next Button -->
+<button class="flex-1 h-14 rounded-full bg-primary text-background-dark font-bold text-lg shadow-[0_0_20px_rgba(0,255,255,0.4)] hover:shadow-[0_0_30px_rgba(0,255,255,0.6)] transition-all flex items-center justify-center gap-2 group">
+                    Gerar Plano
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">auto_awesome</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

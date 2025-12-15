@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RunEasy Calendar Dark Futurista</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "re-bg": "#0E0E1F",
+                        "re-surface": "#1C1C2E", 
+                        "re-surface-highlight": "#2C2C3E",
+                        "re-text": "#EBEBF5",
+                        "re-text-muted": "rgba(235, 235, 245, 0.6)",
+                        "re-primary": "#00D4FF",
+                        "re-neon": "#00FFFF",
+                        "re-success": "#32CD32",
+                        "re-alert": "#FFC400",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "3xl": "1.5rem", "full": "9999px" },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.3)',
+                        'glow': '0 0 20px rgba(0, 212, 255, 0.3)',
+                        'neon-glow': '0 0 10px rgba(0, 255, 255, 0.5)',
+                        'card': '0 0 0 1px rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.5)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #334155;
+            border-radius: 20px;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-re-bg text-re-text font-display antialiased selection:bg-re-primary/30">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-re-bg shadow-2xl border-x border-white/5">
+<header class="flex items-center justify-between px-6 pt-6 pb-2 bg-re-bg/90 backdrop-blur-md sticky top-0 z-40">
+<button class="size-10 flex items-center justify-center rounded-xl bg-re-surface border border-white/5 shadow-card hover:bg-re-surface-highlight transition-all active:scale-95 text-re-text">
+<span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span>
+</button>
+<div class="flex flex-col items-center">
+<span class="text-xs font-semibold tracking-[0.2em] text-re-primary uppercase drop-shadow-[0_0_8px_rgba(0,212,255,0.5)]">Agenda</span>
+<h1 class="text-lg font-bold text-re-text">Calendário</h1>
+</div>
+<button class="size-10 flex items-center justify-center rounded-xl bg-re-surface border border-white/5 shadow-card hover:bg-re-surface-highlight transition-all active:scale-95 text-re-text relative">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-re-alert rounded-full ring-2 ring-re-surface shadow-[0_0_8px_#FFC400]"></span>
+</button>
+</header>
+<div class="px-6 py-4">
+<div class="flex items-center justify-between bg-re-surface rounded-3xl p-1 shadow-glow relative overflow-hidden border border-re-primary/20">
+<div class="absolute right-0 top-0 w-full h-full bg-gradient-to-l from-re-primary/10 via-transparent to-transparent opacity-50"></div>
+<div class="flex flex-1 items-center justify-center py-3 border-r border-white/5 relative z-10">
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-re-text-muted font-bold uppercase tracking-widest mb-1">Volume</span>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-bold text-white tracking-tighter drop-shadow-md">124</span>
+<span class="text-xs font-medium text-re-primary">km</span>
+</div>
+</div>
+</div>
+<div class="flex flex-1 items-center justify-center py-3 relative z-10">
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-re-text-muted font-bold uppercase tracking-widest mb-1">Frequência</span>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-bold text-white tracking-tighter drop-shadow-md">18</span>
+<span class="text-xs font-medium text-re-text-muted">/ 22</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="px-6 mb-4 flex items-center justify-between">
+<h2 class="text-2xl font-bold text-re-text tracking-tight">Outubro <span class="text-re-text-muted font-light">2023</span></h2>
+<div class="flex gap-2">
+<button class="size-8 rounded-full border border-white/10 bg-re-surface flex items-center justify-center hover:bg-re-surface-highlight text-re-text transition-colors">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="size-8 rounded-full border border-white/10 bg-re-surface flex items-center justify-center hover:bg-re-surface-highlight text-re-text transition-colors">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="px-4 pb-4">
+<div class="grid grid-cols-7 mb-3">
+<div class="text-center text-[10px] font-bold text-re-text-muted uppercase tracking-widest">Dom</div>
+<div class="text-center text-[10px] font-bold text-re-text-muted uppercase tracking-widest">Seg</div>
+<div class="text-center text-[10px] font-bold text-re-text-muted uppercase tracking-widest">Ter</div>
+<div class="text-center text-[10px] font-bold text-re-text-muted uppercase tracking-widest">Qua</div>
+<div class="text-center text-[10px] font-bold text-re-text-muted uppercase tracking-widest">Qui</div>
+<div class="text-center text-[10px] font-bold text-re-text-muted uppercase tracking-widest">Sex</div>
+<div class="text-center text-[10px] font-bold text-re-text-muted uppercase tracking-widest">Sab</div>
+</div>
+<div class="grid grid-cols-7 gap-y-3 gap-x-1">
+<div class="aspect-square"></div>
+<div class="aspect-square"></div>
+<div class="aspect-square"></div>
+<button class="group relative flex flex-col items-center justify-center aspect-square rounded-2xl hover:bg-white/5 transition-all duration-300">
+<span class="text-sm font-medium text-re-text-muted group-hover:text-re-text">1</span>
+<span class="absolute bottom-1.5 size-1.5 rounded-full bg-re-success shadow-[0_0_6px_#32CD32]"></span>
+</button>
+<button class="group relative flex flex-col items-center justify-center aspect-square rounded-2xl hover:bg-white/5 transition-all duration-300">
+<span class="text-sm font-medium text-re-text-muted group-hover:text-re-text">2</span>
+<span class="absolute bottom-1.5 w-4 h-1 rounded-full bg-re-primary/80 shadow-[0_0_8px_rgba(0,212,255,0.4)]"></span>
+<span class="absolute -top-0.5 -right-0.5 flex size-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-re-success opacity-75"></span>
+<span class="relative inline-flex rounded-full size-3 bg-re-success/50"></span>
+</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center aspect-square rounded-2xl hover:bg-white/5 transition-all duration-300 opacity-50">
+<span class="text-sm font-medium text-re-text-muted">3</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center aspect-square rounded-2xl hover:bg-white/5 transition-all duration-300">
+<span class="text-sm font-medium text-re-text-muted group-hover:text-re-text">4</span>
+<span class="absolute top-1 right-1 text-[8px] text-red-500 font-bold">X</span>
+<span class="absolute bottom-1.5 w-1.5 h-1.5 rounded-full border border-red-500 shadow-[0_0_4px_red]"></span>
+</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted opacity-50">5</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted opacity-50">6</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted opacity-50">7</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted opacity-50">8</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted opacity-50">9</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted opacity-50">10</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted opacity-50">11</button>
+<div class="relative aspect-square">
+<button class="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-re-neon text-re-bg shadow-glow z-10 scale-110 transform transition-transform ring-2 ring-re-neon/50 ring-offset-2 ring-offset-[#0E0E1F]">
+<span class="text-sm font-bold">12</span>
+<div class="mt-1 w-8 py-0.5 bg-re-bg/20 rounded text-[9px] font-bold text-re-bg flex justify-center leading-none">
+                            10k
+                        </div>
+</button>
+</div>
+<button class="group relative flex flex-col items-center justify-center aspect-square rounded-2xl bg-white/5 border border-white/5">
+<span class="text-sm font-bold text-re-text">13</span>
+<div class="absolute bottom-1.5 flex gap-0.5">
+<div class="size-1 rounded-full bg-re-primary shadow-[0_0_4px_#00D4FF]"></div>
+<div class="size-1 rounded-full bg-re-primary shadow-[0_0_4px_#00D4FF]"></div>
+<div class="size-1 rounded-full bg-re-primary shadow-[0_0_4px_#00D4FF]"></div>
+</div>
+</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text font-medium">14</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text font-medium relative">
+                    15
+                    <div class="absolute bottom-2 w-1 h-1 bg-re-text-muted rounded-full"></div>
+</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">16</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">17</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">18</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">19</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">20</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">21</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">22</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">23</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">24</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">25</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">26</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">27</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">28</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">29</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">30</button>
+<button class="aspect-square flex items-center justify-center text-sm text-re-text-muted">31</button>
+</div>
+</div>
+<div class="flex-1 bg-re-surface rounded-t-[2.5rem] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.5)] relative z-10 overflow-hidden border-t border-white/5">
+<div class="w-12 h-1.5 bg-white/10 rounded-full mx-auto mt-3 mb-6"></div>
+<div class="px-6 pb-24">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-bold text-re-text">Quinta, 12 Out</h3>
+<span class="px-3 py-1 rounded-full bg-re-neon/10 border border-re-neon/20 text-xs font-bold text-re-neon uppercase tracking-wider shadow-[0_0_10px_rgba(0,255,255,0.1)]">Treino Hoje</span>
+</div>
+<div class="group relative rounded-3xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 p-1 overflow-hidden transition-all active:scale-[0.98]">
+<div class="relative bg-re-surface-highlight rounded-[1.3rem] p-5 shadow-inner z-10">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="inline-flex items-center justify-center px-2.5 py-1 rounded-md bg-white/10 text-[10px] font-bold text-re-text uppercase tracking-wider backdrop-blur-sm border border-white/5">
+                                        Rodagem
+                                    </span>
+<span class="size-2 rounded-full bg-re-alert shadow-[0_0_8px_rgba(255,196,0,0.8)] animate-pulse"></span>
+</div>
+<h4 class="text-2xl font-bold text-re-text tracking-tight">Longo Aeróbico</h4>
+</div>
+<button class="size-12 rounded-full bg-re-neon text-re-bg flex items-center justify-center shadow-[0_0_15px_rgba(0,255,255,0.4)] hover:scale-110 hover:shadow-[0_0_20px_rgba(0,255,255,0.6)] transition-all">
+<span class="material-symbols-outlined text-[28px] fill-1">play_arrow</span>
+</button>
+</div>
+<div class="grid grid-cols-3 gap-2 mt-4">
+<div class="flex flex-col gap-1 p-2 rounded-xl bg-re-bg/40 border border-white/5">
+<span class="material-symbols-outlined text-lg text-re-text-muted">straighten</span>
+<span class="text-lg font-bold text-re-text">10<span class="text-xs font-medium text-re-text-muted ml-0.5">km</span></span>
+</div>
+<div class="flex flex-col gap-1 p-2 rounded-xl bg-re-bg/40 border border-white/5">
+<span class="material-symbols-outlined text-lg text-re-text-muted">timer</span>
+<span class="text-lg font-bold text-re-text">55<span class="text-xs font-medium text-re-text-muted ml-0.5">min</span></span>
+</div>
+<div class="flex flex-col gap-1 p-2 rounded-xl bg-re-bg/40 border border-white/5">
+<span class="material-symbols-outlined text-lg text-re-text-muted">speed</span>
+<span class="text-lg font-bold text-re-text">5:30</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-re-primary to-re-neon w-1/3 z-20 shadow-[0_0_10px_rgba(0,255,255,0.5)]"></div>
+</div>
+<div class="mt-8">
+<p class="text-xs font-bold text-re-text-muted uppercase tracking-widest mb-3 pl-2">Próximo: Sexta-feira</p>
+<div class="flex items-center gap-4 p-4 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.05] transition-colors">
+<div class="size-10 rounded-xl bg-re-primary/10 border border-re-primary/20 flex items-center justify-center text-re-primary">
+<span class="material-symbols-outlined shadow-[0_0_10px_rgba(0,212,255,0.2)]">sprint</span>
+</div>
+<div class="flex-1">
+<h5 class="text-sm font-bold text-re-text">Intervalado 8x400m</h5>
+<p class="text-xs text-re-text-muted">Pista de Atletismo • Alta Intensidade</p>
+</div>
+<span class="material-symbols-outlined text-re-text-muted">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<button class="fixed bottom-6 right-6 size-16 rounded-full bg-re-primary text-re-bg shadow-[0_0_20px_rgba(0,212,255,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50 group border border-white/20">
+<span class="absolute inset-0 rounded-full border border-re-text/20 animate-pulse"></span>
+<span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
+</button>
+</div>
+
+</body></html>

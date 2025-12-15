@@ -32,7 +32,8 @@ export function LoginScreen({ navigation }: any) {
 
     const handleWebCallback = async () => {
         try {
-            const url = new URL(window.location.href);
+            const currentUrl = window.location.href;
+            const url = new URL(currentUrl);
             const userId = url.searchParams.get('user_id');
             const errorParam = url.searchParams.get('error');
 
@@ -52,9 +53,13 @@ export function LoginScreen({ navigation }: any) {
                 // Clean URL and navigate
                 window.history.replaceState({}, '', '/');
 
-                const path = url.pathname;
-                if (path.includes('onboarding')) {
-                    navigation.replace('Onboarding', { userId });
+                // Check if this is a new user (onboarding path)
+                // The backend redirects to /onboarding?user_id=xxx for new users
+                const isNewUser = currentUrl.includes('onboarding');
+                console.log('Login callback - isNewUser:', isNewUser, 'URL:', currentUrl);
+
+                if (isNewUser) {
+                    navigation.replace('Quiz_Objective');
                 } else {
                     navigation.replace('Main');
                 }
@@ -107,9 +112,12 @@ export function LoginScreen({ navigation }: any) {
                         await Storage.setItemAsync('user_id', userId);
                         await login(userId);
 
-                        const path = url.pathname;
-                        if (path.includes('onboarding')) {
-                            navigation.replace('Onboarding', { userId });
+                        // Check if this is a new user (onboarding path)
+                        const isNewUser = result.url.includes('onboarding');
+                        console.log('Native login callback - isNewUser:', isNewUser, 'URL:', result.url);
+
+                        if (isNewUser) {
+                            navigation.replace('Quiz_Objective');
                         } else {
                             navigation.replace('Main');
                         }

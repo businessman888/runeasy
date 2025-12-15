@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RunEasy - Onboarding Lesões</title>
+<!-- Fonts and Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00FFFF",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0E0E1F",
+                        "surface": "#1C1C2E",
+                        "surface-light": "#2C2C45",
+                        "text-main": "#EBEBF5",
+                        "text-muted": "#8E8E93",
+                        "alert": "#FFC400",
+                        "success": "#32CD32"
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'neon': '0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3)',
+                        'neon-sm': '0 0 5px rgba(0, 255, 255, 0.5)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for textarea */
+        textarea::-webkit-scrollbar {
+            width: 6px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background-color: #2C2C45;
+            border-radius: 99px;
+        }
+        
+        /* Smooth transitions for interactive elements */
+        .transition-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Ensure the layout fills the viewport correctly on mobile */
+        body, html {
+            height: 100%;
+            overflow: hidden; 
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-black flex items-center justify-center h-full font-display text-text-main selection:bg-primary selection:text-background-dark">
+<!-- Mobile Frame Container -->
+<div class="relative flex h-full w-full max-w-md flex-col bg-background-dark shadow-2xl overflow-hidden sm:h-[850px] sm:rounded-[2.5rem] sm:border-[8px] sm:border-gray-900">
+<!-- Ambient Background Glows -->
+<div class="pointer-events-none absolute -top-[10%] -left-[10%] h-[50%] w-[50%] rounded-full bg-primary/5 blur-[80px]" data-alt="Abstract cyan ambient glow top left"></div>
+<div class="pointer-events-none absolute bottom-[10%] -right-[10%] h-[40%] w-[40%] rounded-full bg-[#4facfe]/5 blur-[80px]" data-alt="Abstract blue ambient glow bottom right"></div>
+<!-- Header Section -->
+<header class="relative z-10 flex flex-col px-6 pt-12 sm:pt-14 pb-4 shrink-0">
+<!-- Navigation & Step Count -->
+<div class="mb-6 flex items-center justify-between">
+<button aria-label="Voltar" class="group flex h-10 w-10 items-center justify-center rounded-full bg-surface/40 backdrop-blur-sm text-text-main transition-smooth hover:bg-surface hover:text-primary active:scale-95">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div class="rounded-full bg-surface/30 px-3 py-1 text-xs font-semibold tracking-wide backdrop-blur-md border border-white/5">
+<span class="text-primary">PASSO 4</span> <span class="text-text-muted">/ 6</span>
+</div>
+</div>
+<!-- Progress Indicator -->
+<div aria-label="Progress Bar" class="flex w-full gap-1.5">
+<div class="h-1 flex-1 rounded-full bg-primary shadow-neon-sm"></div>
+<div class="h-1 flex-1 rounded-full bg-primary shadow-neon-sm"></div>
+<div class="h-1 flex-1 rounded-full bg-primary shadow-neon-sm"></div>
+<div class="h-1 flex-1 rounded-full bg-primary shadow-neon-sm"></div>
+<div class="h-1 flex-1 rounded-full bg-surface-light/30"></div>
+<div class="h-1 flex-1 rounded-full bg-surface-light/30"></div>
+</div>
+</header>
+<!-- Main Scrollable Content -->
+<main class="relative z-10 flex flex-1 flex-col overflow-y-auto overflow-x-hidden px-6 pt-2 pb-24">
+<!-- Headline -->
+<div class="mb-8 space-y-3 animate-[fadeIn_0.6s_ease-out]">
+<h1 class="text-[28px] leading-[1.2] font-bold tracking-tight text-white">
+                    Você possui alguma <span class="text-primary">lesão atual</span> ou limitação física?
+                </h1>
+<p class="text-base font-normal leading-relaxed text-text-muted">
+                    Isso ajuda a nossa IA a adaptar o seu plano de treino para evitar riscos de agravamento.
+                </p>
+</div>
+<!-- Interaction Area (Parent Group for CSS Logic) -->
+<div class="group/form flex flex-1 flex-col w-full">
+<!-- Toggle Cards -->
+<div class="grid grid-cols-2 gap-4 mb-8">
+<!-- Option: Não -->
+<label class="relative cursor-pointer">
+<input class="peer sr-only" name="injury_toggle" type="radio" value="no"/>
+<div class="relative flex h-36 flex-col items-center justify-center rounded-2xl border border-surface-light/50 bg-surface/20 transition-smooth active:scale-95 peer-checked:border-text-muted peer-checked:bg-surface peer-checked:text-white text-text-muted hover:bg-surface/40 hover:border-surface-light">
+<!-- Icon Background Blob -->
+<div class="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/5 to-transparent opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined mb-3 text-4xl z-10">sentiment_satisfied</span>
+<span class="text-lg font-semibold z-10">Não</span>
+</div>
+</label>
+<!-- Option: Sim -->
+<label class="relative cursor-pointer">
+<input checked="" class="peer sr-only" id="yes-option" name="injury_toggle" type="radio" value="yes"/>
+<div class="relative flex h-36 flex-col items-center justify-center rounded-2xl border border-surface-light/50 bg-surface/20 transition-smooth active:scale-95 peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:shadow-[inset_0_0_20px_rgba(0,255,255,0.1)] text-text-muted hover:bg-surface/40 hover:border-primary/50">
+<!-- Active State Glow -->
+<div class="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary/10 to-transparent opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined mb-3 text-4xl z-10">healing</span>
+<span class="text-lg font-semibold z-10">Sim</span>
+<!-- Checkmark Badge -->
+<div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 transition-opacity scale-50 peer-checked:scale-100">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Conditional Text Area (Visible when #yes-option is checked via CSS :has) -->
+<div class="hidden group-has-[#yes-option:checked]/form:flex flex-col w-full flex-1 animate-[slideUp_0.4s_cubic-bezier(0.16,1,0.3,1)]">
+<div class="flex items-center justify-between mb-3 px-1">
+<label class="text-sm font-medium text-primary tracking-wide uppercase" for="details">Detalhes da lesão</label>
+<span class="text-xs text-text-muted bg-surface/50 px-2 py-0.5 rounded">Opcional</span>
+</div>
+<div class="relative w-full h-40 grow">
+<!-- Input Background -->
+<div class="absolute inset-0 bg-surface/30 rounded-2xl border border-surface-light backdrop-blur-sm pointer-events-none"></div>
+<textarea class="relative z-10 w-full h-full resize-none bg-transparent rounded-2xl border-0 p-5 text-base text-white placeholder-text-muted/40 focus:ring-1 focus:ring-primary focus:shadow-[0_0_15px_rgba(0,255,255,0.15)] transition-all outline-none leading-relaxed" id="details" placeholder="Descreva sua lesão (ex: dor no joelho esquerdo ao correr, tendinite no tornozelo...)"></textarea>
+<!-- Decorative Bottom Bar -->
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent rounded-b-2xl opacity-50"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Actions -->
+<footer class="absolute bottom-0 z-20 w-full px-6 pb-8 pt-6 bg-gradient-to-t from-background-dark via-background-dark/95 to-transparent">
+<div class="flex items-center gap-4">
+<button class="h-14 min-w-[100px] rounded-xl border border-surface-light bg-transparent text-base font-semibold text-text-muted transition-smooth hover:border-text-main hover:text-white hover:bg-surface/30 active:scale-95">
+                    Voltar
+                </button>
+<button class="group relative flex h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-base font-bold text-background-dark transition-all hover:bg-[#80ffff] hover:shadow-neon active:scale-95 overflow-hidden">
+<span class="relative z-10 flex items-center gap-2">
+                        Avançar
+                        <span class="material-symbols-outlined text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
+</span>
+<!-- Button sheen effect -->
+<div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-[shimmer_1s_infinite]"></div>
+</button>
+</div>
+</footer>
+</div>
+<!-- Keyframe Animations -->
+<style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</body></html>
