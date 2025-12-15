@@ -39,13 +39,24 @@ function WorkoutDetailScreen({ route }: any) {
 
 
 // Tab Navigator
-function MainTabs({ route }: any) {
+function MainTabs({ route, navigation }: any) {
     const { initialTab } = route.params || {};
+
+    // Navigate to the correct tab after mount if initialTab is specified
+    React.useEffect(() => {
+        if (initialTab && initialTab !== 'Home') {
+            // Small delay to ensure tabs are mounted
+            const timer = setTimeout(() => {
+                navigation.navigate(initialTab);
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [initialTab, navigation]);
 
     return (
         <Tab.Navigator
             id="MainTabs"
-            initialRouteName={initialTab || 'Home'}
+            initialRouteName="Home"
             screenOptions={{
                 tabBarActiveTintColor: colors.primary,
                 tabBarInactiveTintColor: colors.textSecondary,
