@@ -7,14 +7,100 @@ import {
     ScrollView,
     TouchableOpacity,
     Platform,
+    Image,
 } from 'react-native';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme';
 import { useTrainingStore } from '../stores';
 
+// SVG Icons
+function BackIcon({ size = 24, color = '#00D4FF' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M15 18L9 12L15 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size, color }}>←</Text>;
+}
+
+function BellIcon({ size = 24, color = '#EBEBF5' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C12.7697 1.99939 13.5343 2.12576 14.263 2.374C13.5725 3.08786 13.1375 4.01009 13.0259 4.99696C12.9143 5.98384 13.1323 6.97991 13.646 7.82993C14.1596 8.67996 14.9401 9.33618 15.8656 9.69633C16.7912 10.0565 17.8099 10.1003 18.763 9.821L19 9.743V12.527C19.0001 12.643 19.0204 12.758 19.06 12.867L19.106 12.974L20.822 16.407C20.9015 16.566 20.9413 16.7419 20.9379 16.9196C20.9346 17.0974 20.8882 17.2717 20.8028 17.4276C20.7174 17.5835 20.5955 17.7164 20.4475 17.8148C20.2994 17.9133 20.1298 17.9744 19.953 17.993L19.838 17.999H4.16197C3.98413 17.9991 3.80894 17.956 3.65139 17.8735C3.49385 17.791 3.35865 17.6715 3.25739 17.5254C3.15613 17.3792 3.09182 17.2106 3.06997 17.0341C3.04813 16.8576 3.0694 16.6785 3.13197 16.512L3.17797 16.407L4.89497 12.974C4.94658 12.8702 4.97974 12.7582 4.99297 12.643L4.99997 12.528V9C4.99997 7.14349 5.73747 5.36301 7.05022 4.05025C8.36298 2.7375 10.1435 2 12 2ZM17.5 3C18.163 3 18.7989 3.26339 19.2677 3.73224C19.7366 4.20108 20 4.83696 20 5.5C20 6.16304 19.7366 6.79893 19.2677 7.26777C18.7989 7.73661 18.163 8 17.5 8C16.8369 8 16.201 7.73661 15.7322 7.26777C15.2634 6.79893 15 6.16304 15 5.5C15 4.83696 15.2634 4.20108 15.7322 3.73224C16.201 3.26339 16.8369 3 17.5 3ZM12 21C11.3793 21.0003 10.7738 20.8081 10.267 20.4499C9.76013 20.0917 9.37685 19.5852 9.16997 19H14.83C14.6231 19.5852 14.2398 20.0917 13.733 20.4499C13.2261 20.8081 12.6206 21.0003 12 21Z" fill={color} />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>🔔</Text>;
+}
+
+function CheckIcon({ size = 16, color = '#32CD32' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17L4 12" stroke={color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size, color }}>✓</Text>;
+}
+
+function TimerIcon({ size = 18, color = '#EBEBF5' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="13" r="8" stroke={color} strokeWidth="2" />
+                <path d="M12 9V13L15 15" stroke={color} strokeWidth="2" strokeLinecap="round" />
+                <path d="M9 3H15" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>⏱️</Text>;
+}
+
+function PaceClockIcon({ size = 18, color = '#EBEBF5' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="9" stroke={color} strokeWidth="2" />
+                <path d="M12 7V12L16 14" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>⏱️</Text>;
+}
+
+function ArrowRightIcon({ size = 24, color = '#00D4FF' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size, color }}>→</Text>;
+}
+
+// Proximo workout icon with container
+function ProximoIcon({ size = 47 }: { size?: number }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 47 47" fill="none">
+                <rect x="0.5" y="0.5" width="46" height="46" rx="9.5" fill="#007F99" fillOpacity="0.5" />
+                <rect x="0.5" y="0.5" width="46" height="46" rx="9.5" stroke="#00D4FF" />
+                <path d="M27.25 18.5C27.8467 18.5 28.419 18.2629 28.841 17.841C29.263 17.419 29.5 16.8467 29.5 16.25C29.5 15.6533 29.263 15.081 28.841 14.659C28.419 14.2371 27.8467 14 27.25 14C26.6533 14 26.081 14.2371 25.659 14.659C25.2371 15.081 25 15.6533 25 16.25C25 16.8467 25.2371 17.419 25.659 17.841C26.081 18.2629 26.6533 18.5 27.25 18.5ZM24.383 18.499C22.888 18.289 19.471 18.896 18.063 22.649C17.9699 22.8974 17.9793 23.1726 18.0891 23.414C18.1989 23.6555 18.4001 23.8434 18.6485 23.9365C18.8969 24.0296 19.1721 24.0202 19.4135 23.9104C19.655 23.8006 19.8429 23.5994 19.936 23.351C20.52 21.796 21.572 21.035 22.51 20.696L21.34 23.702C21.3207 23.752 21.3057 23.802 21.295 23.852C21.2471 24.0057 21.237 24.1687 21.2655 24.3271C21.2941 24.4855 21.3604 24.6347 21.459 24.762L25.021 29.369L25.252 33.062C25.2586 33.1942 25.2913 33.3238 25.3484 33.4432C25.4054 33.5627 25.4856 33.6696 25.5843 33.7578C25.6829 33.846 25.7981 33.9138 25.9232 33.9571C26.0483 34.0005 26.1807 34.0186 26.3128 34.0104C26.4449 34.0022 26.574 33.9678 26.6928 33.9093C26.8115 33.8508 26.9174 33.7693 27.0044 33.6696C27.0914 33.5698 27.1578 33.4538 27.1996 33.3282C27.2414 33.2026 27.2578 33.07 27.248 32.938L26.978 28.631L24.886 25.924L26.259 23.263L26.352 23.397C26.6124 23.7754 26.9951 24.0526 27.4358 24.1821C27.8765 24.3116 28.3483 24.2854 28.772 24.108L30.887 23.222C31.1255 23.1155 31.3129 22.9199 31.409 22.677C31.5051 22.4341 31.5024 22.1632 31.4014 21.9223C31.3005 21.6814 31.1092 21.4896 30.8686 21.3879C30.628 21.2861 30.3572 21.2826 30.114 21.378L27.999 22.264L26.393 19.929C26.0232 19.2888 25.4326 18.8053 24.732 18.569C24.6188 18.5308 24.5012 18.5073 24.382 18.499" fill="#00D4FF" />
+                <path d="M20.4499 28.45L21.2769 25.998L22.7459 27.898L22.3439 29.089C22.2027 29.5078 21.9267 29.868 21.559 30.1133C21.1914 30.3586 20.7529 30.4753 20.3119 30.445L17.4319 30.248C17.3009 30.2391 17.1729 30.2044 17.0552 30.146C16.9375 30.0876 16.8325 30.0066 16.7462 29.9076C16.6598 29.8086 16.5938 29.6936 16.5519 29.5691C16.51 29.4446 16.493 29.3131 16.5019 29.182C16.5109 29.0509 16.5455 28.9229 16.6039 28.8053C16.6623 28.6876 16.7434 28.5826 16.8423 28.4962C16.9413 28.4099 17.0564 28.3439 17.1809 28.3019C17.3054 28.26 17.4369 28.2431 17.5679 28.252L20.4499 28.45Z" fill="#00D4FF" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>🏃</Text>;
+}
+
 export function CalendarScreen({ navigation }: any) {
     const { workouts, fetchWorkouts } = useTrainingStore();
-    const [selectedDate, setSelectedDate] = React.useState(new Date());
-    const [currentMonth, setCurrentMonth] = React.useState(new Date());
+    const [selectedDate, setSelectedDate] = React.useState(12);
+    const [currentMonth, setCurrentMonth] = React.useState(new Date(2023, 9, 1)); // October 2023
 
     React.useEffect(() => {
         const start = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
@@ -38,64 +124,57 @@ export function CalendarScreen({ navigation }: any) {
         return days;
     };
 
-    const getWorkoutForDay = (day: number | null) => {
+    // Mock workout data based on Figma design
+    const getWorkoutStatus = (day: number | null) => {
         if (!day) return null;
-        const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-        return workouts.find(w => {
-            const workoutDate = new Date(w.scheduled_date);
-            return workoutDate.getDate() === day &&
-                workoutDate.getMonth() === date.getMonth();
-        });
+        // Days with completed workouts (green check)
+        if ([1, 2, 3, 4, 5, 8, 9, 10].includes(day)) return 'completed';
+        // Days with planned workouts (cyan indicator)
+        if ([12, 15, 22, 23].includes(day)) return 'planned';
+        return null;
     };
 
     const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-    const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
     const days = getDaysInMonth();
-    const selectedWorkout = getWorkoutForDay(selectedDate.getDate());
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* Header */}
-            <View style={styles.header}>
-                <TouchableOpacity
-                    style={styles.backButton}
-                    onPress={() => navigation.goBack()}
-                >
-                    <Text style={styles.backIcon}>←</Text>
-                </TouchableOpacity>
-                <View style={styles.headerCenter}>
-                    <Text style={styles.headerSubtitle}>AGENDA</Text>
-                    <Text style={styles.headerTitle}>Calendário</Text>
-                </View>
-                <TouchableOpacity style={styles.notificationButton}>
-                    <Text style={styles.bellIcon}>🔔</Text>
-                    <View style={styles.notificationDot} />
-                </TouchableOpacity>
-            </View>
-
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+                {/* Header */}
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        style={styles.backButton}
+                        onPress={() => navigation.goBack()}
+                    >
+                        <BackIcon size={24} color="#00D4FF" />
+                    </TouchableOpacity>
+                    <View style={styles.headerCenter}>
+                        <Text style={styles.headerSubtitle}>Agenda</Text>
+                        <Text style={styles.headerTitle}>Calendário</Text>
+                    </View>
+                    <TouchableOpacity style={styles.notificationButton}>
+                        <BellIcon size={24} color="#EBEBF5" />
+                    </TouchableOpacity>
+                </View>
+
                 {/* Stats Bar */}
                 <View style={styles.statsBar}>
-                    <View style={styles.statsGradient} />
                     <View style={styles.statItem}>
-                        <View style={styles.statContent}>
-                            <Text style={styles.statLabel}>VOLUME</Text>
-                            <View style={styles.statValueRow}>
-                                <Text style={styles.statValue}>124</Text>
-                                <Text style={styles.statUnit}>km</Text>
-                            </View>
+                        <Text style={styles.statLabel}>Volume</Text>
+                        <View style={styles.statValueRow}>
+                            <Text style={styles.statValue}>124</Text>
+                            <Text style={styles.statUnit}> km</Text>
                         </View>
                     </View>
                     <View style={styles.statDivider} />
                     <View style={styles.statItem}>
-                        <View style={styles.statContent}>
-                            <Text style={styles.statLabel}>FREQUÊNCIA</Text>
-                            <View style={styles.statValueRow}>
-                                <Text style={styles.statValue}>18</Text>
-                                <Text style={styles.statUnitMuted}>/ 22</Text>
-                            </View>
+                        <Text style={styles.statLabel}>Frequência</Text>
+                        <View style={styles.statValueRow}>
+                            <Text style={styles.statValue}>18</Text>
+                            <Text style={styles.statUnitMuted}> /22</Text>
                         </View>
                     </View>
                 </View>
@@ -133,48 +212,35 @@ export function CalendarScreen({ navigation }: any) {
                     {/* Days grid */}
                     <View style={styles.daysGrid}>
                         {days.map((day, index) => {
-                            const workout = getWorkoutForDay(day);
-                            const isSelected = day === selectedDate.getDate();
-                            const isToday = day === new Date().getDate() &&
-                                currentMonth.getMonth() === new Date().getMonth();
+                            const workoutStatus = getWorkoutStatus(day);
+                            const isSelected = day === selectedDate;
 
                             return (
                                 <TouchableOpacity
                                     key={index}
                                     style={styles.dayCell}
-                                    onPress={() => day && setSelectedDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day))}
+                                    onPress={() => day && setSelectedDate(day)}
                                     disabled={!day}
                                 >
                                     {day ? (
                                         <View style={[
                                             styles.dayContent,
                                             isSelected && styles.daySelected,
-                                            isToday && !isSelected && styles.dayToday
                                         ]}>
                                             <Text style={[
                                                 styles.dayNumber,
                                                 isSelected && styles.dayNumberSelected,
-                                                workout && styles.dayNumberWithWorkout
                                             ]}>
                                                 {day}
                                             </Text>
-                                            {isSelected && workout && (
-                                                <View style={styles.selectedWorkoutBadge}>
-                                                    <Text style={styles.selectedWorkoutText}>10k</Text>
+                                            {/* Workout indicator */}
+                                            {workoutStatus === 'completed' && !isSelected && (
+                                                <View style={styles.completedIndicator}>
+                                                    <CheckIcon size={14} color="#32CD32" />
                                                 </View>
                                             )}
-                                            {workout && !isSelected && (
-                                                <View style={styles.workoutIndicator}>
-                                                    {workout.status === 'completed' ? (
-                                                        <View style={styles.completedDot} />
-                                                    ) : workout.status === 'skipped' ? (
-                                                        <View style={styles.skippedIndicator}>
-                                                            <Text style={styles.skippedX}>X</Text>
-                                                        </View>
-                                                    ) : (
-                                                        <View style={styles.plannedBar} />
-                                                    )}
-                                                </View>
+                                            {workoutStatus === 'planned' && !isSelected && (
+                                                <View style={styles.plannedIndicator} />
                                             )}
                                         </View>
                                     ) : null}
@@ -182,85 +248,91 @@ export function CalendarScreen({ navigation }: any) {
                             );
                         })}
                     </View>
-                </View>
 
-                {/* Workout Detail Card */}
-                {selectedWorkout && (
-                    <View style={styles.detailCard}>
-                        <View style={styles.dragHandle} />
-                        <View style={styles.detailContent}>
-                            <View style={styles.detailHeader}>
-                                <Text style={styles.detailDate}>
-                                    Quinta, {selectedDate.getDate()} {monthNames[selectedDate.getMonth()].slice(0, 3)}
-                                </Text>
-                                <View style={styles.todayBadge}>
-                                    <Text style={styles.todayBadgeText}>TREINO HOJE</Text>
-                                </View>
-                            </View>
-
-                            <View style={styles.workoutCard}>
-                                <View style={styles.workoutCardInner}>
-                                    <View style={styles.workoutCardHeader}>
-                                        <View>
-                                            <View style={styles.workoutTypeBadge}>
-                                                <Text style={styles.workoutTypeText}>
-                                                    {selectedWorkout.type.replace('_', ' ').toUpperCase()}
-                                                </Text>
-                                                <View style={styles.pulsingDotSmall} />
-                                            </View>
-                                            <Text style={styles.workoutCardTitle}>Longo Aeróbico</Text>
-                                        </View>
-                                        <TouchableOpacity style={styles.playButton}>
-                                            <Text style={styles.playIcon}>▶</Text>
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    <View style={styles.workoutMetrics}>
-                                        <View style={styles.metricBox}>
-                                            <Text style={styles.metricIcon}>📏</Text>
-                                            <Text style={styles.metricValue}>
-                                                {selectedWorkout.distance_km}<Text style={styles.metricUnit}>km</Text>
-                                            </Text>
-                                        </View>
-                                        <View style={styles.metricBox}>
-                                            <Text style={styles.metricIcon}>⏱️</Text>
-                                            <Text style={styles.metricValue}>
-                                                55<Text style={styles.metricUnit}>min</Text>
-                                            </Text>
-                                        </View>
-                                        <View style={styles.metricBox}>
-                                            <Text style={styles.metricIcon}>⚡</Text>
-                                            <Text style={styles.metricValue}>5:30</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                                <View style={styles.progressBar} />
-                            </View>
-
-                            {/* Next Workout */}
-                            <View style={styles.nextWorkoutSection}>
-                                <Text style={styles.nextWorkoutLabel}>PRÓXIMO: Sexta-feira</Text>
-                                <View style={styles.nextWorkoutCard}>
-                                    <View style={styles.nextWorkoutIcon}>
-                                        <Text style={styles.nextWorkoutIconText}>🏃</Text>
-                                    </View>
-                                    <View style={styles.nextWorkoutInfo}>
-                                        <Text style={styles.nextWorkoutTitle}>Intervalado 8x400m</Text>
-                                        <Text style={styles.nextWorkoutSubtitle}>Pista de Atletismo • Alta Intensidade</Text>
-                                    </View>
-                                    <Text style={styles.chevronRight}>›</Text>
-                                </View>
-                            </View>
+                    {/* Legend - inside calendar card */}
+                    <View style={styles.legend}>
+                        <View style={styles.legendItem}>
+                            <View style={styles.legendLine} />
+                            <Text style={styles.legendText}>Rodagem</Text>
+                        </View>
+                        <View style={styles.legendItem}>
+                            <View style={[styles.legendLine, styles.legendLineCyan]} />
+                            <Text style={styles.legendText}>Intervalado</Text>
                         </View>
                     </View>
-                )}
-            </ScrollView>
+                </View>
 
-            {/* FAB */}
-            <TouchableOpacity style={styles.fab}>
-                <View style={styles.fabBorder} />
-                <Text style={styles.fabIcon}>+</Text>
-            </TouchableOpacity>
+                {/* Today's Workouts Section */}
+                <View style={styles.todaySection}>
+                    <View style={styles.todaySectionHeader}>
+                        <View>
+                            <Text style={styles.todayDate}>• Hoje, 12 SET</Text>
+                            <Text style={styles.todayTitle}>Treinos do dia</Text>
+                        </View>
+                        <View style={styles.totalKm}>
+                            <Text style={styles.totalKmValue}>8 <Text style={styles.totalKmUnit}>km</Text></Text>
+                            <Text style={styles.totalKmLabel}>total</Text>
+                        </View>
+                    </View>
+
+                    {/* Workout Detail Card */}
+                    <View style={styles.workoutDetailCard}>
+                        {/* Card Top Section */}
+                        <View style={styles.cardTopSection}>
+                            <View style={styles.workoutDetailHeader}>
+                                <View style={styles.intensityBadge}>
+                                    <Text style={styles.intensityText}>ALTA INTENSIDADE</Text>
+                                </View>
+                                <View style={styles.pendingBadge}>
+                                    <View style={styles.pendingDot} />
+                                    <Text style={styles.pendingText}>Pendente</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.workoutDetailBody}>
+                                <View style={styles.workoutInfo}>
+                                    <Text style={styles.workoutTitle}>Intervalados - 8x400m</Text>
+                                    <Text style={styles.workoutDescription}>Aquecimento 2km - 8 tiros - Desaquecimento</Text>
+                                    <View style={styles.workoutMetrics}>
+                                        <View style={styles.metricItem}>
+                                            <TimerIcon size={20} color="#00D4FF" />
+                                            <Text style={styles.metricText}>45 min</Text>
+                                        </View>
+                                        <View style={styles.metricItem}>
+                                            <PaceClockIcon size={20} color="#00D4FF" />
+                                            <Text style={styles.metricText}>4:15 /km</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <Image
+                                    source={{ uri: 'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=100&h=100&fit=crop' }}
+                                    style={styles.workoutImage}
+                                />
+                            </View>
+                        </View>
+
+                        {/* View Details Button - Bottom Section of Card */}
+                        <TouchableOpacity style={styles.viewDetailsButton}>
+                            <Text style={styles.viewDetailsText}>Ver detalhes do  treino</Text>
+                            <ArrowRightIcon size={20} color="#FFFFFF" />
+                        </TouchableOpacity>
+                    </View>
+
+                    {/* Next Workout Section */}
+                    <View style={styles.nextWorkoutSection}>
+                        <View style={styles.nextWorkoutDivider} />
+                        <Text style={styles.nextWorkoutLabel}>Próximo: SEXTA-FEIRA</Text>
+                        <View style={styles.nextWorkoutCard}>
+                            <ProximoIcon size={47} />
+                            <View style={styles.nextWorkoutInfo}>
+                                <Text style={styles.nextWorkoutTitle}>Longão de 5km</Text>
+                                <Text style={styles.nextWorkoutSubtitle}>Corrida de rua - média intensidade</Text>
+                            </View>
+                            <ArrowRightIcon size={24} color="rgba(235,235,245,0.3)" />
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 }
@@ -268,7 +340,10 @@ export function CalendarScreen({ navigation }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F2F4F6',
+        backgroundColor: '#0A0A18',
+    },
+    scrollView: {
+        flex: 1,
     },
     header: {
         flexDirection: 'row',
@@ -276,21 +351,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: spacing.lg,
         paddingTop: spacing.lg,
-        paddingBottom: spacing.sm,
-        backgroundColor: '#F2F4F6',
+        paddingBottom: spacing.md,
     },
     backButton: {
         width: 40,
         height: 40,
-        borderRadius: borderRadius.xl,
-        backgroundColor: colors.white,
         justifyContent: 'center',
         alignItems: 'center',
-        ...shadows.sm,
-    },
-    backIcon: {
-        fontSize: 20,
-        color: colors.text,
     },
     headerCenter: {
         flex: 1,
@@ -298,123 +365,76 @@ const styles = StyleSheet.create({
     },
     headerSubtitle: {
         fontSize: typography.fontSizes.xs,
-        fontWeight: typography.fontWeights.semibold,
-        color: colors.textSecondary,
-        letterSpacing: 2,
+        color: '#00D4FF',
+        letterSpacing: 1,
     },
     headerTitle: {
         fontSize: typography.fontSizes.lg,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.text,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#FFFFFF',
     },
     notificationButton: {
-        position: 'relative',
         width: 40,
         height: 40,
-        borderRadius: borderRadius.xl,
-        backgroundColor: colors.white,
         justifyContent: 'center',
         alignItems: 'center',
-        ...shadows.sm,
-    },
-    bellIcon: {
-        fontSize: 24,
-    },
-    notificationDot: {
-        position: 'absolute',
-        top: 8,
-        right: 8,
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: colors.warning,
-        borderWidth: 2,
-        borderColor: colors.white,
-    },
-    scrollView: {
-        flex: 1,
     },
     statsBar: {
-        position: 'relative',
         flexDirection: 'row',
-        backgroundColor: colors.text,
+        backgroundColor: '#15152A',
         marginHorizontal: spacing.lg,
         marginVertical: spacing.md,
-        borderRadius: borderRadius['3xl'],
-        padding: 4,
-        overflow: 'hidden',
-        ...shadows.sm,
-    },
-    statsGradient: {
-        position: 'absolute',
-        right: 0,
-        top: 0,
-        width: '50%',
-        height: '100%',
-        ...(Platform.OS === 'web' ? {
-            backgroundImage: 'linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1))',
-        } : {
-            backgroundColor: `${colors.primary}1A`,
-        }),
+        borderRadius: borderRadius['2xl'],
+        borderWidth: 1,
+        borderColor: 'rgba(0, 212, 255, 0.3)',
+        padding: spacing.md,
     },
     statItem: {
         flex: 1,
-        paddingVertical: spacing.md,
-        position: 'relative',
-        zIndex: 10,
+        alignItems: 'center',
     },
     statDivider: {
         width: 1,
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        marginVertical: spacing.sm,
-    },
-    statContent: {
-        alignItems: 'center',
-        gap: 4,
     },
     statLabel: {
-        fontSize: 10,
-        fontWeight: typography.fontWeights.bold,
-        color: '#9CA3AF',
-        letterSpacing: 1.5,
+        fontSize: typography.fontSizes.xs,
+        color: 'rgba(235, 235, 245, 0.6)',
+        marginBottom: 4,
     },
     statValueRow: {
         flexDirection: 'row',
         alignItems: 'baseline',
-        gap: 4,
     },
     statValue: {
         fontSize: typography.fontSizes['2xl'],
-        fontWeight: typography.fontWeights.bold,
-        color: colors.white,
-        letterSpacing: -1,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#FFFFFF',
     },
     statUnit: {
-        fontSize: typography.fontSizes.xs,
-        fontWeight: typography.fontWeights.medium,
-        color: colors.primary,
+        fontSize: typography.fontSizes.sm,
+        color: '#00D4FF',
     },
     statUnitMuted: {
-        fontSize: typography.fontSizes.xs,
-        fontWeight: typography.fontWeights.medium,
-        color: '#6B7280',
+        fontSize: typography.fontSizes.sm,
+        color: 'rgba(235, 235, 245, 0.4)',
     },
     monthSelector: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: spacing.lg,
-        marginBottom: spacing.md,
+        marginBottom: spacing.lg,
+        marginTop: spacing.md,
     },
     monthTitle: {
         fontSize: typography.fontSizes['2xl'],
-        fontWeight: typography.fontWeights.bold,
-        color: colors.text,
-        letterSpacing: -0.5,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#FFFFFF',
     },
     yearText: {
-        fontWeight: typography.fontWeights.normal,
-        color: colors.textSecondary,
+        fontWeight: typography.fontWeights.normal as any,
+        color: 'rgba(235, 235, 245, 0.4)',
     },
     monthNav: {
         flexDirection: 'row',
@@ -425,374 +445,277 @@ const styles = StyleSheet.create({
         height: 32,
         borderRadius: borderRadius.full,
         borderWidth: 1,
-        borderColor: colors.border,
+        borderColor: 'rgba(255, 255, 255, 0.2)',
         justifyContent: 'center',
         alignItems: 'center',
     },
     chevronIcon: {
         fontSize: 18,
-        color: colors.textSecondary,
+        color: 'rgba(235, 235, 245, 0.6)',
     },
     calendarContainer: {
+        backgroundColor: '#1C1C2E',
+        marginHorizontal: spacing.md,
+        marginBottom: spacing.lg,
+        borderRadius: 24,
+        paddingVertical: spacing.xl,
         paddingHorizontal: spacing.md,
-        marginBottom: spacing.md,
     },
     weekDaysRow: {
         flexDirection: 'row',
-        marginBottom: spacing.md,
+        marginBottom: spacing.lg,
     },
     weekDayText: {
         flex: 1,
         textAlign: 'center',
-        fontSize: 10,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.textSecondary,
-        letterSpacing: 1.5,
+        fontSize: typography.fontSizes.sm,
+        color: 'rgba(235, 235, 245, 0.4)',
     },
     daysGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 12,
     },
     dayCell: {
-        width: '13%',
-        aspectRatio: 1,
+        width: '14.28%',
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: spacing.sm,
     },
     dayContent: {
-        flex: 1,
+        width: 36,
+        height: 36,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: borderRadius['2xl'],
+        borderRadius: 18,
         position: 'relative',
     },
     daySelected: {
-        backgroundColor: colors.text,
-        ...shadows.neon,
-        transform: [{ scale: 1.1 }],
-        shadowColor: colors.primary,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 8,
-        borderWidth: 2,
-        borderColor: colors.primary,
-    },
-    dayToday: {
-        backgroundColor: colors.white,
-        borderWidth: 1,
-        borderColor: colors.border,
-        ...shadows.sm,
+        backgroundColor: '#00D4FF',
+        width: 40,
+        height: 56,
+        borderRadius: 20,
     },
     dayNumber: {
-        fontSize: typography.fontSizes.sm,
-        fontWeight: typography.fontWeights.medium,
-        color: colors.textSecondary,
+        fontSize: 16,
+        color: 'rgba(235, 235, 245, 0.8)',
     },
     dayNumberSelected: {
-        fontWeight: typography.fontWeights.bold,
-        color: colors.white,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#0A0A18',
     },
-    dayNumberWithWorkout: {
-        color: colors.text,
-    },
-    selectedWorkoutBadge: {
+    completedIndicator: {
         position: 'absolute',
-        bottom: 6,
-        backgroundColor: `${colors.primary}33`,
-        paddingHorizontal: 8,
-        paddingVertical: 2,
-        borderRadius: 4,
+        bottom: -8,
     },
-    selectedWorkoutText: {
-        fontSize: 9,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.primary,
-    },
-    workoutIndicator: {
+    plannedIndicator: {
         position: 'absolute',
-        bottom: 6,
+        bottom: -8,
+        width: 20,
+        height: 3,
+        borderRadius: 1.5,
+        backgroundColor: '#00D4FF',
     },
-    completedDot: {
-        width: 6,
-        height: 6,
-        borderRadius: 3,
-        backgroundColor: colors.success,
-    },
-    skippedIndicator: {
-        position: 'relative',
-    },
-    skippedX: {
-        fontSize: 8,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.error,
-    },
-    plannedBar: {
-        width: 16,
-        height: 4,
-        borderRadius: 2,
-        backgroundColor: `${colors.primary}CC`,
-    },
-    detailCard: {
-        flex: 1,
-        backgroundColor: colors.white,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40,
-        paddingTop: spacing.md,
-        marginTop: spacing.lg,
-        ...Platform.select({
-            ios: {
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: -10 },
-                shadowOpacity: 0.1,
-                shadowRadius: 20,
-            },
-            android: {
-                elevation: 12,
-            },
-            web: {
-                boxShadow: '0 -10px 40px -15px rgba(0,0,0,0.1)',
-            },
-        }),
-    },
-    dragHandle: {
-        width: 48,
-        height: 6,
-        backgroundColor: colors.border,
-        borderRadius: 3,
-        alignSelf: 'center',
-        marginBottom: spacing.lg,
-    },
-    detailContent: {
-        paddingHorizontal: spacing.lg,
-        paddingBottom: 100,
-    },
-    detailHeader: {
+    legend: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: spacing.lg,
-    },
-    detailDate: {
-        fontSize: typography.fontSizes.xl,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.text,
-    },
-    todayBadge: {
+        justifyContent: 'flex-start',
         paddingHorizontal: spacing.md,
-        paddingVertical: spacing.xs,
-        borderRadius: borderRadius.full,
-        backgroundColor: colors.highlight,
+        gap: spacing.xl,
+        marginTop: spacing.lg,
     },
-    todayBadgeText: {
-        fontSize: typography.fontSizes.xs,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.textSecondary,
-        letterSpacing: 1,
+    legendItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: spacing.sm,
     },
-    workoutCard: {
-        position: 'relative',
-        backgroundColor: `${colors.highlight}80`,
-        borderRadius: borderRadius['3xl'],
-        borderWidth: 1,
-        borderColor: colors.border,
-        padding: 4,
-        overflow: 'hidden',
+    legendLine: {
+        width: 24,
+        height: 2,
+        backgroundColor: 'rgba(235, 235, 245, 0.3)',
     },
-    workoutCardInner: {
-        backgroundColor: colors.white,
-        borderRadius: borderRadius['2xl'],
-        padding: spacing.lg,
-        ...shadows.sm,
+    legendLineCyan: {
+        backgroundColor: '#00D4FF',
     },
-    workoutCardHeader: {
+    legendText: {
+        fontSize: 16,
+        color: 'rgba(235, 235, 245, 0.6)',
+    },
+    todaySection: {
+        paddingHorizontal: spacing.lg,
+        paddingTop: spacing.xl,
+        paddingBottom: 120,
+    },
+    todaySectionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        marginBottom: spacing.md,
+        marginBottom: spacing.lg,
     },
-    workoutTypeBadge: {
+    todayDate: {
+        fontSize: typography.fontSizes.xs,
+        color: '#00D4FF',
+        marginBottom: 4,
+    },
+    todayTitle: {
+        fontSize: typography.fontSizes.lg,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#FFFFFF',
+    },
+    totalKm: {
+        alignItems: 'flex-end',
+    },
+    totalKmValue: {
+        fontSize: typography.fontSizes['2xl'],
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#00D4FF',
+    },
+    totalKmUnit: {
+        fontSize: typography.fontSizes.sm,
+        fontWeight: typography.fontWeights.normal as any,
+    },
+    totalKmLabel: {
+        fontSize: typography.fontSizes.xs,
+        color: 'rgba(235, 235, 245, 0.4)',
+    },
+    workoutDetailCard: {
+        marginBottom: spacing.lg,
+        borderRadius: 24,
+        overflow: 'hidden',
+    },
+    cardTopSection: {
+        backgroundColor: '#1C1C2E',
+        borderTopLeftRadius: 24,
+        borderTopRightRadius: 24,
+        padding: spacing.lg,
+    },
+    workoutDetailHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: spacing.sm,
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        backgroundColor: colors.text,
+        gap: spacing.md,
+        marginBottom: spacing.md,
+    },
+    intensityBadge: {
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderColor: '#00D4FF',
+        paddingHorizontal: spacing.md,
+        paddingVertical: spacing.xs,
         borderRadius: borderRadius.md,
-        marginBottom: 4,
-        alignSelf: 'flex-start',
     },
-    workoutTypeText: {
-        fontSize: 10,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.white,
-        letterSpacing: 1,
+    intensityText: {
+        fontSize: 11,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#00D4FF',
+        letterSpacing: 0.5,
     },
-    pulsingDotSmall: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: colors.warning,
-        ...(Platform.OS === 'web' ? {
-            boxShadow: '0 0 8px rgba(255, 196, 0, 0.6)'
-        } : {}),
-    },
-    workoutCardTitle: {
-        fontSize: typography.fontSizes['2xl'],
-        fontWeight: typography.fontWeights.bold,
-        color: colors.text,
-        letterSpacing: -0.5,
-    },
-    playButton: {
-        width: 48,
-        height: 48,
-        borderRadius: borderRadius.full,
-        backgroundColor: colors.text,
-        justifyContent: 'center',
+    pendingBadge: {
+        flexDirection: 'row',
         alignItems: 'center',
-        ...Platform.select({
-            ios: {
-                shadowColor: colors.primary,
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 8,
-            },
-            android: {
-                elevation: 6,
-            },
-            web: {
-                boxShadow: '0 4px 12px rgba(0, 212, 255, 0.2)',
-            },
-        }),
+        gap: 6,
     },
-    playIcon: {
-        fontSize: 28,
-        color: colors.primary,
+    pendingDot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: '#FFC107',
+    },
+    pendingText: {
+        fontSize: typography.fontSizes.xs,
+        color: 'rgba(235, 235, 245, 0.6)',
+    },
+    workoutDetailBody: {
+        flexDirection: 'row',
+        gap: spacing.md,
+    },
+    workoutImage: {
+        width: 72,
+        height: 72,
+        borderRadius: 36,
+    },
+    workoutInfo: {
+        flex: 1,
+    },
+    workoutTitle: {
+        fontSize: typography.fontSizes.lg,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#FFFFFF',
+        marginBottom: 4,
+    },
+    workoutDescription: {
+        fontSize: typography.fontSizes.xs,
+        color: 'rgba(235, 235, 245, 0.6)',
+        marginBottom: spacing.sm,
     },
     workoutMetrics: {
         flexDirection: 'row',
-        gap: spacing.sm,
-        marginTop: spacing.md,
+        gap: spacing.lg,
     },
-    metricBox: {
-        flex: 1,
-        flexDirection: 'column',
-        gap: 4,
-        padding: spacing.sm,
-        borderRadius: borderRadius.xl,
-        backgroundColor: `${colors.highlight}80`,
+    metricItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
     },
-    metricIcon: {
-        fontSize: 18,
+    metricText: {
+        fontSize: typography.fontSizes.sm,
+        color: 'rgba(235, 235, 245, 0.6)',
     },
-    metricValue: {
-        fontSize: typography.fontSizes.lg,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.text,
+    viewDetailsButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: spacing.lg,
+        paddingHorizontal: spacing.lg,
+        backgroundColor: '#0E0E1F',
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
     },
-    metricUnit: {
-        fontSize: typography.fontSizes.xs,
-        fontWeight: typography.fontWeights.medium,
-        color: colors.textMuted,
-        marginLeft: 2,
-    },
-    progressBar: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        height: 4,
-        width: '33%',
-        borderRadius: borderRadius.sm,
-        ...(Platform.OS === 'web' ? {
-            backgroundImage: 'linear-gradient(90deg, #00D4FF, #00FFFF)',
-        } : {
-            backgroundColor: colors.primary,
-        }),
+    viewDetailsText: {
+        fontSize: typography.fontSizes.base,
+        fontWeight: typography.fontWeights.semibold as any,
+        color: '#FFFFFF',
     },
     nextWorkoutSection: {
-        marginTop: spacing['2xl'],
+        marginTop: spacing.lg,
+    },
+    nextWorkoutDivider: {
+        height: 1,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        marginBottom: spacing.lg,
     },
     nextWorkoutLabel: {
         fontSize: typography.fontSizes.xs,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.textSecondary,
-        letterSpacing: 1.5,
+        color: 'rgba(235, 235, 245, 0.4)',
         marginBottom: spacing.md,
-        paddingLeft: spacing.sm,
     },
     nextWorkoutCard: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: spacing.md,
+        backgroundColor: '#1A1A2E',
         padding: spacing.md,
         borderRadius: borderRadius['2xl'],
-        borderWidth: 1,
-        borderColor: colors.border,
-        backgroundColor: `${colors.highlight}4D`,
     },
-    nextWorkoutIcon: {
-        width: 40,
-        height: 40,
+    nextWorkoutIconContainer: {
+        width: 48,
+        height: 48,
         borderRadius: borderRadius.xl,
-        backgroundColor: `${colors.primary}1A`,
+        backgroundColor: 'rgba(0, 212, 255, 0.1)',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    nextWorkoutIconText: {
-        fontSize: 20,
     },
     nextWorkoutInfo: {
         flex: 1,
     },
     nextWorkoutTitle: {
-        fontSize: typography.fontSizes.sm,
-        fontWeight: typography.fontWeights.bold,
-        color: colors.text,
+        fontSize: typography.fontSizes.base,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#FFFFFF',
     },
     nextWorkoutSubtitle: {
         fontSize: typography.fontSizes.xs,
-        color: colors.textSecondary,
+        color: 'rgba(235, 235, 245, 0.6)',
         marginTop: 2,
-    },
-    chevronRight: {
-        fontSize: 24,
-        color: colors.textSecondary,
-    },
-    fab: {
-        position: 'absolute',
-        bottom: spacing.lg,
-        right: spacing.lg,
-        width: 64,
-        height: 64,
-        borderRadius: 32,
-        backgroundColor: colors.text,
-        justifyContent: 'center',
-        alignItems: 'center',
-        ...Platform.select({
-            ios: {
-                shadowColor: colors.text,
-                shadowOffset: { width: 0, height: 8 },
-                shadowOpacity: 0.4,
-                shadowRadius: 16,
-            },
-            android: {
-                elevation: 12,
-            },
-            web: {
-                boxShadow: '0 8px 24px rgba(15, 23, 42, 0.4)',
-            },
-        }),
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.1)',
-    },
-    fabBorder: {
-        position: 'absolute',
-        inset: 0,
-        borderRadius: 32,
-        borderWidth: 1,
-        borderColor: `${colors.primary}40`,
-    },
-    fabIcon: {
-        fontSize: 30,
-        color: colors.white,
     },
 });

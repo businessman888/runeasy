@@ -1,15 +1,18 @@
-// Design System Colors (from telas frontend mockups)
+// Design System Colors - Dark Theme (Figma design)
 export const colors = {
-    // Backgrounds
-    background: '#F5F7FA',  // canvas - soft white
+    // Backgrounds - Dark Navy
+    background: '#0A0A18',  // dark navy background
+    backgroundLight: '#0E0E1F',  // slightly lighter
     white: '#FFFFFF',
-    card: '#FFFFFF',
-    highlight: '#F1F5F9',  // very light grey
+    card: '#1A1A2E',  // dark card
+    cardDark: '#0E0E1F',  // darker card variant
+    highlight: '#1E1E32',  // dark highlight
 
     // Primary & Accent
     primary: '#00D4FF',  // neon-cyan - electric blue
     primaryLight: '#3B82F6',  // electric-blue
     primaryDark: '#0099CC',
+    accent: '#F59E0B',  // orange/amber for streak
 
     // Status Colors
     success: '#10B981',  // neon-success
@@ -17,18 +20,20 @@ export const colors = {
     warning: '#FFC400',  // neon-alert
     info: '#3B82F6',
 
-    // Text
-    text: '#0F172A',  // text-main - dark slate
-    textSecondary: '#64748B',  // text-muted - slate 500
-    textMuted: '#94A3B8',
+    // Text - Light for dark theme
+    text: '#FFFFFF',  // white text
+    textLight: '#EBEBF5',  // light text
+    textSecondary: '#A0A0B2',  // muted light
+    textMuted: '#6B6B7B',  // darker muted
 
     // UI Elements  
-    border: '#E2E8F0',
-    borderLight: '#F1F5F9',
+    border: '#2A2A3E',  // dark border
+    borderLight: '#1E1E32',  // lighter dark border
 
     // Glassmorphism overlay
-    glassWhite: 'rgba(255, 255, 255, 0.8)',
-    glassLight: 'rgba(255, 255, 255, 0.6)',
+    glassWhite: 'rgba(255, 255, 255, 0.1)',
+    glassLight: 'rgba(255, 255, 255, 0.05)',
+    glassDark: 'rgba(0, 0, 0, 0.3)',
 };
 
 // Typography based on Plus Jakarta Sans

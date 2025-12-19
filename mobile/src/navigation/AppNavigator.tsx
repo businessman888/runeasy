@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View, StyleSheet } from 'react-native';
+import { CustomTabBar } from '../components/CustomTabBar';
 
 import {
     LoginScreen,
@@ -14,6 +15,7 @@ import {
     EvolutionScreen,
     SettingsScreen,
     PlanPreviewScreen,
+    CoachAnalysisScreen,
     ObjectiveScreen,
     LevelScreen,
     FrequencyScreen,
@@ -57,22 +59,10 @@ function MainTabs({ route, navigation }: any) {
         <Tab.Navigator
             id="MainTabs"
             initialRouteName="Home"
+            tabBar={(props) => <CustomTabBar {...props} />}
             screenOptions={{
-                tabBarActiveTintColor: colors.primary,
-                tabBarInactiveTintColor: colors.textSecondary,
-                tabBarStyle: {
-                    backgroundColor: colors.white,
-                    borderTopColor: colors.border,
-                    paddingBottom: 8,
-                    paddingTop: 8,
-                    height: 60,
-                },
-                tabBarLabelStyle: {
-                    fontSize: 12,
-                    fontWeight: '500',
-                },
                 headerStyle: {
-                    backgroundColor: colors.white,
+                    backgroundColor: colors.background,
                 },
                 headerTintColor: colors.text,
                 headerTitleStyle: {
@@ -85,9 +75,6 @@ function MainTabs({ route, navigation }: any) {
                 component={HomeScreen}
                 options={{
                     title: 'Início',
-                    tabBarIcon: ({ color, size }) => (
-                        <Text style={{ fontSize: size }}>🏠</Text>
-                    ),
                     headerShown: false,
                 }}
             />
@@ -96,10 +83,8 @@ function MainTabs({ route, navigation }: any) {
                 component={CalendarScreen}
                 options={{
                     title: 'Calendário',
-                    tabBarIcon: ({ color, size }) => (
-                        <Text style={{ fontSize: size }}>📅</Text>
-                    ),
                     headerTitle: 'Meu Calendário',
+                    headerShown: false,
                 }}
             />
             <Tab.Screen
@@ -107,10 +92,8 @@ function MainTabs({ route, navigation }: any) {
                 component={BadgesScreen}
                 options={{
                     title: 'Badges',
-                    tabBarIcon: ({ color, size }) => (
-                        <Text style={{ fontSize: size }}>🏆</Text>
-                    ),
                     headerTitle: 'Minhas Badges',
+                    headerShown: false,
                 }}
             />
             <Tab.Screen
@@ -118,10 +101,8 @@ function MainTabs({ route, navigation }: any) {
                 component={EvolutionScreen}
                 options={{
                     title: 'Evolução',
-                    tabBarIcon: ({ color, size }) => (
-                        <Text style={{ fontSize: size }}>📊</Text>
-                    ),
                     headerTitle: 'Minha Evolução',
+                    headerShown: false,
                 }}
             />
             <Tab.Screen
@@ -129,10 +110,8 @@ function MainTabs({ route, navigation }: any) {
                 component={SettingsScreen}
                 options={{
                     title: 'Config',
-                    tabBarIcon: ({ color, size }) => (
-                        <Text style={{ fontSize: size }}>⚙️</Text>
-                    ),
                     headerTitle: 'Configurações',
+                    headerShown: false,
                 }}
             />
         </Tab.Navigator>
@@ -279,6 +258,14 @@ export function AppNavigator() {
                             component={FeedbackScreen}
                             options={{
                                 title: 'Análise do Treino',
+                                presentation: 'card',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="CoachAnalysis"
+                            component={CoachAnalysisScreen}
+                            options={{
+                                headerShown: false,
                                 presentation: 'card',
                             }}
                         />
