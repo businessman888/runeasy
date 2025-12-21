@@ -1,0 +1,177 @@
+import { create } from 'zustand';
+import { Platform } from 'react-native';
+import * as Storage from '../utils/storage';
+
+// Types matching backend response
+export interface ReadinessVerdict {
+    readiness_score: number;
+    status_color: 'green' | 'yellow' | 'red';
+    status_label: string;
+    ai_analysis: {
+        headline: string;
+        reasoning: string;
+        plan_adjustment: string;
+    };
+    metrics_summary: Array<{
+        label: string;
+        value: string;
+        sublabel?: string;
+        icon: string;
+    }>;
+    generated_at: string;
+}
+
+export interface ReadinessAnswers {
+    sleep: number;      // 1-5
+    legs: number;       // 1-5
+    mood: number;       // 1-5
+    stress: number;     // 1-5
+    motivation: number; // 1-5
+}
+
+interface ReadinessState {
+    // Quiz state
+    answers: Partial<ReadinessAnswers>;
+    currentStep: number;
+
+    // Verdict state
+    verdict: ReadinessVerdict | null;
+    isLoading: boolean;
+    error: string | null;
+
+    // Actions
+    setAnswer: (key: keyof ReadinessAnswers, value: number) => void;
+    nextStep: () => void;
+    prevStep: () => void;
+    resetQuiz: () => void;
+    fetchVerdict: () => Promise<void>;
+    clearVerdict: () => void;
+}
+
+// Use 10.0.2.2 for Android emulator, localhost for iOS simulator, or your actual IP for physical devices
+const getApiUrl = () => {
+    if (process.env.EXPO_PUBLIC_API_URL) {
+        return process.env.EXPO_PUBLIC_API_URL;
+    }
+    // Android emulator uses 10.0.2.2 to access host machine's localhost
+    if (Platform.OS === 'android') {
+        return 'http://10.0.2.2:3000/api';
+    }
+    // iOS simulator and web can use localhost
+    return 'http://localhost:3000/api';
+};
+
+const API_URL = getApiUrl();
+
+const getUserId = async () => {
+    return await Storage.getItemAsync('user_id');
+};
+
+// Map step index to answer key
+const STEP_KEYS: (keyof ReadinessAnswers)[] = ['sleep', 'legs', 'mood', 'stress', 'motivation'];
+
+export const useReadinessStore = create<ReadinessState>((set, get) => ({
+    answers: {},
+    currentStep: 0,
+    verdict: null,
+    isLoading: false,
+    error: null,
+
+    setAnswer: (key, value) => {
+        set((state) => ({
+            answers: { ...state.answers, [key]: value },
+        }));
+    },
+
+    nextStep: () => {
+        const { currentStep, answers } = get();
+        const currentKey = STEP_KEYS[currentStep];
+
+        // Store current answer and move to next
+        if (currentStep < 4) {
+            set({ currentStep: currentStep + 1 });
+        }
+    },
+
+    prevStep: () => {
+        const { currentStep } = get();
+        if (currentStep > 0) {
+            set({ currentStep: currentStep - 1 });
+        }
+    },
+
+    resetQuiz: () => {
+        set({
+            answers: {},
+            currentStep: 0,
+            verdict: null,
+            error: null,
+        });
+    },
+
+    fetchVerdict: async () => {
+        const { answers } = get();
+
+        // Validate all answers are present
+        const requiredKeys: (keyof ReadinessAnswers)[] = ['sleep', 'legs', 'mood', 'stress', 'motivation'];
+        for (const key of requiredKeys) {
+            if (!answers[key]) {
+                console.warn(`Missing answer for ${key}, answers:`, answers);
+                set({ error: `Resposta faltando: ${key}` });
+                return;
+            }
+        }
+
+        try {
+            set({ isLoading: true, error: null });
+
+            // Get userId or use a fallback for testing
+            let userId = await getUserId();
+            if (!userId) {
+                console.warn('No userId found, using test fallback');
+                userId = 'test-user-fallback';
+            }
+
+            console.log('Fetching verdict with:', {
+                url: `${API_URL}/readiness/analyze`,
+                userId,
+                answers
+            });
+
+            const response = await fetch(`${API_URL}/readiness/analyze`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-user-id': userId,
+                },
+                body: JSON.stringify({
+                    userId,
+                    answers: answers as ReadinessAnswers,
+                }),
+            });
+
+            console.log('Response status:', response.status);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('API Error:', errorText);
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
+
+            const verdict: ReadinessVerdict = await response.json();
+            console.log('Verdict received:', verdict);
+            set({ verdict, isLoading: false });
+        } catch (error) {
+            console.error('Fetch verdict error:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+            set({
+                error: `Falha ao analisar prontidão: ${errorMessage}`,
+                isLoading: false
+            });
+        }
+    },
+
+    clearVerdict: () => {
+        set({ verdict: null, error: null });
+    },
+}));

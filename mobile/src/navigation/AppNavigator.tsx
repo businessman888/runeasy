@@ -22,6 +22,8 @@ import {
     PaceScreen,
     TimeframeScreen,
     LimitationsScreen,
+    ReadinessQuizScreen,
+    ReadinessResultScreen,
 } from '../screens';
 import { colors, typography } from '../theme';
 import { useAuthStore } from '../stores';
@@ -264,6 +266,22 @@ export function AppNavigator() {
                         <Stack.Screen
                             name="CoachAnalysis"
                             component={CoachAnalysisScreen}
+                            options={{
+                                headerShown: false,
+                                presentation: 'card',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="ReadinessQuiz"
+                            component={ReadinessQuizScreen}
+                            options={{
+                                headerShown: false,
+                                presentation: 'card',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="ReadinessResult"
+                            component={ReadinessResultScreen}
                             options={{
                                 headerShown: false,
                                 presentation: 'card',
