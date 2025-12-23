@@ -181,7 +181,10 @@ export function HomeScreen({ navigation }: any) {
                             <Text style={styles.userName}>Alex Runner</Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.notificationButton}>
+                    <TouchableOpacity
+                        style={styles.notificationButton}
+                        onPress={() => navigation.navigate('Notifications')}
+                    >
                         <BellIcon size={24} color="#EBEBF5" />
                     </TouchableOpacity>
                 </View>

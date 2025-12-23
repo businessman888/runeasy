@@ -16,6 +16,7 @@ import {
     SettingsScreen,
     PlanPreviewScreen,
     CoachAnalysisScreen,
+    NotificationsScreen,
     ObjectiveScreen,
     LevelScreen,
     FrequencyScreen,
@@ -282,6 +283,14 @@ export function AppNavigator() {
                         <Stack.Screen
                             name="ReadinessResult"
                             component={ReadinessResultScreen}
+                            options={{
+                                headerShown: false,
+                                presentation: 'card',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="Notifications"
+                            component={NotificationsScreen}
                             options={{
                                 headerShown: false,
                                 presentation: 'card',

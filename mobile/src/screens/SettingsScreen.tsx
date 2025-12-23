@@ -158,18 +158,6 @@ export function SettingsScreen({ navigation }: any) {
 
                         <View style={styles.menuDivider} />
 
-                        <TouchableOpacity style={styles.menuItem}>
-                            <View style={styles.menuItemLeft}>
-                                <View style={styles.menuIconContainer}>
-                                    <PaymentIcon size={22} color="#00D4FF" />
-                                </View>
-                                <Text style={styles.menuItemText}>Gerenciamento de Assinatura</Text>
-                            </View>
-                            <ChevronIcon size={20} />
-                        </TouchableOpacity>
-
-                        <View style={styles.menuDivider} />
-
                         <TouchableOpacity
                             style={styles.menuItem}
                             onPress={() => navigation.navigate('Evolution')}

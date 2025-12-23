@@ -9,6 +9,7 @@ export * from './SettingsScreen';
 export * from './StatsScreen';
 export * from './PlanPreviewScreen';
 export * from './CoachAnalysisScreen';
+export * from './NotificationsScreen';
 
 // Quiz Screens
 export * from './quiz';

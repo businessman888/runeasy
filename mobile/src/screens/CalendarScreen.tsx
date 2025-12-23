@@ -8,6 +8,10 @@ import {
     TouchableOpacity,
     Platform,
     Image,
+    Modal,
+    Dimensions,
+    Animated,
+    PanResponder,
 } from 'react-native';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme';
 import { useTrainingStore } from '../stores';
@@ -97,16 +101,268 @@ function ProximoIcon({ size = 47 }: { size?: number }) {
     return <Text style={{ fontSize: size }}>🏃</Text>;
 }
 
+// Modal Icons
+function DistanceIcon({ size = 20, color = '#00D4FF' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M13.5 5.5C14.6046 5.5 15.5 4.60457 15.5 3.5C15.5 2.39543 14.6046 1.5 13.5 1.5C12.3954 1.5 11.5 2.39543 11.5 3.5C11.5 4.60457 12.3954 5.5 13.5 5.5Z" fill={color} />
+                <path d="M5 21L8.5 15L11 18L15 12L20 21H5Z" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>📏</Text>;
+}
+
+function RPEIcon({ size = 20, color = '#00D4FF' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke={color} strokeWidth="1.5" />
+                <path d="M12 6V12L16 14" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>⚡</Text>;
+}
+
+function ClockOutlineIcon({ size = 20, color = 'rgba(235,235,245,0.6)' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="9" stroke={color} strokeWidth="1.5" />
+                <path d="M12 7V12L15 14" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>⏰</Text>;
+}
+
+function RunnerWarmupIcon({ size = 24, color = '#00D4FF' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M13.5 5.5C14.6 5.5 15.5 4.6 15.5 3.5C15.5 2.4 14.6 1.5 13.5 1.5C12.4 1.5 11.5 2.4 11.5 3.5C11.5 4.6 12.4 5.5 13.5 5.5ZM9.89 19.38L10.89 14.47L13 16.5V23H15V15.15L12.86 13.11L13.5 9.77C14.85 11.3 16.87 12.35 19.1 12.57V10.57C17.2 10.35 15.6 9.26 14.67 7.76L13.5 5.82C13.13 5.22 12.5 4.82 11.75 4.82C11.41 4.82 11.09 4.91 10.79 5.06L6 7.17V12H8V8.36L9.07 7.87L7.5 16.9L2.85 15.9L2.35 17.85L9.89 19.38Z" fill={color} />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>🏃</Text>;
+}
+
+function RunnerSprintIcon({ size = 24, color = '#00D4FF' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M16.5 5.5C17.6 5.5 18.5 4.6 18.5 3.5C18.5 2.4 17.6 1.5 16.5 1.5C15.4 1.5 14.5 2.4 14.5 3.5C14.5 4.6 15.4 5.5 16.5 5.5ZM12.9 19.4L13.9 14.5L16 16.5V23H18V15.2L15.9 13.1L16.5 9.8C17.9 11.3 19.9 12.4 22.1 12.6V10.6C20.2 10.4 18.6 9.3 17.7 7.8L16.5 5.8C16.1 5.2 15.5 4.8 14.7 4.8C14.4 4.8 14.1 4.9 13.8 5.1L9 7.2V12H11V8.4L12.1 7.9L10.5 16.9L5.9 15.9L5.4 17.9L12.9 19.4Z" fill={color} />
+                <path d="M3 11H7" stroke={color} strokeWidth="2" strokeLinecap="round" />
+                <path d="M4 8H8" stroke={color} strokeWidth="2" strokeLinecap="round" />
+                <path d="M5 14H9" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>🏃‍♂️</Text>;
+}
+
+function CooldownIcon({ size = 24, color = '#00D4FF' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M13.5 5.5C14.6 5.5 15.5 4.6 15.5 3.5C15.5 2.4 14.6 1.5 13.5 1.5C12.4 1.5 11.5 2.4 11.5 3.5C11.5 4.6 12.4 5.5 13.5 5.5Z" fill={color} />
+                <path d="M17.5 8L19.5 6" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M18.5 10L21 9" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M9.89 19.38L10.89 14.47L13 16.5V23H15V15.15L12.86 13.11L13.5 9.77C14 10.35 14.6 10.85 15.25 11.26L13.5 5.82C13.13 5.22 12.5 4.82 11.75 4.82C11.41 4.82 11.09 4.91 10.79 5.06L6 7.17V12H8V8.36L9.07 7.87L7.5 16.9L2.85 15.9L2.35 17.85L9.89 19.38Z" fill={color} />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>🚶</Text>;
+}
+
+function IdeaIcon({ size = 24, color = '#FFD700' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C8.13 2 5 5.13 5 9C5 11.38 6.19 13.47 8 14.74V17C8 17.55 8.45 18 9 18H15C15.55 18 16 17.55 16 17V14.74C17.81 13.47 19 11.38 19 9C19 5.13 15.87 2 12 2ZM14.85 13.1L14 13.7V16H10V13.7L9.15 13.1C7.8 12.16 7 10.63 7 9C7 6.24 9.24 4 12 4C14.76 4 17 6.24 17 9C17 10.63 16.2 12.16 14.85 13.1ZM9 20H15V21C15 21.55 14.55 22 14 22H10C9.45 22 9 21.55 9 21V20Z" fill={color} />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>💡</Text>;
+}
+
+function RunFastIcon({ size = 30, color = '#0E0E1F' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M16.5 5.5C17.6 5.5 18.5 4.6 18.5 3.5C18.5 2.4 17.6 1.5 16.5 1.5C15.4 1.5 14.5 2.4 14.5 3.5C14.5 4.6 15.4 5.5 16.5 5.5ZM12.9 19.4L13.9 14.5L16 16.5V23H18V15.2L15.9 13.1L16.5 9.8C17.9 11.3 19.9 12.4 22.1 12.6V10.6C20.2 10.4 18.6 9.3 17.7 7.8L16.5 5.8C16.1 5.2 15.5 4.8 14.7 4.8C14.4 4.8 14.1 4.9 13.8 5.1L9 7.2V12H11V8.4L12.1 7.9L10.5 16.9L5.9 15.9L5.4 17.9L12.9 19.4ZM3 11H7M4 8H8M5 14H9" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size }}>🏃</Text>;
+}
+
+function CloseIcon({ size = 24, color = '#EBEBF5' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6L18 18" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size, color }}>✕</Text>;
+}
+
+// Workout data interface
+interface WorkoutBlock {
+    id: string;
+    title: string;
+    subtitle: string;
+    type: 'warmup' | 'main' | 'cooldown';
+    duration?: string;
+    description?: string;
+    pace?: string;
+    recovery?: string;
+}
+
+interface WorkoutData {
+    id: string;
+    title: string;
+    distance: string;
+    duration: string;
+    rpe: string;
+    blocks: WorkoutBlock[];
+    insight: string;
+}
+
+// Mock workout data
+const mockWorkoutData: WorkoutData = {
+    id: '1',
+    title: 'Intervalados - 8x400m',
+    distance: '8.5 km',
+    duration: '55 min',
+    rpe: 'RPE 7/10',
+    blocks: [
+        {
+            id: '1',
+            title: 'Aquecimento',
+            subtitle: 'Bloco 01',
+            type: 'warmup',
+            duration: '10 min',
+            description: 'Trote leve z1/z2 para ativar',
+        },
+        {
+            id: '2',
+            title: 'Tiros de 400m',
+            subtitle: 'Bloco 02 - PRINCIPAL',
+            type: 'main',
+            duration: '8x400m',
+            description: 'Ritmo forte, focado na técnica',
+            pace: '3:45/km',
+            recovery: 'Recuperação 1:30 min\nTrote ou caminhada leve',
+        },
+        {
+            id: '3',
+            title: 'Desaquecimento',
+            subtitle: 'Bloco 03',
+            type: 'cooldown',
+            duration: '10 min',
+            description: 'Trote muito leve + alongamento estático.',
+        },
+    ],
+    insight: 'Você descansou bem ontem. Sua prontidão está alta. Tente focar em aumentar a cadência nos últimos 2 tiros quando o cansaço bater.',
+};
+
 export function CalendarScreen({ navigation }: any) {
     const { workouts, fetchWorkouts } = useTrainingStore();
     const [selectedDate, setSelectedDate] = React.useState(12);
     const [currentMonth, setCurrentMonth] = React.useState(new Date(2023, 9, 1)); // October 2023
+
+    // Modal states
+    const [modalVisible, setModalVisible] = React.useState(false);
+    const [selectedWorkout, setSelectedWorkout] = React.useState<WorkoutData | null>(null);
+    const [showStartButton, setShowStartButton] = React.useState(false);
+    const lastClickedDate = React.useRef<number | null>(null);
+    const lastClickTime = React.useRef<number>(0);
+    const modalSlideAnim = React.useRef(new Animated.Value(0)).current;
+
+    const DOUBLE_CLICK_DELAY = 400; // ms
 
     React.useEffect(() => {
         const start = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
         const end = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
         fetchWorkouts(start.toISOString().split('T')[0], end.toISOString().split('T')[0]);
     }, [currentMonth]);
+
+    // Handle day press with double-click detection
+    const handleDayPress = (day: number) => {
+        const now = Date.now();
+        const timeDiff = now - lastClickTime.current;
+
+        if (lastClickedDate.current === day && timeDiff < DOUBLE_CLICK_DELAY) {
+            // Double click detected - open modal without start button
+            openWorkoutModal(day, false);
+        } else {
+            // Single click - select the day
+            setSelectedDate(day);
+        }
+
+        lastClickedDate.current = day;
+        lastClickTime.current = now;
+    };
+
+    // Open workout modal
+    const openWorkoutModal = (day: number, withStartButton: boolean = false) => {
+        // Check if day has a workout
+        const status = getWorkoutStatus(day);
+        if (status === 'planned' || status === 'completed') {
+            setSelectedWorkout(mockWorkoutData);
+            setShowStartButton(withStartButton);
+            setModalVisible(true);
+            Animated.spring(modalSlideAnim, {
+                toValue: 1,
+                useNativeDriver: true,
+                tension: 65,
+                friction: 11,
+            }).start();
+        }
+    };
+
+    // Close modal
+    const closeModal = () => {
+        Animated.timing(modalSlideAnim, {
+            toValue: 0,
+            duration: 250,
+            useNativeDriver: true,
+        }).start(() => {
+            setModalVisible(false);
+            setSelectedWorkout(null);
+            setShowStartButton(false);
+        });
+    };
+
+    // Handle next workout card press (without start button)
+    const handleNextWorkoutPress = () => {
+        setSelectedWorkout(mockWorkoutData);
+        setShowStartButton(false);
+        setModalVisible(true);
+        Animated.spring(modalSlideAnim, {
+            toValue: 1,
+            useNativeDriver: true,
+            tension: 65,
+            friction: 11,
+        }).start();
+    };
+
+    // Handle today's workout card press (with start button)
+    const handleTodayWorkoutPress = () => {
+        setSelectedWorkout(mockWorkoutData);
+        setShowStartButton(true);
+        setModalVisible(true);
+        Animated.spring(modalSlideAnim, {
+            toValue: 1,
+            useNativeDriver: true,
+            tension: 65,
+            friction: 11,
+        }).start();
+    };
 
     const getDaysInMonth = () => {
         const year = currentMonth.getFullYear();
@@ -155,7 +411,10 @@ export function CalendarScreen({ navigation }: any) {
                         <Text style={styles.headerSubtitle}>Agenda</Text>
                         <Text style={styles.headerTitle}>Calendário</Text>
                     </View>
-                    <TouchableOpacity style={styles.notificationButton}>
+                    <TouchableOpacity
+                        style={styles.notificationButton}
+                        onPress={() => navigation.navigate('Notifications')}
+                    >
                         <BellIcon size={24} color="#EBEBF5" />
                     </TouchableOpacity>
                 </View>
@@ -219,7 +478,7 @@ export function CalendarScreen({ navigation }: any) {
                                 <TouchableOpacity
                                     key={index}
                                     style={styles.dayCell}
-                                    onPress={() => day && setSelectedDate(day)}
+                                    onPress={() => day && handleDayPress(day)}
                                     disabled={!day}
                                 >
                                     {day ? (
@@ -312,7 +571,11 @@ export function CalendarScreen({ navigation }: any) {
                         </View>
 
                         {/* View Details Button - Bottom Section of Card */}
-                        <TouchableOpacity style={styles.viewDetailsButton}>
+                        <TouchableOpacity
+                            style={styles.viewDetailsButton}
+                            onPress={handleTodayWorkoutPress}
+                            activeOpacity={0.7}
+                        >
                             <Text style={styles.viewDetailsText}>Ver detalhes do  treino</Text>
                             <ArrowRightIcon size={20} color="#FFFFFF" />
                         </TouchableOpacity>
@@ -322,17 +585,169 @@ export function CalendarScreen({ navigation }: any) {
                     <View style={styles.nextWorkoutSection}>
                         <View style={styles.nextWorkoutDivider} />
                         <Text style={styles.nextWorkoutLabel}>Próximo: SEXTA-FEIRA</Text>
-                        <View style={styles.nextWorkoutCard}>
+                        <TouchableOpacity
+                            style={styles.nextWorkoutCard}
+                            onPress={handleNextWorkoutPress}
+                            activeOpacity={0.7}
+                        >
                             <ProximoIcon size={47} />
                             <View style={styles.nextWorkoutInfo}>
                                 <Text style={styles.nextWorkoutTitle}>Longão de 5km</Text>
                                 <Text style={styles.nextWorkoutSubtitle}>Corrida de rua - média intensidade</Text>
                             </View>
                             <ArrowRightIcon size={24} color="rgba(235,235,245,0.3)" />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>
+
+            {/* Workout Details Modal */}
+            <Modal
+                visible={modalVisible}
+                transparent={true}
+                animationType="none"
+                onRequestClose={closeModal}
+            >
+                <TouchableOpacity
+                    style={styles.modalOverlay}
+                    activeOpacity={1}
+                    onPress={closeModal}
+                >
+                    <Animated.View
+                        style={[
+                            styles.modalContainer,
+                            {
+                                transform: [{
+                                    translateY: modalSlideAnim.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [Dimensions.get('window').height, 0],
+                                    })
+                                }]
+                            }
+                        ]}
+                    >
+                        <TouchableOpacity activeOpacity={1} style={styles.modalInnerContainer}>
+                            {/* Drag Handle */}
+                            <View style={styles.modalHandle} />
+
+                            {/* Modal Header */}
+                            <Text style={styles.modalTitle}>
+                                {selectedWorkout?.title || 'Treino do Dia'}
+                            </Text>
+
+                            {/* Scrollable Content */}
+                            <ScrollView
+                                style={styles.modalScrollView}
+                                contentContainerStyle={styles.modalScrollContent}
+                                showsVerticalScrollIndicator={false}
+                                bounces={false}
+                            >
+                                {/* Metrics Badges */}
+                                <View style={styles.modalBadges}>
+                                    <View style={styles.modalBadge}>
+                                        <DistanceIcon size={16} color="#00D4FF" />
+                                        <Text style={styles.modalBadgeText}>{selectedWorkout?.distance}</Text>
+                                    </View>
+                                    <View style={styles.modalBadge}>
+                                        <TimerIcon size={16} color="#00D4FF" />
+                                        <Text style={styles.modalBadgeText}>{selectedWorkout?.duration}</Text>
+                                    </View>
+                                    <View style={styles.modalBadge}>
+                                        <RPEIcon size={16} color="#00D4FF" />
+                                        <Text style={styles.modalBadgeText}>{selectedWorkout?.rpe}</Text>
+                                    </View>
+                                </View>
+
+                                {/* Workout Blocks */}
+                                {selectedWorkout?.blocks.map((block, index) => (
+                                    <View
+                                        key={block.id}
+                                        style={[
+                                            styles.workoutBlock,
+                                            block.type === 'main' && styles.workoutBlockMain
+                                        ]}
+                                    >
+                                        {/* Block Header */}
+                                        <View style={styles.blockHeader}>
+                                            <View>
+                                                <Text style={[
+                                                    styles.blockSubtitle,
+                                                    block.type === 'main' && styles.blockSubtitleMain
+                                                ]}>
+                                                    {block.subtitle}
+                                                </Text>
+                                                <Text style={styles.blockTitle}>{block.title}</Text>
+                                            </View>
+                                            {block.type === 'warmup' && <RunnerWarmupIcon size={28} color="#00D4FF" />}
+                                            {block.type === 'main' && <RunnerSprintIcon size={28} color="#00D4FF" />}
+                                            {block.type === 'cooldown' && <CooldownIcon size={28} color="#00D4FF" />}
+                                        </View>
+
+                                        {/* Block Content */}
+                                        <View style={styles.blockContent}>
+                                            {/* For main block: show duration and pace on same line */}
+                                            {block.type === 'main' && block.pace ? (
+                                                <>
+                                                    <View style={styles.blockDurationPaceRow}>
+                                                        <View style={styles.blockDurationWithIcon}>
+                                                            <ClockOutlineIcon size={18} color="rgba(235,235,245,0.6)" />
+                                                            <Text style={styles.blockDuration}>{block.duration}</Text>
+                                                        </View>
+                                                        <Text style={styles.blockPace}>{block.pace}</Text>
+                                                    </View>
+                                                    <Text style={styles.blockDescriptionMain}>{block.description}</Text>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <View style={styles.blockDurationRow}>
+                                                        <ClockOutlineIcon size={18} color="rgba(235,235,245,0.6)" />
+                                                        <Text style={styles.blockDuration}>{block.duration}</Text>
+                                                    </View>
+                                                    <Text style={styles.blockDescription}>{block.description}</Text>
+                                                </>
+                                            )}
+
+                                            {/* Recovery section for main block */}
+                                            {block.type === 'main' && block.recovery && (
+                                                <View style={styles.blockRecovery}>
+                                                    <Text style={styles.blockRecoveryTitle}>Recuperação 1:30 min</Text>
+                                                    <Text style={styles.blockRecoveryText}>Trote ou caminhada leve</Text>
+                                                </View>
+                                            )}
+                                        </View>
+                                    </View>
+                                ))}
+
+                                {/* AI Insight Card */}
+                                <View style={styles.insightCard}>
+                                    <View style={styles.insightHeader}>
+                                        <IdeaIcon size={20} color="#FFD700" />
+                                        <Text style={styles.insightTitle}>RUNEASY TRAINING INSIGHT</Text>
+                                    </View>
+                                    <Text style={styles.insightText}>{selectedWorkout?.insight}</Text>
+                                </View>
+
+                                {/* Bottom spacing for scroll */}
+                                <View style={{ height: showStartButton ? 20 : 40 }} />
+                            </ScrollView>
+
+                            {/* Fixed Start Workout Button at bottom */}
+                            {showStartButton && (
+                                <View style={styles.startWorkoutContainer}>
+                                    <TouchableOpacity
+                                        style={styles.startWorkoutButton}
+                                        onPress={closeModal}
+                                        activeOpacity={0.8}
+                                    >
+                                        <RunFastIcon size={24} color="#0E0E1F" />
+                                        <Text style={styles.startWorkoutText}>Começar treino</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                        </TouchableOpacity>
+                    </Animated.View>
+                </TouchableOpacity>
+            </Modal>
         </SafeAreaView>
     );
 }
@@ -717,5 +1132,230 @@ const styles = StyleSheet.create({
         fontSize: typography.fontSizes.xs,
         color: 'rgba(235, 235, 245, 0.6)',
         marginTop: 2,
+    },
+
+    // Modal Styles
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        justifyContent: 'flex-end',
+    },
+    modalContainer: {
+        backgroundColor: '#1C1C2E',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        maxHeight: '90%',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -1 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalInnerContainer: {
+        flex: 1,
+        maxHeight: '100%',
+    },
+    modalScrollView: {
+        flex: 1,
+        paddingHorizontal: spacing.lg,
+    },
+    modalScrollContent: {
+        paddingBottom: spacing.md,
+    },
+    modalHandle: {
+        width: 60,
+        height: 6,
+        backgroundColor: 'rgba(235, 235, 245, 0.1)',
+        borderRadius: 20,
+        alignSelf: 'center',
+        marginTop: spacing.lg,
+        marginBottom: spacing.xl,
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#EBEBF5',
+        textAlign: 'center',
+        marginBottom: spacing.lg,
+    },
+    modalBadges: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: spacing.md,
+        marginBottom: spacing.xl,
+    },
+    modalBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        backgroundColor: 'rgba(0, 212, 255, 0.15)',
+        paddingHorizontal: spacing.md,
+        paddingVertical: spacing.sm,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: 'rgba(0, 212, 255, 0.3)',
+    },
+    modalBadgeText: {
+        fontSize: typography.fontSizes.sm,
+        fontWeight: typography.fontWeights.semibold as any,
+        color: '#EBEBF5',
+    },
+
+    // Workout Block Styles
+    workoutBlock: {
+        backgroundColor: '#15152A',
+        borderRadius: 16,
+        marginBottom: spacing.md,
+        overflow: 'hidden',
+    },
+    workoutBlockMain: {
+        borderWidth: 1,
+        borderColor: 'rgba(0, 212, 255, 0.3)',
+    },
+    blockHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: spacing.md,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(255, 255, 255, 0.05)',
+    },
+    blockSubtitle: {
+        fontSize: typography.fontSizes.xs,
+        color: 'rgba(235, 235, 245, 0.5)',
+        marginBottom: 4,
+    },
+    blockSubtitleMain: {
+        color: '#00D4FF',
+        fontWeight: typography.fontWeights.bold as any,
+    },
+    blockTitle: {
+        fontSize: typography.fontSizes.lg,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#EBEBF5',
+    },
+    blockContent: {
+        padding: spacing.md,
+    },
+    blockDurationRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: spacing.sm,
+        marginBottom: spacing.xs,
+    },
+    blockDurationPaceRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: spacing.xs,
+    },
+    blockDurationWithIcon: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: spacing.sm,
+    },
+    blockDuration: {
+        fontSize: typography.fontSizes.base,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#EBEBF5',
+    },
+    blockDescription: {
+        fontSize: typography.fontSizes.sm,
+        color: 'rgba(235, 235, 245, 0.6)',
+        marginLeft: 26,
+    },
+    blockDescriptionMain: {
+        fontSize: typography.fontSizes.sm,
+        color: 'rgba(235, 235, 245, 0.6)',
+    },
+    blockPaceRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: spacing.md,
+        paddingTop: spacing.md,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(255, 255, 255, 0.05)',
+    },
+    blockPaceLabel: {
+        fontSize: typography.fontSizes.base,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#EBEBF5',
+    },
+    blockPace: {
+        fontSize: typography.fontSizes.base,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#00D4FF',
+    },
+    blockRecovery: {
+        marginTop: spacing.md,
+        paddingTop: spacing.md,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(255, 255, 255, 0.05)',
+    },
+    blockRecoveryTitle: {
+        fontSize: typography.fontSizes.base,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#EBEBF5',
+        marginBottom: 4,
+    },
+    blockRecoveryText: {
+        fontSize: typography.fontSizes.sm,
+        color: 'rgba(235, 235, 245, 0.6)',
+    },
+
+    // Insight Card Styles
+    insightCard: {
+        backgroundColor: 'rgba(0, 127, 153, 0.3)',
+        borderRadius: 16,
+        padding: spacing.lg,
+        marginTop: spacing.md,
+        marginBottom: spacing.lg,
+        borderWidth: 1,
+        borderColor: '#00D4FF',
+    },
+    insightHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: spacing.sm,
+        marginBottom: spacing.md,
+    },
+    insightTitle: {
+        fontSize: typography.fontSizes.sm,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#00D4FF',
+        letterSpacing: 0.5,
+    },
+    insightText: {
+        fontSize: typography.fontSizes.sm,
+        color: 'rgba(235, 235, 245, 0.8)',
+        lineHeight: 20,
+    },
+
+    // Start Workout Button Container (Fixed at bottom)
+    startWorkoutContainer: {
+        paddingHorizontal: spacing.lg,
+        paddingVertical: spacing.lg,
+        backgroundColor: '#1C1C2E',
+    },
+    startWorkoutButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: spacing.sm,
+        backgroundColor: '#00D4FF',
+        paddingVertical: spacing.md,
+        paddingHorizontal: spacing.xl,
+        borderRadius: 20,
+        shadowColor: '#00D4FF',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 6,
+        elevation: 3,
+    },
+    startWorkoutText: {
+        fontSize: typography.fontSizes.base,
+        fontWeight: typography.fontWeights.bold as any,
+        color: '#0E0E1F',
     },
 });
