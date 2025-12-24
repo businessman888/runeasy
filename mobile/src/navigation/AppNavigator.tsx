@@ -25,6 +25,10 @@ import {
     LimitationsScreen,
     ReadinessQuizScreen,
     ReadinessResultScreen,
+    PersonalInfoScreen,
+    TrainingHistoryScreen,
+    NotificationSettingsScreen,
+    HelpScreen,
 } from '../screens';
 import { colors, typography } from '../theme';
 import { useAuthStore } from '../stores';
@@ -291,6 +295,38 @@ export function AppNavigator() {
                         <Stack.Screen
                             name="Notifications"
                             component={NotificationsScreen}
+                            options={{
+                                headerShown: false,
+                                presentation: 'card',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="PersonalInfo"
+                            component={PersonalInfoScreen}
+                            options={{
+                                headerShown: false,
+                                presentation: 'card',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="TrainingHistory"
+                            component={TrainingHistoryScreen}
+                            options={{
+                                headerShown: false,
+                                presentation: 'card',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="NotificationSettings"
+                            component={NotificationSettingsScreen}
+                            options={{
+                                headerShown: false,
+                                presentation: 'card',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="Help"
+                            component={HelpScreen}
                             options={{
                                 headerShown: false,
                                 presentation: 'card',

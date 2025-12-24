@@ -10,6 +10,10 @@ export * from './StatsScreen';
 export * from './PlanPreviewScreen';
 export * from './CoachAnalysisScreen';
 export * from './NotificationsScreen';
+export * from './PersonalInfoScreen';
+export * from './TrainingHistoryScreen';
+export * from './NotificationSettingsScreen';
+export * from './HelpScreen';
 
 // Quiz Screens
 export * from './quiz';

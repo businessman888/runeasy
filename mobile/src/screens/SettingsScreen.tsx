@@ -146,7 +146,10 @@ export function SettingsScreen({ navigation }: any) {
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>CONTA</Text>
                     <View style={styles.menuCard}>
-                        <TouchableOpacity style={styles.menuItem}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => navigation.navigate('PersonalInfo')}
+                        >
                             <View style={styles.menuItemLeft}>
                                 <View style={styles.menuIconContainer}>
                                     <PersonIcon size={22} color="#00D4FF" />
@@ -160,7 +163,7 @@ export function SettingsScreen({ navigation }: any) {
 
                         <TouchableOpacity
                             style={styles.menuItem}
-                            onPress={() => navigation.navigate('Evolution')}
+                            onPress={() => navigation.navigate('TrainingHistory')}
                         >
                             <View style={styles.menuItemLeft}>
                                 <View style={styles.menuIconContainer}>
@@ -201,7 +204,10 @@ export function SettingsScreen({ navigation }: any) {
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>PREFERÊNCIAS</Text>
                     <View style={styles.menuCard}>
-                        <TouchableOpacity style={styles.menuItem}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => navigation.navigate('NotificationSettings')}
+                        >
                             <View style={styles.menuItemLeft}>
                                 <View style={styles.menuIconContainer}>
                                     <NotificationIcon size={22} color="#FFFFFF" />
@@ -213,7 +219,10 @@ export function SettingsScreen({ navigation }: any) {
 
                         <View style={styles.menuDivider} />
 
-                        <TouchableOpacity style={styles.menuItem}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => navigation.navigate('Help')}
+                        >
                             <View style={styles.menuItemLeft}>
                                 <View style={styles.menuIconContainer}>
                                     <HelpIcon size={22} color="#FFFFFF" />
