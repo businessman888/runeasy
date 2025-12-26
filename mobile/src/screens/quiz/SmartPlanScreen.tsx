@@ -126,15 +126,29 @@ const getGoalDescription = (goal: string): string => {
 };
 
 export function SmartPlanScreen({ navigation, route }: any) {
-    const { data } = useOnboardingStore();
+    const { data, generatedPlan: storePlan } = useOnboardingStore();
     const { setAuthenticated } = useAuthStore();
     const userId = route?.params?.userId;
     const timeframe = route?.params?.timeframe;
 
-    // Extract data from onboarding store
+    // Get plan data from route params (preferred) or from store
+    const planData = route?.params?.planData || storePlan;
+
+    // Extract data from AI-generated plan or fallback to onboarding store
     const goal = data.goal || '10k';
-    const daysPerWeek = data.daysPerWeek || 4;
-    const targetWeeks = data.targetWeeks || 12;
+    const planHeader = planData?.planHeader;
+    const nextWorkout = planData?.nextWorkout;
+    const welcomeBadge = planData?.welcomeBadge;
+
+    // Use AI-generated values if available, otherwise use store data
+    const objectiveShort = planHeader?.objectiveShort || getGoalLabel(goal);
+    const durationWeeks = planHeader?.durationWeeks || `${data.targetWeeks || 12} Sem`;
+    const frequencyWeekly = planHeader?.frequencyWeekly || `${data.daysPerWeek || 4}x/Sem`;
+
+    // Next workout data - use AI-generated or fallback
+    const workoutTitle = nextWorkout?.title || 'Rodagem Leve - 5 km';
+    const workoutDuration = nextWorkout?.duration || '35 min';
+    const workoutPace = nextWorkout?.paceEstimate || 'Pace 5:30';
 
     const handleUnlockAll = () => {
         // Reset navigation stack and go to Main (Home tab)
@@ -169,15 +183,15 @@ export function SmartPlanScreen({ navigation, route }: any) {
                     <View style={styles.pillsContainer}>
                         <View style={styles.pill}>
                             <Text style={styles.pillLabel}>Objetivo</Text>
-                            <Text style={styles.pillValue}>{getGoalLabel(goal)}</Text>
+                            <Text style={styles.pillValue}>{objectiveShort}</Text>
                         </View>
                         <View style={styles.pill}>
                             <Text style={styles.pillLabel}>Duração</Text>
-                            <Text style={styles.pillValue}>{targetWeeks} Sem</Text>
+                            <Text style={styles.pillValue}>{durationWeeks}</Text>
                         </View>
                         <View style={styles.pill}>
                             <Text style={styles.pillLabel}>Freq.</Text>
-                            <Text style={styles.pillValue}>{daysPerWeek}x/Sem</Text>
+                            <Text style={styles.pillValue}>{frequencyWeekly}</Text>
                         </View>
                     </View>
 
@@ -202,15 +216,15 @@ export function SmartPlanScreen({ navigation, route }: any) {
                     <View style={styles.workoutCard}>
                         <View style={styles.workoutContent}>
                             <Text style={styles.workoutLabel}>TREINO #1</Text>
-                            <Text style={styles.workoutTitle}>Rodagem Leve - 5 km</Text>
+                            <Text style={styles.workoutTitle}>{workoutTitle}</Text>
                             <View style={styles.workoutMetrics}>
                                 <View style={styles.metricItem}>
                                     <TimerIcon />
-                                    <Text style={styles.metricText}>35 min</Text>
+                                    <Text style={styles.metricText}>{workoutDuration}</Text>
                                 </View>
                                 <View style={styles.metricItem}>
                                     <SpeedIcon />
-                                    <Text style={styles.metricText}>Pace 5:30</Text>
+                                    <Text style={styles.metricText}>{workoutPace}</Text>
                                 </View>
                             </View>
                         </View>
@@ -221,7 +235,7 @@ export function SmartPlanScreen({ navigation, route }: any) {
                     <View style={styles.sectionHeader}>
                         <Text style={styles.sectionTitle}>Cronograma Completo</Text>
                         <View style={styles.weeksBadge}>
-                            <Text style={styles.weeksBadgeText}>{targetWeeks} Semanas</Text>
+                            <Text style={styles.weeksBadgeText}>{durationWeeks}</Text>
                         </View>
                     </View>
 

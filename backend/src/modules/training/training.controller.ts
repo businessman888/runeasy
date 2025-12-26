@@ -10,9 +10,11 @@ import {
     HttpException,
     HttpStatus,
     Logger,
+    UseGuards,
 } from '@nestjs/common';
 import { TrainingService } from './training.service';
 import { SupabaseService } from '../../database';
+import { SupabaseAuthGuard } from '../../common/guards/supabase-auth.guard';
 
 interface CreatePlanDto {
     goal: string;
@@ -41,6 +43,7 @@ export class TrainingController {
      * Save onboarding data and create training plan
      */
     @Post('onboarding')
+    @UseGuards(SupabaseAuthGuard)
     async completeOnboarding(
         @Headers('x-user-id') userId: string,
         @Body() dto: CreatePlanDto,

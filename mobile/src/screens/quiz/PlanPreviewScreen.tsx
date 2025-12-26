@@ -8,6 +8,7 @@ import {
     Dimensions,
     Platform,
     ScrollView,
+    ActivityIndicator,
 } from 'react-native';
 import { colors } from '../../theme';
 import { useOnboardingStore } from '../../stores/onboardingStore';
@@ -151,7 +152,7 @@ const TIMEFRAME_OPTIONS = [
 
 export function PlanPreviewScreen({ navigation, route }: any) {
     const userId = route?.params?.userId;
-    const { data, updateData } = useOnboardingStore();
+    const { data, updateData, submitOnboarding, isGenerating, error, errorCode, clearError } = useOnboardingStore();
     const [selectedTimeframe, setSelectedTimeframe] = useState<string | null>(null);
 
     const handleSelect = (id: string) => {
@@ -161,10 +162,33 @@ export function PlanPreviewScreen({ navigation, route }: any) {
         updateData({ targetWeeks: weeks });
     };
 
-    const handleUnlockPlan = () => {
-        // Navigate to smart plan screen
-        navigation.navigate('SmartPlan', { userId, timeframe: selectedTimeframe });
+    const handleUnlockPlan = async () => {
+        if (isGenerating) return;
+
+        clearError();
+
+        try {
+            const planData = await submitOnboarding();
+
+            if (planData) {
+                // Navigate to smart plan screen with generated plan data
+                navigation.navigate('SmartPlan', {
+                    userId,
+                    timeframe: selectedTimeframe,
+                    planData,
+                });
+            } else if (errorCode === 'AUTH_REQUIRED') {
+                // User needs to login - redirect to Login screen
+                navigation.navigate('Login', {
+                    returnTo: 'Quiz_PlanPreview',
+                    message: 'Faça login para gerar seu plano de treino personalizado.',
+                });
+            }
+        } catch (err) {
+            console.error('Failed to generate plan:', err);
+        }
     };
+
 
     return (
         <View style={styles.container}>
@@ -240,22 +264,38 @@ export function PlanPreviewScreen({ navigation, route }: any) {
                 </View>
             </ScrollView>
 
+            {/* Error Message */}
+            {error && (
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>{error}</Text>
+                </View>
+            )}
+
             {/* Unlock Plan Button */}
             <View style={styles.bottomButtonContainer}>
                 <TouchableOpacity
                     style={[
                         styles.unlockButton,
-                        !selectedTimeframe && styles.unlockButtonDisabled
+                        (!selectedTimeframe || isGenerating) && styles.unlockButtonDisabled
                     ]}
                     onPress={handleUnlockPlan}
-                    disabled={!selectedTimeframe}
+                    disabled={!selectedTimeframe || isGenerating}
                     activeOpacity={0.8}
                 >
-                    <Text style={[
-                        styles.unlockButtonText,
-                        !selectedTimeframe && styles.unlockButtonTextDisabled
-                    ]}>Desbloquear plano</Text>
-                    <UnlockIcon />
+                    {isGenerating ? (
+                        <>
+                            <ActivityIndicator size="small" color="#0E0E1F" />
+                            <Text style={styles.unlockButtonText}>Gerando plano...</Text>
+                        </>
+                    ) : (
+                        <>
+                            <Text style={[
+                                styles.unlockButtonText,
+                                !selectedTimeframe && styles.unlockButtonTextDisabled
+                            ]}>Desbloquear plano</Text>
+                            <UnlockIcon />
+                        </>
+                    )}
                 </TouchableOpacity>
             </View>
         </View>
@@ -412,6 +452,18 @@ const styles = StyleSheet.create({
     },
     unlockButtonTextDisabled: {
         color: 'rgba(14, 14, 31, 0.5)',
+    },
+    errorContainer: {
+        backgroundColor: 'rgba(255, 59, 48, 0.1)',
+        borderRadius: 12,
+        padding: 12,
+        marginHorizontal: 20,
+        marginBottom: 10,
+    },
+    errorText: {
+        color: '#FF3B30',
+        fontSize: 14,
+        textAlign: 'center',
     },
 });
 

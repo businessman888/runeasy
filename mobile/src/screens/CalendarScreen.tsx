@@ -271,9 +271,9 @@ const mockWorkoutData: WorkoutData = {
 };
 
 export function CalendarScreen({ navigation }: any) {
-    const { workouts, fetchWorkouts } = useTrainingStore();
-    const [selectedDate, setSelectedDate] = React.useState(12);
-    const [currentMonth, setCurrentMonth] = React.useState(new Date(2023, 9, 1)); // October 2023
+    const { workouts, fetchWorkouts, upcomingWorkouts, fetchUpcomingWorkouts } = useTrainingStore();
+    const [selectedDate, setSelectedDate] = React.useState(new Date().getDate());
+    const [currentMonth, setCurrentMonth] = React.useState(new Date());
 
     // Modal states
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -289,7 +289,51 @@ export function CalendarScreen({ navigation }: any) {
         const start = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
         const end = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
         fetchWorkouts(start.toISOString().split('T')[0], end.toISOString().split('T')[0]);
+        fetchUpcomingWorkouts();
     }, [currentMonth]);
+
+    // Helper: Transform API workout to UI WorkoutData format
+    const transformWorkoutToUI = (workout: any): WorkoutData => {
+        const blocks: WorkoutBlock[] = (workout.instructions_json || []).map((segment: any, index: number) => ({
+            id: String(index + 1),
+            title: segment.type === 'warmup' ? 'Aquecimento' : segment.type === 'cooldown' ? 'Desaquecimento' : 'Principal',
+            subtitle: `Bloco ${String(index + 1).padStart(2, '0')}${segment.type === 'main' ? ' - PRINCIPAL' : ''}`,
+            type: segment.type,
+            duration: `${segment.distance_km} km`,
+            description: segment.type === 'warmup'
+                ? 'Trote leve z1/z2 para ativar'
+                : segment.type === 'cooldown'
+                    ? 'Trote muito leve + alongamento estático.'
+                    : 'Ritmo forte, focado na técnica',
+            pace: segment.pace_min && segment.pace_max
+                ? `${segment.pace_min.toFixed(0)}:${((segment.pace_min % 1) * 60).toFixed(0).padStart(2, '0')}/km`
+                : undefined,
+        }));
+
+        const workoutTypeLabels: Record<string, string> = {
+            'easy_run': 'Rodagem Leve',
+            'long_run': 'Longão',
+            'intervals': 'Intervalados',
+            'tempo': 'Tempo Run',
+            'recovery': 'Recuperação',
+        };
+
+        return {
+            id: workout.id,
+            title: `${workoutTypeLabels[workout.type] || workout.type} - ${workout.distance_km}km`,
+            distance: `${workout.distance_km} km`,
+            duration: `${Math.round(workout.distance_km * 6)} min`, // Estimate based on 6 min/km
+            rpe: 'RPE 6/10',
+            blocks,
+            insight: workout.objective || 'Mantenha o foco e aproveite o treino!'
+        };
+    };
+
+    // Helper: Find workout for a specific day
+    const getWorkoutForDay = (day: number) => {
+        const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        return workouts.find(w => w.scheduled_date === dateStr);
+    };
 
     // Handle day press with double-click detection
     const handleDayPress = (day: number) => {
@@ -310,10 +354,9 @@ export function CalendarScreen({ navigation }: any) {
 
     // Open workout modal
     const openWorkoutModal = (day: number, withStartButton: boolean = false) => {
-        // Check if day has a workout
-        const status = getWorkoutStatus(day);
-        if (status === 'planned' || status === 'completed') {
-            setSelectedWorkout(mockWorkoutData);
+        const workout = getWorkoutForDay(day);
+        if (workout) {
+            setSelectedWorkout(transformWorkoutToUI(workout));
             setShowStartButton(withStartButton);
             setModalVisible(true);
             Animated.spring(modalSlideAnim, {
@@ -340,28 +383,32 @@ export function CalendarScreen({ navigation }: any) {
 
     // Handle next workout card press (without start button)
     const handleNextWorkoutPress = () => {
-        setSelectedWorkout(mockWorkoutData);
-        setShowStartButton(false);
-        setModalVisible(true);
-        Animated.spring(modalSlideAnim, {
-            toValue: 1,
-            useNativeDriver: true,
-            tension: 65,
-            friction: 11,
-        }).start();
+        if (upcomingWorkouts.length > 1) {
+            setSelectedWorkout(transformWorkoutToUI(upcomingWorkouts[1]));
+            setShowStartButton(false);
+            setModalVisible(true);
+            Animated.spring(modalSlideAnim, {
+                toValue: 1,
+                useNativeDriver: true,
+                tension: 65,
+                friction: 11,
+            }).start();
+        }
     };
 
     // Handle today's workout card press (with start button)
     const handleTodayWorkoutPress = () => {
-        setSelectedWorkout(mockWorkoutData);
-        setShowStartButton(true);
-        setModalVisible(true);
-        Animated.spring(modalSlideAnim, {
-            toValue: 1,
-            useNativeDriver: true,
-            tension: 65,
-            friction: 11,
-        }).start();
+        if (upcomingWorkouts.length > 0) {
+            setSelectedWorkout(transformWorkoutToUI(upcomingWorkouts[0]));
+            setShowStartButton(true);
+            setModalVisible(true);
+            Animated.spring(modalSlideAnim, {
+                toValue: 1,
+                useNativeDriver: true,
+                tension: 65,
+                friction: 11,
+            }).start();
+        }
     };
 
     const getDaysInMonth = () => {
@@ -380,15 +427,24 @@ export function CalendarScreen({ navigation }: any) {
         return days;
     };
 
-    // Mock workout data based on Figma design
+    // Get workout status for a day based on real data
     const getWorkoutStatus = (day: number | null) => {
         if (!day) return null;
-        // Days with completed workouts (green check)
-        if ([1, 2, 3, 4, 5, 8, 9, 10].includes(day)) return 'completed';
-        // Days with planned workouts (cyan indicator)
-        if ([12, 15, 22, 23].includes(day)) return 'planned';
+        const workout = getWorkoutForDay(day);
+        if (!workout) return null;
+        if (workout.status === 'completed') return 'completed';
+        if (workout.status === 'pending') return 'planned';
         return null;
     };
+
+    // Get today's workout from upcoming workouts
+    const todayWorkout = upcomingWorkouts.length > 0 ? upcomingWorkouts[0] : null;
+    const nextWorkout = upcomingWorkouts.length > 1 ? upcomingWorkouts[1] : null;
+
+    // Calculate total volume and frequency
+    const totalVolume = workouts.reduce((sum, w) => sum + (w.distance_km || 0), 0);
+    const completedCount = workouts.filter(w => w.status === 'completed').length;
+    const totalCount = workouts.length;
 
     const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -525,79 +581,131 @@ export function CalendarScreen({ navigation }: any) {
                 <View style={styles.todaySection}>
                     <View style={styles.todaySectionHeader}>
                         <View>
-                            <Text style={styles.todayDate}>• Hoje, 12 SET</Text>
+                            <Text style={styles.todayDate}>• Hoje, {new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }).toUpperCase()}</Text>
                             <Text style={styles.todayTitle}>Treinos do dia</Text>
                         </View>
                         <View style={styles.totalKm}>
-                            <Text style={styles.totalKmValue}>8 <Text style={styles.totalKmUnit}>km</Text></Text>
+                            <Text style={styles.totalKmValue}>{todayWorkout?.distance_km || 0} <Text style={styles.totalKmUnit}>km</Text></Text>
                             <Text style={styles.totalKmLabel}>total</Text>
                         </View>
                     </View>
 
                     {/* Workout Detail Card */}
-                    <View style={styles.workoutDetailCard}>
-                        {/* Card Top Section */}
-                        <View style={styles.cardTopSection}>
-                            <View style={styles.workoutDetailHeader}>
-                                <View style={styles.intensityBadge}>
-                                    <Text style={styles.intensityText}>ALTA INTENSIDADE</Text>
-                                </View>
-                                <View style={styles.pendingBadge}>
-                                    <View style={styles.pendingDot} />
-                                    <Text style={styles.pendingText}>Pendente</Text>
-                                </View>
-                            </View>
-
-                            <View style={styles.workoutDetailBody}>
-                                <View style={styles.workoutInfo}>
-                                    <Text style={styles.workoutTitle}>Intervalados - 8x400m</Text>
-                                    <Text style={styles.workoutDescription}>Aquecimento 2km - 8 tiros - Desaquecimento</Text>
-                                    <View style={styles.workoutMetrics}>
-                                        <View style={styles.metricItem}>
-                                            <TimerIcon size={20} color="#00D4FF" />
-                                            <Text style={styles.metricText}>45 min</Text>
-                                        </View>
-                                        <View style={styles.metricItem}>
-                                            <PaceClockIcon size={20} color="#00D4FF" />
-                                            <Text style={styles.metricText}>4:15 /km</Text>
-                                        </View>
+                    {todayWorkout ? (
+                        <View style={styles.workoutDetailCard}>
+                            {/* Card Top Section */}
+                            <View style={styles.cardTopSection}>
+                                <View style={styles.workoutDetailHeader}>
+                                    <View style={styles.intensityBadge}>
+                                        <Text style={styles.intensityText}>
+                                            {todayWorkout.type === 'intervals' || todayWorkout.type === 'tempo' ? 'ALTA INTENSIDADE' : 'MODERADO'}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.pendingBadge}>
+                                        <View style={styles.pendingDot} />
+                                        <Text style={styles.pendingText}>
+                                            {todayWorkout.status === 'completed' ? 'Concluído' : 'Pendente'}
+                                        </Text>
                                     </View>
                                 </View>
-                                <Image
-                                    source={{ uri: 'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=100&h=100&fit=crop' }}
-                                    style={styles.workoutImage}
-                                />
+
+                                <View style={styles.workoutDetailBody}>
+                                    <View style={styles.workoutInfo}>
+                                        <Text style={styles.workoutTitle}>
+                                            {(() => {
+                                                const labels: Record<string, string> = {
+                                                    'easy_run': 'Rodagem Leve',
+                                                    'long_run': 'Longão',
+                                                    'intervals': 'Intervalados',
+                                                    'tempo': 'Tempo Run',
+                                                    'recovery': 'Recuperação',
+                                                };
+                                                return `${labels[todayWorkout.type] || todayWorkout.type} - ${todayWorkout.distance_km}km`;
+                                            })()}
+                                        </Text>
+                                        <Text style={styles.workoutDescription}>{todayWorkout.objective || 'Treino do dia'}</Text>
+                                        <View style={styles.workoutMetrics}>
+                                            <View style={styles.metricItem}>
+                                                <TimerIcon size={20} color="#00D4FF" />
+                                                <Text style={styles.metricText}>{Math.round(todayWorkout.distance_km * 6)} min</Text>
+                                            </View>
+                                            <View style={styles.metricItem}>
+                                                <PaceClockIcon size={20} color="#00D4FF" />
+                                                <Text style={styles.metricText}>
+                                                    {todayWorkout.instructions_json?.[0]?.pace_min
+                                                        ? `${Math.floor(todayWorkout.instructions_json[0].pace_min)}:${String(Math.round((todayWorkout.instructions_json[0].pace_min % 1) * 60)).padStart(2, '0')} /km`
+                                                        : '6:00 /km'}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <Image
+                                        source={{ uri: 'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=100&h=100&fit=crop' }}
+                                        style={styles.workoutImage}
+                                    />
+                                </View>
+                            </View>
+
+                            {/* View Details Button - Bottom Section of Card */}
+                            <TouchableOpacity
+                                style={styles.viewDetailsButton}
+                                onPress={handleTodayWorkoutPress}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={styles.viewDetailsText}>Ver detalhes do  treino</Text>
+                                <ArrowRightIcon size={20} color="#FFFFFF" />
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <View style={styles.workoutDetailCard}>
+                            <View style={styles.cardTopSection}>
+                                <Text style={[styles.workoutTitle, { textAlign: 'center', paddingVertical: 20 }]}>
+                                    Nenhum treino agendado para hoje
+                                </Text>
                             </View>
                         </View>
-
-                        {/* View Details Button - Bottom Section of Card */}
-                        <TouchableOpacity
-                            style={styles.viewDetailsButton}
-                            onPress={handleTodayWorkoutPress}
-                            activeOpacity={0.7}
-                        >
-                            <Text style={styles.viewDetailsText}>Ver detalhes do  treino</Text>
-                            <ArrowRightIcon size={20} color="#FFFFFF" />
-                        </TouchableOpacity>
-                    </View>
+                    )}
 
                     {/* Next Workout Section */}
-                    <View style={styles.nextWorkoutSection}>
-                        <View style={styles.nextWorkoutDivider} />
-                        <Text style={styles.nextWorkoutLabel}>Próximo: SEXTA-FEIRA</Text>
-                        <TouchableOpacity
-                            style={styles.nextWorkoutCard}
-                            onPress={handleNextWorkoutPress}
-                            activeOpacity={0.7}
-                        >
-                            <ProximoIcon size={47} />
-                            <View style={styles.nextWorkoutInfo}>
-                                <Text style={styles.nextWorkoutTitle}>Longão de 5km</Text>
-                                <Text style={styles.nextWorkoutSubtitle}>Corrida de rua - média intensidade</Text>
-                            </View>
-                            <ArrowRightIcon size={24} color="rgba(235,235,245,0.3)" />
-                        </TouchableOpacity>
-                    </View>
+                    {nextWorkout && (
+                        <View style={styles.nextWorkoutSection}>
+                            <View style={styles.nextWorkoutDivider} />
+                            <Text style={styles.nextWorkoutLabel}>
+                                Próximo: {(() => {
+                                    const date = new Date(nextWorkout.scheduled_date);
+                                    const days = ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO'];
+                                    return days[date.getDay()];
+                                })()}
+                            </Text>
+                            <TouchableOpacity
+                                style={styles.nextWorkoutCard}
+                                onPress={handleNextWorkoutPress}
+                                activeOpacity={0.7}
+                            >
+                                <ProximoIcon size={47} />
+                                <View style={styles.nextWorkoutInfo}>
+                                    <Text style={styles.nextWorkoutTitle}>
+                                        {(() => {
+                                            const labels: Record<string, string> = {
+                                                'easy_run': 'Rodagem Leve',
+                                                'long_run': 'Longão',
+                                                'intervals': 'Intervalados',
+                                                'tempo': 'Tempo Run',
+                                                'recovery': 'Recuperação',
+                                            };
+                                            return `${labels[nextWorkout.type] || nextWorkout.type} de ${nextWorkout.distance_km}km`;
+                                        })()}
+                                    </Text>
+                                    <Text style={styles.nextWorkoutSubtitle}>
+                                        {nextWorkout.type === 'intervals' || nextWorkout.type === 'tempo'
+                                            ? 'Corrida de rua - alta intensidade'
+                                            : 'Corrida de rua - média intensidade'}
+                                    </Text>
+                                </View>
+                                <ArrowRightIcon size={24} color="rgba(235,235,245,0.3)" />
+                            </TouchableOpacity>
+                        </View>
+                    )}
                 </View>
             </ScrollView>
 
