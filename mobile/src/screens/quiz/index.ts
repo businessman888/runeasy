@@ -4,3 +4,6 @@ export { FrequencyScreen } from './FrequencyScreen';
 export { PaceScreen } from './PaceScreen';
 export { TimeframeScreen } from './TimeframeScreen';
 export { LimitationsScreen } from './LimitationsScreen';
+export { PlanPreviewScreen } from './PlanPreviewScreen';
+export { SmartPlanScreen } from './SmartPlanScreen';
+

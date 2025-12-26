@@ -14,7 +14,6 @@ import {
     FeedbackScreen,
     EvolutionScreen,
     SettingsScreen,
-    PlanPreviewScreen,
     CoachAnalysisScreen,
     NotificationsScreen,
     ObjectiveScreen,
@@ -30,6 +29,9 @@ import {
     NotificationSettingsScreen,
     HelpScreen,
 } from '../screens';
+import { PlanPreviewScreen as QuizPlanPreviewScreen } from '../screens/quiz/PlanPreviewScreen';
+import { SmartPlanScreen } from '../screens/quiz/SmartPlanScreen';
+import { PlanPreviewScreen as OldPlanPreviewScreen } from '../screens/PlanPreviewScreen';
 import { colors, typography } from '../theme';
 import { useAuthStore } from '../stores';
 
@@ -202,10 +204,20 @@ export function AppNavigator() {
                             component={LimitationsScreen}
                             options={{ headerShown: false }}
                         />
+                        <Stack.Screen
+                            name="Quiz_PlanPreview"
+                            component={QuizPlanPreviewScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="SmartPlan"
+                            component={SmartPlanScreen}
+                            options={{ headerShown: false }}
+                        />
                         {/* Plan Preview Screen */}
                         <Stack.Screen
                             name="PlanPreview"
-                            component={PlanPreviewScreen}
+                            component={OldPlanPreviewScreen}
                             options={{ headerShown: false }}
                         />
                     </>
@@ -248,8 +260,18 @@ export function AppNavigator() {
                             options={{ headerShown: false }}
                         />
                         <Stack.Screen
+                            name="Quiz_PlanPreview"
+                            component={QuizPlanPreviewScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="SmartPlan"
+                            component={SmartPlanScreen}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
                             name="PlanPreview"
-                            component={PlanPreviewScreen}
+                            component={OldPlanPreviewScreen}
                             options={{ headerShown: false }}
                         />
                         <Stack.Screen
