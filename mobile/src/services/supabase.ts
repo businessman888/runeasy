@@ -1,33 +1,47 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import * as Storage from '../utils/storage';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-        storage: {
-            getItem: async (key) => {
-                return await Storage.getItemAsync(key);
+// Check if Supabase is configured
+const isSupabaseConfigured = supabaseUrl.length > 0 && supabaseAnonKey.length > 0;
+
+if (!isSupabaseConfigured) {
+    console.warn('[Supabase] Warning: Supabase is not configured. Set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY in your .env file.');
+}
+
+// Create client only if configured, otherwise use a mock/null client
+export const supabase: SupabaseClient | null = isSupabaseConfigured
+    ? createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+            storage: {
+                getItem: async (key) => {
+                    return await Storage.getItemAsync(key);
+                },
+                setItem: async (key, value) => {
+                    await Storage.setItemAsync(key, value);
+                },
+                removeItem: async (key) => {
+                    await Storage.deleteItemAsync(key);
+                },
             },
-            setItem: async (key, value) => {
-                await Storage.setItemAsync(key, value);
-            },
-            removeItem: async (key) => {
-                await Storage.deleteItemAsync(key);
-            },
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: false,
         },
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: false,
-    },
-});
+    })
+    : null;
 
 /**
  * Get the current authenticated user ID from Supabase session
  * @returns The user ID or null if not authenticated
  */
 export async function getAuthenticatedUserId(): Promise<string | null> {
+    if (!supabase) {
+        console.warn('[Supabase] Cannot get user: Supabase not configured');
+        return null;
+    }
     try {
         const { data: { user }, error } = await supabase.auth.getUser();
 
@@ -56,6 +70,10 @@ export async function isAuthenticated(): Promise<boolean> {
  * @returns The access token or null if not authenticated
  */
 export async function getSessionToken(): Promise<string | null> {
+    if (!supabase) {
+        console.warn('[Supabase] Cannot get session: Supabase not configured');
+        return null;
+    }
     try {
         const { data: { session }, error } = await supabase.auth.getSession();
 
@@ -69,3 +87,4 @@ export async function getSessionToken(): Promise<string | null> {
         return null;
     }
 }
+

@@ -41,9 +41,9 @@ export class TrainingController {
 
     /**
      * Save onboarding data and create training plan
+     * Note: Auth via x-user-id header (set during Strava OAuth callback)
      */
     @Post('onboarding')
-    @UseGuards(SupabaseAuthGuard)
     async completeOnboarding(
         @Headers('x-user-id') userId: string,
         @Body() dto: CreatePlanDto,

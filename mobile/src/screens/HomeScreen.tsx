@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -10,8 +10,9 @@ import {
     Platform,
 } from 'react-native';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme';
-import { useGamificationStore, useTrainingStore, useFeedbackStore } from '../stores';
+import { useAuthStore, useGamificationStore, useTrainingStore, useFeedbackStore, useStatsStore } from '../stores';
 import { CircularProgress } from '../components/CircularProgress';
+import { Skeleton, SkeletonCircle, SkeletonText } from '../components/Skeleton';
 
 // Fire icon SVG component for streak banner
 function FireIcon({ size = 24, color = '#FFC400' }: { size?: number; color?: string }) {
@@ -136,25 +137,107 @@ function BellIcon({ size = 24, color = '#EBEBF5' }: { size?: number; color?: str
     return <Text style={{ fontSize: size }}>🔔</Text>;
 }
 
-export function HomeScreen({ navigation }: any) {
-    const { stats, fetchStats } = useGamificationStore();
-    const { upcomingWorkouts, fetchUpcomingWorkouts } = useTrainingStore();
-    const { latestSummary, fetchLatestSummary } = useFeedbackStore();
+// Lock icon for AI Analysis card
+function LockIcon({ size = 24, color = '#6B7280' }: { size?: number; color?: string }) {
+    if (Platform.OS === 'web') {
+        return (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+                <path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM15.1 8H8.9V6C8.9 4.29 10.29 2.9 12 2.9C13.71 2.9 15.1 4.29 15.1 6V8Z" />
+            </svg>
+        );
+    }
+    return <Text style={{ fontSize: size, color }}>🔒</Text>;
+}
 
-    React.useEffect(() => {
-        fetchStats();
-        fetchUpcomingWorkouts();
-        fetchLatestSummary();
+export function HomeScreen({ navigation }: any) {
+    const { user } = useAuthStore();
+    const { stats, fetchStats, isLoading: gamificationLoading } = useGamificationStore();
+    const { upcomingWorkouts, fetchUpcomingWorkouts, isLoading: trainingLoading } = useTrainingStore();
+    const { latestSummary, fetchLatestSummary } = useFeedbackStore();
+    const { summary, fetchSummary, isLoading: statsLoading } = useStatsStore();
+    const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+    useEffect(() => {
+        const loadData = async () => {
+            await Promise.all([
+                fetchStats(),
+                fetchUpcomingWorkouts(),
+                fetchLatestSummary(),
+                fetchSummary(),
+            ]);
+            setIsInitialLoading(false);
+        };
+        loadData();
     }, []);
 
     const nextWorkout = upcomingWorkouts?.[0];
-    const currentLevel = stats?.current_level || 5;
-    const totalPoints = stats?.total_points || 350;
-    const pointsToNext = stats?.points_to_next_level || 500;
-    const currentStreak = stats?.current_streak || 5;
-    const progress = Math.min((totalPoints / pointsToNext) * 100, 100);
+    // Use real data with proper fallbacks for new users
+    const currentLevel = stats?.current_level ?? 1;
+    const totalPoints = stats?.total_points ?? 0;
+    const pointsToNext = stats?.points_to_next_level ?? 100;
+    const currentStreak = stats?.current_streak ?? 0;
+    const progress = pointsToNext > 0 ? Math.min((totalPoints / pointsToNext) * 100, 100) : 0;
 
-    // Get greeting based on time
+    // Check if user has completed any workouts (for AI card lock state)
+    const hasCompletedWorkouts = (summary?.total_runs ?? 0) > 0;
+
+    // Real user data from authStore
+    const userName = user?.profile?.firstname
+        ? `${user.profile.firstname}${user.profile.lastname ? ' ' + user.profile.lastname : ''}`
+        : 'Corredor';
+    const profilePic = user?.profile?.profile_pic || 'https://i.pravatar.cc/100';
+
+    // Helper function to convert workout type to Portuguese display name
+    const getWorkoutTypeName = (type: string): string => {
+        const typeNames: Record<string, string> = {
+            easy_run: 'Rodagem Leve',
+            long_run: 'Longão',
+            intervals: 'Intervalado',
+            tempo: 'Tempo Run',
+            recovery: 'Recuperação',
+        };
+        return typeNames[type] || type;
+    };
+
+    // Helper function to format workout date
+    const formatWorkoutDate = (dateStr: string): string => {
+        const date = new Date(dateStr + 'T00:00:00');
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        if (date.getTime() === today.getTime()) {
+            return 'Hoje';
+        } else if (date.getTime() === tomorrow.getTime()) {
+            return 'Amanhã';
+        } else {
+            return date.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'short' });
+        }
+    };
+
+    // Helper function to get pace from workout instructions
+    const getWorkoutPace = (workout: any): string => {
+        if (workout.instructions_json && workout.instructions_json.length > 0) {
+            // Find the main block or use first instruction with pace
+            const mainBlock = workout.instructions_json.find((i: any) => i.type === 'main') || workout.instructions_json[0];
+            if (mainBlock && mainBlock.pace_min) {
+                const paceMin = Math.floor(mainBlock.pace_min);
+                const paceSec = Math.round((mainBlock.pace_min - paceMin) * 60);
+                return `${paceMin}:${paceSec.toString().padStart(2, '0')}`;
+            }
+        }
+        // Default pace based on workout type
+        const defaultPaces: Record<string, string> = {
+            easy_run: '6:30',
+            long_run: '6:00',
+            intervals: '5:00',
+            tempo: '5:30',
+            recovery: '7:00',
+        };
+        return defaultPaces[workout.type] || '6:00';
+    };
+
     const getGreeting = () => {
         const hour = new Date().getHours();
         if (hour < 12) return 'Bom dia';
@@ -172,13 +255,21 @@ export function HomeScreen({ navigation }: any) {
                 {/* Header */}
                 <View style={styles.header}>
                     <View style={styles.headerLeft}>
-                        <Image
-                            source={{ uri: 'https://i.pravatar.cc/100' }}
-                            style={styles.profileImage}
-                        />
+                        {isInitialLoading ? (
+                            <SkeletonCircle size={48} />
+                        ) : (
+                            <Image
+                                source={{ uri: profilePic }}
+                                style={styles.profileImage}
+                            />
+                        )}
                         <View style={styles.headerText}>
                             <Text style={styles.greetingText}>{getGreeting()}</Text>
-                            <Text style={styles.userName}>Alex Runner</Text>
+                            {isInitialLoading ? (
+                                <SkeletonText width={120} height={20} />
+                            ) : (
+                                <Text style={styles.userName}>{userName}</Text>
+                            )}
                         </View>
                     </View>
                     <TouchableOpacity
@@ -235,87 +326,116 @@ export function HomeScreen({ navigation }: any) {
                 </View>
 
                 {/* Workout Card */}
-                <View style={styles.workoutCard}>
-                    <View style={styles.workoutHeader}>
-                        <View style={styles.proximoBadge}>
-                            <View style={styles.proximoDot} />
-                            <Text style={styles.proximoText}>Próximo</Text>
-                        </View>
-                        <View style={styles.runnerIcon}>
-                            <RunningIcon size={30} color="#00D4FF" />
-                        </View>
-                    </View>
-
-                    <Text style={styles.workoutTitle}>Tempo de corrida</Text>
-                    <View style={styles.workoutTimeRow}>
-                        <CalendarSmallIcon size={16} />
-                        <Text style={styles.workoutTime}>Hoje - 18:00</Text>
-                    </View>
-
-                    <View style={styles.workoutStats}>
-                        <View style={styles.statBox}>
-                            <View style={styles.statHeader}>
-                                <DistanceIcon size={18} color="#00D4FF" />
-                                <Text style={styles.statLabel}>Distância</Text>
+                {nextWorkout ? (
+                    <View style={styles.workoutCard}>
+                        <View style={styles.workoutHeader}>
+                            <View style={styles.proximoBadge}>
+                                <View style={styles.proximoDot} />
+                                <Text style={styles.proximoText}>Próximo</Text>
                             </View>
-                            <Text style={styles.statValue}>
-                                {nextWorkout ? nextWorkout.distance_km.toFixed(1) : '8.0'} <Text style={styles.statUnit}>km</Text>
-                            </Text>
-                        </View>
-                        <View style={styles.statBox}>
-                            <View style={styles.statHeader}>
-                                <PaceIcon size={18} color="#00D4FF" />
-                                <Text style={styles.statLabel}>Pace</Text>
+                            <View style={styles.runnerIcon}>
+                                <RunningIcon size={30} color="#00D4FF" />
                             </View>
-                            <Text style={styles.statValue}>
-                                4.45 <Text style={styles.statUnit}>/km</Text>
-                            </Text>
+                        </View>
+
+                        <Text style={styles.workoutTitle}>{getWorkoutTypeName(nextWorkout.type)}</Text>
+                        <View style={styles.workoutTimeRow}>
+                            <CalendarSmallIcon size={16} />
+                            <Text style={styles.workoutTime}>{formatWorkoutDate(nextWorkout.scheduled_date)}</Text>
+                        </View>
+
+                        <View style={styles.workoutStats}>
+                            <View style={styles.statBox}>
+                                <View style={styles.statHeader}>
+                                    <DistanceIcon size={18} color="#00D4FF" />
+                                    <Text style={styles.statLabel}>Distância</Text>
+                                </View>
+                                <Text style={styles.statValue}>
+                                    {nextWorkout.distance_km.toFixed(1)} <Text style={styles.statUnit}>km</Text>
+                                </Text>
+                            </View>
+                            <View style={styles.statBox}>
+                                <View style={styles.statHeader}>
+                                    <PaceIcon size={18} color="#00D4FF" />
+                                    <Text style={styles.statLabel}>Pace</Text>
+                                </View>
+                                <Text style={styles.statValue}>
+                                    {getWorkoutPace(nextWorkout)} <Text style={styles.statUnit}>/km</Text>
+                                </Text>
+                            </View>
+                        </View>
+
+                        <TouchableOpacity style={styles.startButton}>
+                            <ShoeIcon size={24} color="#0E0E1F" />
+                            <Text style={styles.startButtonText}>Iniciar Treino</Text>
+                        </TouchableOpacity>
+                    </View>
+                ) : (
+                    <View style={styles.workoutCard}>
+                        <View style={styles.lockedContent}>
+                            <RunningIcon size={48} color="#6B7280" />
+                            <Text style={styles.lockedText}>Nenhum treino agendado</Text>
                         </View>
                     </View>
-
-                    <TouchableOpacity style={styles.startButton}>
-                        <ShoeIcon size={24} color="#0E0E1F" />
-                        <Text style={styles.startButtonText}>Iniciar Treino</Text>
-                    </TouchableOpacity>
-                </View>
+                )}
 
                 {/* AI Analysis Card */}
                 <View style={styles.aiCard}>
-                    <View style={styles.aiHeader}>
-                        <View>
-                            <Text style={styles.aiTitle}>Análise do Treinador</Text>
-                            <Text style={styles.aiSubtitle}>Corrida matinal - hoje</Text>
-                        </View>
-                        <BinocularsIcon size={35} color="#00D4FF" />
-                    </View>
+                    {hasCompletedWorkouts ? (
+                        <>
+                            <View style={styles.aiHeader}>
+                                <View>
+                                    <Text style={styles.aiTitle}>Análise do Treinador</Text>
+                                    <Text style={styles.aiSubtitle}>Corrida matinal - hoje</Text>
+                                </View>
+                                <BinocularsIcon size={35} color="#00D4FF" />
+                            </View>
 
-                    <View style={styles.aiStats}>
-                        <View style={styles.aiPaceSection}>
-                            <Text style={styles.aiPace}>
-                                5:12 <Text style={styles.aiPaceUnit}>km</Text>
-                            </Text>
-                            <View style={styles.efficiencyBadge}>
-                                <TrendUpIcon size={18} color="#32CD32" />
-                                <Text style={styles.efficiencyText}>+2% EFICIENTE</Text>
+                            <View style={styles.aiStats}>
+                                <View style={styles.aiPaceSection}>
+                                    <Text style={styles.aiPace}>
+                                        5:12 <Text style={styles.aiPaceUnit}>km</Text>
+                                    </Text>
+                                    <View style={styles.efficiencyBadge}>
+                                        <TrendUpIcon size={18} color="#32CD32" />
+                                        <Text style={styles.efficiencyText}>+2% EFICIENTE</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.miniChart}>
+                                    <View style={[styles.bar, { height: 20 }]} />
+                                    <View style={[styles.bar, { height: 28 }]} />
+                                    <View style={[styles.bar, { height: 24 }]} />
+                                    <View style={[styles.barActive, { height: 40 }]} />
+                                    <View style={[styles.bar, { height: 32 }]} />
+                                    <View style={[styles.barActive, { height: 48 }]} />
+                                </View>
+                            </View>
+
+                            <TouchableOpacity
+                                style={styles.feedbackButton}
+                                onPress={() => navigation.navigate('CoachAnalysis')}
+                            >
+                                <Text style={styles.feedbackButtonText}>Ver feedback completo</Text>
+                                <ArrowRightIcon size={18} color="#00D4FF" />
+                            </TouchableOpacity>
+                        </>
+                    ) : (
+                        <View style={styles.lockedContainer}>
+                            <View style={styles.aiHeader}>
+                                <View>
+                                    <Text style={styles.aiTitle}>Análise do Treinador</Text>
+                                    <Text style={styles.aiSubtitle}>Funcionalidade bloqueada</Text>
+                                </View>
+                                <LockIcon size={35} color="#6B7280" />
+                            </View>
+                            <View style={styles.lockedContent}>
+                                <LockIcon size={48} color="#6B7280" />
+                                <Text style={styles.lockedText}>
+                                    Complete o primeiro treino para desbloquear
+                                </Text>
                             </View>
                         </View>
-                        <View style={styles.miniChart}>
-                            <View style={[styles.bar, { height: 20 }]} />
-                            <View style={[styles.bar, { height: 28 }]} />
-                            <View style={[styles.bar, { height: 24 }]} />
-                            <View style={[styles.barActive, { height: 40 }]} />
-                            <View style={[styles.bar, { height: 32 }]} />
-                            <View style={[styles.barActive, { height: 48 }]} />
-                        </View>
-                    </View>
-
-                    <TouchableOpacity
-                        style={styles.feedbackButton}
-                        onPress={() => navigation.navigate('CoachAnalysis')}
-                    >
-                        <Text style={styles.feedbackButtonText}>Ver feedback completo</Text>
-                        <ArrowRightIcon size={18} color="#00D4FF" />
-                    </TouchableOpacity>
+                    )}
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -696,5 +816,20 @@ const styles = StyleSheet.create({
     feedbackArrow: {
         fontSize: typography.fontSizes.lg,
         color: colors.accent,
+    },
+    // Locked state styles
+    lockedContainer: {
+        width: '100%',
+    },
+    lockedContent: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: spacing.xl,
+        gap: spacing.md,
+    },
+    lockedText: {
+        fontSize: typography.fontSizes.sm,
+        color: '#6B7280',
+        textAlign: 'center' as const,
     },
 });

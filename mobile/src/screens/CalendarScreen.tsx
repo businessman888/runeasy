@@ -14,7 +14,7 @@ import {
     PanResponder,
 } from 'react-native';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme';
-import { useTrainingStore } from '../stores';
+import { useTrainingStore, useStatsStore } from '../stores';
 
 // SVG Icons
 function BackIcon({ size = 24, color = '#00D4FF' }: { size?: number; color?: string }) {
@@ -272,6 +272,7 @@ const mockWorkoutData: WorkoutData = {
 
 export function CalendarScreen({ navigation }: any) {
     const { workouts, fetchWorkouts, upcomingWorkouts, fetchUpcomingWorkouts } = useTrainingStore();
+    const { summary, fetchSummary } = useStatsStore();
     const [selectedDate, setSelectedDate] = React.useState(new Date().getDate());
     const [currentMonth, setCurrentMonth] = React.useState(new Date());
 
@@ -290,6 +291,7 @@ export function CalendarScreen({ navigation }: any) {
         const end = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
         fetchWorkouts(start.toISOString().split('T')[0], end.toISOString().split('T')[0]);
         fetchUpcomingWorkouts();
+        fetchSummary();
     }, [currentMonth]);
 
     // Helper: Transform API workout to UI WorkoutData format
@@ -480,7 +482,7 @@ export function CalendarScreen({ navigation }: any) {
                     <View style={styles.statItem}>
                         <Text style={styles.statLabel}>Volume</Text>
                         <View style={styles.statValueRow}>
-                            <Text style={styles.statValue}>124</Text>
+                            <Text style={styles.statValue}>{Math.round(summary?.total_distance_km || 0)}</Text>
                             <Text style={styles.statUnit}> km</Text>
                         </View>
                     </View>
@@ -488,8 +490,8 @@ export function CalendarScreen({ navigation }: any) {
                     <View style={styles.statItem}>
                         <Text style={styles.statLabel}>Frequência</Text>
                         <View style={styles.statValueRow}>
-                            <Text style={styles.statValue}>18</Text>
-                            <Text style={styles.statUnitMuted}> /22</Text>
+                            <Text style={styles.statValue}>{summary?.total_runs || 0}</Text>
+                            <Text style={styles.statUnitMuted}> dias</Text>
                         </View>
                     </View>
                 </View>

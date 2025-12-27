@@ -74,6 +74,9 @@ export function LoginScreen({ navigation }: any) {
                 // Clean URL first
                 window.history.replaceState({}, '', '/');
 
+                // Save userId to storage for later use in onboarding
+                await Storage.setItemAsync('user_id', userId);
+
                 // Always navigate to Quiz flow for all logins
                 // User will complete quiz and then enter the app
                 console.log('Login callback - navigating to Quiz with userId:', userId);
@@ -124,6 +127,9 @@ export function LoginScreen({ navigation }: any) {
                     }
 
                     if (userId) {
+                        // Save userId to storage for later use in onboarding
+                        await Storage.setItemAsync('user_id', userId);
+
                         // Always navigate to Quiz flow for all logins
                         console.log('Native login callback - navigating to Quiz with userId:', userId);
                         navigation.replace('Quiz_Objective', { userId });

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getAuthenticatedUserId, getSessionToken } from '../services/supabase';
+import * as Storage from '../utils/storage';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api';
 
@@ -122,12 +122,11 @@ export const useOnboardingStore = create<OnboardingState>((set, get) => ({
         set({ isGenerating: true, error: null, errorCode: null });
 
         try {
-            // Get the authenticated user ID and session token
-            const userId = await getAuthenticatedUserId();
-            const token = await getSessionToken();
+            // Get the user ID from local storage (set during Strava login)
+            const userId = await Storage.getItemAsync('user_id');
 
             // If user is not authenticated, stop and require login
-            if (!userId || !token) {
+            if (!userId) {
                 set({
                     error: 'Você precisa fazer login para gerar seu plano de treino.',
                     errorCode: ONBOARDING_ERRORS.AUTH_REQUIRED,
@@ -141,7 +140,6 @@ export const useOnboardingStore = create<OnboardingState>((set, get) => ({
                 headers: {
                     'Content-Type': 'application/json',
                     'x-user-id': userId,
-                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     goal: data.goal || '10k',

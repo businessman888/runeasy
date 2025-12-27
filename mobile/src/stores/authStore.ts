@@ -4,12 +4,14 @@ import * as Storage from '../utils/storage';
 interface User {
     id: string;
     email: string;
+    strava_athlete_id: number | null;
     profile: {
         firstname: string;
         lastname: string;
         profile_pic: string;
     };
     subscription_status: 'trial' | 'active' | 'expired';
+    created_at: string;
 }
 
 interface AuthState {

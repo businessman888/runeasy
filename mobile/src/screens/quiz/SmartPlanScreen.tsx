@@ -150,13 +150,28 @@ export function SmartPlanScreen({ navigation, route }: any) {
     const workoutDuration = nextWorkout?.duration || '35 min';
     const workoutPace = nextWorkout?.paceEstimate || 'Pace 5:30';
 
-    const handleUnlockAll = () => {
-        // Reset navigation stack and go to Main (Home tab)
-        // This works whether user is authenticated or not
+    const handleUnlockAll = async () => {
+        // Mark user as authenticated
+        if (userId) {
+            setAuthenticated(true);
+        }
+
+        // Navigate to Main with Calendar tab selected
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Main' }],
+                routes: [{
+                    name: 'Main',
+                    state: {
+                        index: 1, // Calendar is the second tab
+                        routes: [
+                            { name: 'Home' },
+                            { name: 'Calendar' },
+                            { name: 'Evolution' },
+                            { name: 'Settings' },
+                        ],
+                    },
+                }],
             })
         );
     };

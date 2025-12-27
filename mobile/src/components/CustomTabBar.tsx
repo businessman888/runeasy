@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     centerIconContainer: {
         backgroundColor: '#00C4E8',
         ...(Platform.OS === 'web' ? {
-            background: 'linear-gradient(180deg, #00D4FF 0%, #007F99 100%)',
             boxShadow: '0px 0px 12px 2px rgba(0, 212, 255, 0.6)',
         } : {}),
     },

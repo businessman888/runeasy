@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -106,7 +106,8 @@ function ChevronIcon({ size = 20, color = 'rgba(235,235,245,0.6)' }: { size?: nu
 
 export function SettingsScreen({ navigation }: any) {
     const { user, logout } = useAuthStore();
-    const [stravaConnected, setStravaConnected] = useState(true);
+    // Use real Strava connection status from user data
+    const isStravaConnected = Boolean(user?.strava_athlete_id);
 
     const handleLogout = async () => {
         await logout();
@@ -187,12 +188,15 @@ export function SettingsScreen({ navigation }: any) {
                                 </View>
                                 <View style={styles.stravaTextContainer}>
                                     <Text style={styles.menuItemText}>Strava</Text>
-                                    <Text style={styles.stravaConnectedText}>Conectado como Alex R.</Text>
+                                    <Text style={styles.stravaConnectedText}>
+                                        {isStravaConnected ? `Conectado como ${userName}` : 'Não conectado'}
+                                    </Text>
                                 </View>
                             </View>
                             <Switch
-                                value={stravaConnected}
-                                onValueChange={setStravaConnected}
+                                value={isStravaConnected}
+                                onValueChange={() => { }}
+                                disabled={true}
                                 trackColor={{ false: '#39393D', true: '#00D4FF' }}
                                 thumbColor="#FFFFFF"
                             />
